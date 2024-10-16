@@ -1,7 +1,7 @@
 # Dashboard Cattuccino
 Repositório destinado ao projeto de dashboard para a startup Cattuccino, da disciplina de Projetos 5, do 5° período no CESAR School.
 
-## Descrição do domínio
+## Descrição
 O projeto desenvolvido é uma plataforma dashboard com o objetivo de disponibilizar aos gerentes e analistas de negócios da startup Cattuccino, informações relevantes a cerca do desempenho financeiro dos produtos utilizados e vendidos no estabelecimento, além de informações sobre o desempenho do marketing digital em diferentes redes sociais.
 
 ## Nossos desenvolvedores

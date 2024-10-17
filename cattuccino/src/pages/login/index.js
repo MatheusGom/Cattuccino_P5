@@ -6,8 +6,8 @@ import InitialBackground from '../../components/InitialBackground';
 function Login() {
     const navigate = useNavigate();
 
-    const handleUserClick = () => {
-        navigate('/usuario');
+    const handleUserClick = (userType) => {
+        navigate(`/usuario/${userType}`);
     };
 
     return (
@@ -18,11 +18,11 @@ function Login() {
                     <img className={styles.logo} src='/images/logo.svg' alt='Logo' /><br />
                     <p className={styles.subtitle}>Por favor, nos diga como você deseja entrar</p>
                     <div className={styles.options}>
-                        <div className={styles['selection-box']} onClick={handleUserClick}>
+                        <div className={styles['selection-box']} onClick={() => handleUserClick(1)}>
                             <img className={styles['box-image']} src='/images/user.svg' alt='User' />
                             Usuário
                         </div>
-                        <div className={styles['selection-box']}>
+                        <div className={styles['selection-box']} onClick={() => handleUserClick(2)}>
                             <img className={styles['box-image']} src='/images/manager.svg' alt='Manager' />
                             Gerente
                         </div>

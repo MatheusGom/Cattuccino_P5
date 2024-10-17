@@ -28,6 +28,11 @@
     cursor: pointer;
 }
 
+.welcome {
+    font-size: 16px;
+    color: #FF1A66;
+}
+
 .info {
     margin-top: 45px;
     width: 100%;

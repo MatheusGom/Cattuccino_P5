@@ -1,0 +1,115 @@
+@import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;700&display=swap');
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: "DM Sans";
+}
+
+body {
+    background: radial-gradient(circle at center, #b2274d, #cb4167);
+}
+
+.title {
+    margin-top: 2%;
+    color: #fff;
+    display: flex;
+    height: 60px;
+    flex-direction: column;
+    justify-content: center;
+    align-self: stretch;
+    text-align: center;
+    font-size: 14px;
+    font-style: normal;
+    font-weight: 700;
+    line-height: 140%;
+}
+
+.container {
+    margin: 10vh auto;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #fff;
+    border-radius: 20px;
+    width: 80%;
+    max-width: 400px;
+    height: 300px;
+    padding: 20px;
+}
+
+.login-form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    background-color: #fff;
+}
+
+.logo {
+    width: 70%;
+}
+
+.subtitle {
+    font-size: 15px;
+    font-weight: 900;
+    color: #FF1A66;
+    text-align: center;
+}
+
+.form-input {
+    background-color: #ddd;
+    width: 100%;
+    border: 1px solid #ccc;
+    font-size: 16px;
+    color: #010101;
+    outline: none;
+    border-radius: 20px;
+    padding: 10px;
+    margin-top: 10px;
+}
+
+.options {
+    margin-top: 15%;
+    display: flex;
+    justify-content: space-between;
+    gap: 44px;
+    color: #FF1A66;
+}
+
+.selection-box {
+    border-radius: 24px;
+    background: #FFF;
+    box-shadow: 0px 5px 6px 0px rgba(0, 0, 0, 0.20);
+    font-weight: 900;
+    display: flex;
+    flex-direction: column;
+    text-align: center;
+    align-items: center;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.selection-box:hover {
+    cursor: pointer;
+    transform: translateY(-5px);
+    box-shadow: 0px 10px 12px 0px rgba(0, 0, 0, 0.30);
+}
+
+.box-image {
+    width: 50%;
+}
+
+@media (max-width: 768px) {
+    .container {
+        width: 90%;
+        height: auto;
+        padding: 30px 20px;
+    }
+
+    .form-input {
+        font-size: 14px;
+        padding: 8px;
+    }
+}

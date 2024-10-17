@@ -30,6 +30,13 @@ Para executar o programa, é necessário seguir os seguintes passos:
     - Usar o comando: 
     <dt>
 
+      npm install
+  </dt>
+  </tr>
+  <tr>
+    - Em seguida, usar o comando: 
+    <dt>
+
       npm start
   </dt>
   </tr>

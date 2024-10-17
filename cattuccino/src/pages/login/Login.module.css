@@ -59,18 +59,6 @@ body {
     text-align: center;
 }
 
-.form-input {
-    background-color: #ddd;
-    width: 100%;
-    border: 1px solid #ccc;
-    font-size: 16px;
-    color: #010101;
-    outline: none;
-    border-radius: 20px;
-    padding: 10px;
-    margin-top: 10px;
-}
-
 .options {
     margin-top: 15%;
     display: flex;

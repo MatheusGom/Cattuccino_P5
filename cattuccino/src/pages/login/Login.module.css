@@ -9,10 +9,13 @@
 
 body {
     background: radial-gradient(circle at center, #b2274d, #cb4167);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
 }
 
 .title {
-    margin-top: 2%;
     color: #fff;
     display: flex;
     height: 60px;
@@ -34,8 +37,8 @@ body {
     background-color: #fff;
     border-radius: 20px;
     width: 80%;
-    max-width: 400px;
-    height: 300px;
+    width: 400px;
+    height: 350px;
     padding: 20px;
 }
 
@@ -92,12 +95,41 @@ body {
 @media (max-width: 768px) {
     .container {
         width: 90%;
-        height: auto;
-        padding: 30px 20px;
+        padding: 20px;
+        height: 100%;
     }
 
-    .form-input {
+    .logo {
+        width: 70%;
+    }
+
+    .subtitle {
         font-size: 14px;
-        padding: 8px;
+    }
+
+    .options {
+        gap: 15px;
+    }
+
+    .selection-box {
+        width: 100%;
+    }
+}
+
+@media (max-width: 480px) {
+    .title {
+        font-size: 18px;
+    }
+
+    .subtitle {
+        font-size: 13px;
+    }
+
+    .selection-box {
+        padding: 10px;
+    }
+
+    .box-image {
+        width: 50%;
     }
 }

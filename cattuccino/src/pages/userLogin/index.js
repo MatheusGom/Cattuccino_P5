@@ -4,7 +4,6 @@ import styles from './UserLogin.module.css';
 import InitialBackground from '../../components/InitialBackground';
 
 function UserLogin() {
-
     const navigate = useNavigate();
     const { userType } = useParams();
 
@@ -13,20 +12,25 @@ function UserLogin() {
     };
 
     const getUserMessage = () => {
-        if (userType === '1') {
-            return 'Bem-vindo, Usuário!';
-        } else if (userType === '2') {
+        if (userType === 'Analist') {
+            return 'Bem-vindo, Analista!';
+        } else if (userType === 'Manager') {
             return 'Bem-vindo, Gerente!';
         } else {
             return 'Bem-vindo!';
         }
     };
 
+    const handleLogin = (e) => {
+        e.preventDefault();
+        navigate(`/financeiro/${userType}`);
+    };
+
     return (
         <>
             <InitialBackground />
             <div className={styles.container}>
-                <form className={styles['login-form']}>
+                <form className={styles['login-form']} onSubmit={handleLogin}>
                     <img className={styles.logo} onClick={backHome} src='/images/logo.svg' alt='Logo' /><br />
                     <h2 className={styles.welcome}>{getUserMessage()}</h2>
                     <div className={styles.info}>
@@ -35,6 +39,7 @@ function UserLogin() {
                                 className={styles['form-input']}
                                 type='email'
                                 placeholder='E-mail'
+                                required
                             />
                             <img className={styles.icon} src='/images/mail.svg' alt='e-mail' />
                         </div>
@@ -43,6 +48,7 @@ function UserLogin() {
                                 className={styles['form-input']}
                                 type='password'
                                 placeholder='Senha'
+                                required
                             />
                             <img className={styles.icon} src='/images/password.svg' alt='senha' />
                         </div>

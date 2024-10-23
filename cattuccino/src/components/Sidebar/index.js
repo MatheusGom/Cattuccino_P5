@@ -1,12 +1,21 @@
 import React from 'react';
-// import styles from './InitialBackground.module.css' TIRA ESSE COMENTARIO NA HORA DE USAR O CSS
+// import styles from './Sidebar.module.css' TIRA ESSE COMENTARIO NA HORA DE USAR O CSS
 
-function Sidebar() {
+function Sidebar({ userType }) {
     return (
-        <>
-            <h1>AQUI É O SIDE BAR</h1>
-        </>
+        <div className="sidebar">
+            <h1> AQUI É A SIDEBAR</h1>
+            <ul>
+                <li>A</li>
+                <li>B</li>
+                {userType === 'Manager' && (
+                    <>
+                        <li>Gerente legal 1</li>
+                        <li>Pamonha 2</li>
+                    </>
+                )}
+            </ul>
+        </div>
     );
 }
-
 export default Sidebar;

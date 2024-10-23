@@ -5,7 +5,7 @@ function Header() {
     return (
         <>
             <div className={styles.head}>
-                <p>Testing</p>
+                <h3 className={styles['head-title']}>Dashboard</h3>
             </div>
         </>
     );

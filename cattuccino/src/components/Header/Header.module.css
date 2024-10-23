@@ -1,3 +1,11 @@
 .head {
     background-color: #fff;
+    width: 100%;
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 7vh;
+    display: flex;
+    box-sizing: border-box;
+    gap: 20px;
 }

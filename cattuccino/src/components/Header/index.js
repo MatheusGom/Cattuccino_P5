@@ -6,7 +6,7 @@ function Header() {
         <>
             <div className={styles.head}>
                 <h3 className={styles['head-title']}>Dashboard</h3>
-                <div className={styles['selection-box']}>
+                <div className={styles['container']}>
                     <div className={styles.info}>
                         <img className={styles['search-icon']} src='/images/Icon.svg' alt='search' />
                         <input
@@ -20,7 +20,7 @@ function Header() {
                     <img className={styles['box-image']} src='/images/Configuração.svg' alt='Configuração' />
                     <img className={styles['box-image']} src='/images/Perfil Nav Bar.svg' alt='Perfil Nav Bar' />
                 </div>
-            </div>
+                </div>
         </>
     );
 }

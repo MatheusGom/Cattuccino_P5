@@ -7,7 +7,7 @@ function Header() {
             <div className={styles.head}>
                 <h3 className={styles['head-title']}>Dashboard</h3>
                 <div className={styles.info}>
-                <img className={styles.icon} src='/images/Icon.svg' alt='search' />
+                <img className={styles['search-icon']} src='/images/Icon.svg' alt='search' />
                 <input
                     className={styles['form-input']}
                     type='search'

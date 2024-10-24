@@ -11,14 +11,25 @@
     margin-right: auto;
 
 }
+.head-title{
+    align-items: center;
+    margin-right: auto;
+}
+
 .info {
     display: flex;
-    align-items: right; 
+    align-items: center; 
     gap: 10px;
     width: auto; 
     margin-top: 0; 
     margin-left: auto;
 
+}
+.search-icon{
+    width: 21px;
+    height: 21px;
+    align-items: center;
+    display: flex;
 }
 .form-input {
     flex-grow: 1;
@@ -29,6 +40,8 @@
     color: #000;
     border-radius: 50px;
     background-color: transparent;
+    line-height: 20px;
+    
 }
 .selection-box {
     border-radius: 24px;

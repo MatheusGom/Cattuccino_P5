@@ -20,7 +20,7 @@ function Header() {
                     <img className={styles['box-image']} src='/images/Configuração.svg' alt='Configuração' />
                     <img className={styles['box-image']} src='/images/Perfil Nav Bar.svg' alt='Perfil Nav Bar' />
                 </div>
-                </div>
+            </div>
         </>
     );
 }

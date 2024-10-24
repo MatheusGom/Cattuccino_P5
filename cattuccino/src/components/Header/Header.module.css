@@ -46,11 +46,14 @@
     height: 20px;
     opacity: 0.6;
     color: #500124;
+}
+
+.icon-active {
     transition: transform 0.3s ease, filter 0.3s ease;
     filter: drop-shadow(0px 0px 0px transparent);
 }
 
-.search-icon:hover {
+.icon-active:hover {
     cursor: pointer;
     transform: translateY(-5px);
     filter: drop-shadow(0px 1px 1px rgba(0, 0, 0, 0.30)) brightness(0.9);

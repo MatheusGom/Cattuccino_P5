@@ -8,7 +8,7 @@ function Sidebar({ userType }) {
             <ul>
                 <li>A</li>
                 <li>B</li>
-                {userType === 'Manager' && (
+                {userType === '2' && (
                     <>
                         <li>Gerente legal 1</li>
                         <li>Pamonha 2</li>

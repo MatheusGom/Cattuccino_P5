@@ -12,9 +12,9 @@ function UserLogin() {
     };
 
     const getUserMessage = () => {
-        if (userType === 'Analist') {
+        if (userType === '1') {
             return 'Bem-vindo, Analista!';
-        } else if (userType === 'Manager') {
+        } else if (userType === '2') {
             return 'Bem-vindo, Gerente!';
         } else {
             return 'Bem-vindo!';

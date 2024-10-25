@@ -23,7 +23,7 @@ function UserLogin() {
 
     const handleLogin = (e) => {
         e.preventDefault();
-        navigate(`/financeiro/${userType}`);
+        navigate(`/home/${userType}`);
     };
 
     return (

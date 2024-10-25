@@ -1,10 +1,9 @@
-// src/pages/Financial.js
 import React from 'react';
 import { useParams } from 'react-router-dom';
-//import styles from './Financial.module.css';
+//import styles from './Configurations.module.css';
 import Sidebar from '../../components/Sidebar';
 
-const Financial = () => {
+const Configurations = () => {
     const { userType } = useParams();
 
     return (
@@ -19,4 +18,4 @@ const Financial = () => {
     );
 };
 
-export default Financial;
+export default Configurations;

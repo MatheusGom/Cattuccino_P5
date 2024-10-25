@@ -6,8 +6,8 @@ function App() {
   return (
     <Router>
       <Routes>
-        <Route path='/' element={<Login/>} />
-        <Route path='/usuario/:userType' element={<UserLogin/>}/>
+        <Route path='/' element={<Login />} />
+        <Route path='/usuario/:userType' element={<UserLogin />} />
       </Routes>
     </Router>
   );

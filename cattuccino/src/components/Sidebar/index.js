@@ -1,40 +1,10 @@
-import React, { useEffect, useState } from 'react';
-import { useNavigate, useLocation } from 'react-router-dom';
+import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import styles from './Sidebar.module.css';
 
 function Sidebar({ userType }) {
     const navigate = useNavigate();
-    const location = useLocation();
     const [activeButton, setActiveButton] = useState('home');
-
-    useEffect(() => {
-
-        const currentPath = location.pathname;
-
-        if (currentPath.includes('/financeiro')) {
-            setActiveButton('financial');
-        } 
-        
-        else if (currentPath.includes('/marketing')) {
-            setActiveButton('marketing');
-        } 
-        
-        else if (currentPath.includes('/gerenciamento') && userType === '2') {
-            setActiveButton('management');
-        } 
-        
-        else if (currentPath.includes('/perfil')) {
-            setActiveButton('profile');
-        } 
-        
-        else if (currentPath.includes('/configuracoes')) {
-            setActiveButton('configuration');
-        } 
-        
-        else {
-            setActiveButton('home');
-        }
-    }, [location.pathname, userType]);
 
     const handleButtonClick = (button, route) => {
         setActiveButton(button);
@@ -45,7 +15,7 @@ function Sidebar({ userType }) {
         <div className={styles.sidebar}>
             <ul className={styles.buttonList}>
 
-                <li onClick={() => handleButtonClick('home', `/home/${userType}`)}>
+                <li onClick={() => handleButtonClick('home', ``)}>
                     <img 
                         src={activeButton === 'home' 
                             ? "/images/home_button_pressed.svg" 
@@ -63,7 +33,7 @@ function Sidebar({ userType }) {
                     />
                 </li>
 
-                <li onClick={() => handleButtonClick('marketing', `/marketing/${userType}`)}>
+                <li onClick={() => handleButtonClick('marketing', ``)}>
                     <img 
                         src={activeButton === 'marketing' 
                             ? "/images/marketing_button_pressed.svg" 
@@ -73,7 +43,7 @@ function Sidebar({ userType }) {
                 </li>
 
                 {userType === '2' && (
-                    <li onClick={() => handleButtonClick('management', `/gerenciamento/${userType}`)}>
+                    <li onClick={() => handleButtonClick('management', ``)}>
                         <img 
                             src={activeButton === 'management' 
                                 ? "/images/management_button_pressed.svg" 
@@ -89,7 +59,7 @@ function Sidebar({ userType }) {
                     <br/>
                 </div>
 
-                <li onClick={() => handleButtonClick('profile', `/perfil/${userType}`)}>
+                <li onClick={() => handleButtonClick('profile', ``)}>
                     <img 
                         src={activeButton === 'profile' 
                             ? "/images/profile_button_pressed.svg" 
@@ -98,9 +68,9 @@ function Sidebar({ userType }) {
                     />
                 </li>
 
-                <li onClick={() => handleButtonClick('configurations', `/configuracoes/${userType}`)}>
+                <li onClick={() => handleButtonClick('configurations', ``)}>
                     <img 
-                        src={activeButton === 'configuration' 
+                        src={activeButton === 'configurations' 
                             ? "/images/configuration_button_pressed.svg" 
                             : "/images/configuration_button.svg"} 
                         alt="Configurations Button" 

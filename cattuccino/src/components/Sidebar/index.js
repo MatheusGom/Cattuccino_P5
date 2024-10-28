@@ -13,80 +13,80 @@ function Sidebar({ userType }) {
 
     return (
         <div className={styles.sidebar}>
-            <ul className={styles.buttonList}>
+            <div className={styles['upper-logo']}>
+                <img src="/images/sideBarLogo.svg" alt="Logo" className={styles.logo} />
+            </div>
+            <div className={styles['button-list']}> 
 
-                <li onClick={() => handleButtonClick('home', ``)}>
-                    <img 
-                        src={activeButton === 'home' 
-                            ? "/images/home_button_pressed.svg" 
-                            : "/images/home_button.svg"} 
-                        alt="Home Button" 
+                <div onClick={() => handleButtonClick('home', ``)}>
+                    <img className={styles['side-buttons']}
+                        src={activeButton === 'home'
+                            ? "/images/home_button_pressed.svg"
+                            : "/images/home_button.svg"}
+                        alt="Home Button"
                     />
-                </li>
+                </div>
 
-                <li onClick={() => handleButtonClick('financial', `/financeiro/${userType}`)}>
-                    <img 
-                        src={activeButton === 'financial' 
-                            ? "/images/financial_button_pressed.svg" 
-                            : "/images/financial_button.svg"} 
-                        alt="Financial Button" 
+                <div onClick={() => handleButtonClick('financial', `/financeiro/${userType}`)}>
+                    <img className={styles['side-buttons']}
+                        src={activeButton === 'financial'
+                            ? "/images/financial_button_pressed.svg"
+                            : "/images/financial_button.svg"}
+                        alt="Financial Button"
                     />
-                </li>
+                </div>
 
-                <li onClick={() => handleButtonClick('marketing', ``)}>
-                    <img 
-                        src={activeButton === 'marketing' 
-                            ? "/images/marketing_button_pressed.svg" 
-                            : "/images/marketing_button.svg"} 
-                        alt="Marketing Button" 
+                <div onClick={() => handleButtonClick('marketing', ``)}>
+                    <img className={styles['side-buttons']}
+                        src={activeButton === 'marketing'
+                            ? "/images/marketing_button_pressed.svg"
+                            : "/images/marketing_button.svg"}
+                        alt="Marketing Button"
                     />
-                </li>
+                </div>
 
                 {userType === '2' && (
-                    <li onClick={() => handleButtonClick('management', ``)}>
-                        <img 
-                            src={activeButton === 'management' 
-                                ? "/images/management_button_pressed.svg" 
-                                : "/images/management_button.svg"} 
-                            alt="Management Button" 
+                    <div onClick={() => handleButtonClick('management', ``)}>
+                        <img className={styles['side-buttons']}
+                            src={activeButton === 'management'
+                                ? "/images/management_button_pressed.svg"
+                                : "/images/management_button.svg"}
+                            alt="Management Button"
                         />
-                    </li>
+                    </div>
                 )}
 
                 <div className={styles.title}>
-                    <br/>
-                    <h1>Conta</h1>
-                    <br/>
+                    <p>CONTA</p>
                 </div>
 
-                <li onClick={() => handleButtonClick('profile', ``)}>
-                    <img 
-                        src={activeButton === 'profile' 
-                            ? "/images/profile_button_pressed.svg" 
-                            : "/images/profile_button.svg"} 
-                        alt="Profile Button" 
+                <div onClick={() => handleButtonClick('profile', ``)}>
+                    <img className={styles['side-buttons']}
+                        src={activeButton === 'profile'
+                            ? "/images/profile_button_pressed.svg"
+                            : "/images/profile_button.svg"}
+                        alt="Profile Button"
                     />
-                </li>
+                </div>
 
-                <li onClick={() => handleButtonClick('configurations', ``)}>
-                    <img 
-                        src={activeButton === 'configurations' 
-                            ? "/images/configuration_button_pressed.svg" 
-                            : "/images/configuration_button.svg"} 
-                        alt="Configurations Button" 
+                <div onClick={() => handleButtonClick('configurations', ``)}>
+                    <img className={styles['side-buttons']}
+                        src={activeButton === 'configurations'
+                            ? "/images/configuration_button_pressed.svg"
+                            : "/images/configuration_button.svg"}
+                        alt="Configurations Button"
                     />
-                </li>
+                </div>
 
-                <li onClick={() => handleButtonClick('logout', `/`)}>
-                    <img 
-                        src={activeButton === 'logout' 
-                            ? "/images/logout_button_pressed.svg" 
-                            : "/images/logout_button.svg"} 
-                        alt="Logout Button" 
+                <div onClick={() => handleButtonClick('logout', `/`)}>
+                    <img className={styles['side-buttons']}
+                        src={activeButton === 'logout'
+                            ? "/images/logout_button_pressed.svg"
+                            : "/images/logout_button.svg"}
+                        alt="Logout Button"
                     />
-                </li>
-            </ul>
-
+                </div>
+            </div>
         </div>
     );
 }

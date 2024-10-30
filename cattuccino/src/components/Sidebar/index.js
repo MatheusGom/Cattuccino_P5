@@ -17,7 +17,6 @@ function Sidebar({ userType }) {
             </div>
             <div className={styles['button-list']}>
 
-                {/* Home Button */}
                 <div 
                     className={`${styles['button-container']} ${activeButton === 'home' ? styles.active : ''}`} 
                     onClick={() => handleButtonClick('home')}
@@ -31,7 +30,6 @@ function Sidebar({ userType }) {
                     <p className={styles['button-text']}>Home</p>
                 </div>
 
-                {/* Financial Button */}
                 <div 
                     className={`${styles['button-container']} ${activeButton === 'financial' ? styles.active : ''}`} 
                     onClick={() => handleButtonClick('financial')}
@@ -45,7 +43,6 @@ function Sidebar({ userType }) {
                     <p className={styles['button-text']}>Financeiro</p>
                 </div>
 
-                {/* Marketing Button */}
                 <div 
                     className={`${styles['button-container']} ${activeButton === 'marketing' ? styles.active : ''}`} 
                     onClick={() => handleButtonClick('marketing')}
@@ -59,7 +56,6 @@ function Sidebar({ userType }) {
                     <p className={styles['button-text']}>Marketing</p>
                 </div>
 
-                {/* Management Button (only for userType 2) */}
                 {userType === '2' && (
                     <div 
                         className={`${styles['button-container']} ${activeButton === 'management' ? styles.active : ''}`} 
@@ -75,12 +71,10 @@ function Sidebar({ userType }) {
                     </div>
                 )}
 
-                {/* Section Title */}
                 <div className={styles.title}>
                     <p>CONTA</p>
                 </div>
 
-                {/* Profile Button */}
                 <div 
                     className={`${styles['button-container']} ${activeButton === 'profile' ? styles.active : ''}`} 
                     onClick={() => handleButtonClick('profile')}
@@ -94,7 +88,6 @@ function Sidebar({ userType }) {
                     <p className={styles['button-text']}>Perfil</p>
                 </div>
 
-                {/* Configurations Button */}
                 <div 
                     className={`${styles['button-container']} ${activeButton === 'configurations' ? styles.active : ''}`} 
                     onClick={() => handleButtonClick('configurations')}
@@ -108,7 +101,6 @@ function Sidebar({ userType }) {
                     <p className={styles['button-text']}>Configurações</p>
                 </div>
 
-                {/* Logout Button */}
                 <div 
                     className={`${styles['button-container']} ${activeButton === 'logout' ? styles.active : ''}`} 
                     onClick={() => handleButtonClick('logout')}

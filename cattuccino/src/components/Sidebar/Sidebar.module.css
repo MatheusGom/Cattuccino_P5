@@ -17,26 +17,21 @@
     display: flex;
     flex-direction: column;
     align-items: center;
-    /* Centraliza os elementos horizontalmente */
     padding: 20px;
     box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
-    /* Sombra leve para destacar */
 }
 
 .upper-logo {
     width: 1000px;
     height: 48px;
-    /* Ajuste a largura conforme necessário */
     display: flex;
     justify-content: center;
-    /* Centraliza a imagem na div */
     margin-right: 40px;
 }
 
 .upper-logo img {
     width: 100px;
     height: auto;
-    /* Mantém a proporção da logo */
 }
 
 .button-list {
@@ -56,31 +51,30 @@
 .side-buttons {
     margin-top: 5%;
     margin-bottom: 5%;
-    width: 40px; /* Ajuste para o tamanho desejado */
-    height: 40px; /* Ajuste para o tamanho desejado */
-    cursor: pointer; /* Faz com que o ponteiro do mouse fique como uma mãozinha */
-    transition: transform 0.2s; /* Animação para feedback visual */
+    width: 40px;
+    height: 40px;
+    cursor: pointer;
+    transition: transform 0.2s;
     margin-left: 30%;
 }
 
 .side-buttons:hover {
-    transform: scale(1.1); /* Aumenta levemente o botão ao passar o mouse */
+    transform: scale(1.1);
 }
 
 .button-container {
     display: flex;
-    align-items: center; /* Centraliza o texto verticalmente */
+    align-items: center;
     margin: 15px 0;
 }
 
 .button-text {
     font-weight: bold;
     color: #B4ACAD;
-    margin-left: 10px; /* Ajuste o espaçamento entre o botão e o texto conforme necessário */
+    margin-left: 10px;
     transition: color 0.3s;
 }
 
-/* Quando o botão é ativo, o texto assume a cor especificada */
 .button-container.active .button-text {
     color: #500124;
 }

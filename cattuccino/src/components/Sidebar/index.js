@@ -5,9 +5,23 @@ import styles from './Sidebar.module.css';
 function Sidebar({ userType }) {
     const navigate = useNavigate();
     const [activeButton, setActiveButton] = useState('home');
+    const [showLogoutPopup, setShowLogoutPopup] = useState(false);
 
     const handleButtonClick = (button) => {
-        setActiveButton(button);
+        if (button === 'logout') {
+            setShowLogoutPopup(true);
+        } else {
+            setActiveButton(button);
+        }
+    };
+
+    const confirmLogout = () => {
+        setShowLogoutPopup(false);
+        navigate('/');
+    };
+
+    const cancelLogout = () => {
+        setShowLogoutPopup(false);
     };
 
     return (
@@ -17,8 +31,8 @@ function Sidebar({ userType }) {
             </div>
             <div className={styles['button-list']}>
 
-                <div 
-                    className={`${styles['button-container']} ${activeButton === 'home' ? styles.active : ''}`} 
+                <div
+                    className={`${styles['button-container']} ${activeButton === 'home' ? styles.active : ''}`}
                     onClick={() => handleButtonClick('home')}
                 >
                     <img className={styles['side-buttons']}
@@ -30,8 +44,8 @@ function Sidebar({ userType }) {
                     <p className={styles['button-text']}>Home</p>
                 </div>
 
-                <div 
-                    className={`${styles['button-container']} ${activeButton === 'financial' ? styles.active : ''}`} 
+                <div
+                    className={`${styles['button-container']} ${activeButton === 'financial' ? styles.active : ''}`}
                     onClick={() => handleButtonClick('financial')}
                 >
                     <img className={styles['side-buttons']}
@@ -43,8 +57,8 @@ function Sidebar({ userType }) {
                     <p className={styles['button-text']}>Financeiro</p>
                 </div>
 
-                <div 
-                    className={`${styles['button-container']} ${activeButton === 'marketing' ? styles.active : ''}`} 
+                <div
+                    className={`${styles['button-container']} ${activeButton === 'marketing' ? styles.active : ''}`}
                     onClick={() => handleButtonClick('marketing')}
                 >
                     <img className={styles['side-buttons']}
@@ -57,8 +71,8 @@ function Sidebar({ userType }) {
                 </div>
 
                 {userType === '2' && (
-                    <div 
-                        className={`${styles['button-container']} ${activeButton === 'management' ? styles.active : ''}`} 
+                    <div
+                        className={`${styles['button-container']} ${activeButton === 'management' ? styles.active : ''}`}
                         onClick={() => handleButtonClick('management')}
                     >
                         <img className={styles['side-buttons']}
@@ -75,8 +89,8 @@ function Sidebar({ userType }) {
                     <p>CONTA</p>
                 </div>
 
-                <div 
-                    className={`${styles['button-container']} ${activeButton === 'profile' ? styles.active : ''}`} 
+                <div
+                    className={`${styles['button-container']} ${activeButton === 'profile' ? styles.active : ''}`}
                     onClick={() => handleButtonClick('profile')}
                 >
                     <img className={styles['side-buttons']}
@@ -88,8 +102,8 @@ function Sidebar({ userType }) {
                     <p className={styles['button-text']}>Perfil</p>
                 </div>
 
-                <div 
-                    className={`${styles['button-container']} ${activeButton === 'configurations' ? styles.active : ''}`} 
+                <div
+                    className={`${styles['button-container']} ${activeButton === 'configurations' ? styles.active : ''}`}
                     onClick={() => handleButtonClick('configurations')}
                 >
                     <img className={styles['side-buttons']}
@@ -101,8 +115,8 @@ function Sidebar({ userType }) {
                     <p className={styles['button-text']}>Configurações</p>
                 </div>
 
-                <div 
-                    className={`${styles['button-container']} ${activeButton === 'logout' ? styles.active : ''}`} 
+                <div
+                    className={`${styles['button-container']} ${activeButton === 'logout' ? styles.active : ''}`}
                     onClick={() => handleButtonClick('logout')}
                 >
                     <img className={styles['side-buttons']}
@@ -114,6 +128,15 @@ function Sidebar({ userType }) {
                     <p className={styles['button-text']}>Sair</p>
                 </div>
             </div>
+            {showLogoutPopup && (
+                <div className={styles['popup-overlay']}>
+                    <div className={styles['popup-content']}>
+                        <p>Tem certeza que deseja sair?</p>
+                        <button className={styles['popup-button']} onClick={confirmLogout}>Sim</button>
+                        <button className={styles['popup-button']} onClick={cancelLogout}>Não</button>
+                    </div>
+                </div>
+            )}
         </div>
     );
 }

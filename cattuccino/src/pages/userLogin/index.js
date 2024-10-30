@@ -23,7 +23,7 @@ function UserLogin() {
 
     const handleLogin = (e) => {
         e.preventDefault();
-        navigate(`/home/${userType}`);
+        navigate(`/dashboard/${userType}`);
     };
 
     return (

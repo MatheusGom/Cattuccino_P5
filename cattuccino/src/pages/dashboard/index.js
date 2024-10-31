@@ -1,15 +1,17 @@
 import React from "react";
+import { useParams } from "react-router-dom";
 import styles from './Dashboard.module.css';
 import Header from '../../components/Header';
 import Sidebar from '../../components/Sidebar';
 
 function Dashboard() {
-    return(
-        <> 
+    const { userType } = useParams();
+    return (
+        <>
             <Header />
-            <Sidebar />
-                <div className={styles.dashboard}>
-                </div>
+            <Sidebar userType={userType} />
+            <div className={styles.dashboard}>
+            </div>
         </>
     );
 }

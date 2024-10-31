@@ -11,6 +11,31 @@
     padding: 20px;
 }
 
+.background-user-login {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: radial-gradient(circle at center, #b2274d, #cb4167);
+    z-index: -1;
+}
+
+.title {
+    margin-top: 5%;
+    color: #fff;
+    display: flex;
+    height: 60px;
+    flex-direction: column;
+    justify-content: center;
+    align-self: stretch;
+    text-align: center;
+    font-size: 14px;
+    font-style: normal;
+    font-weight: 700;
+    line-height: 140%;
+}
+
 .login-form {
     display: flex;
     flex-direction: column;

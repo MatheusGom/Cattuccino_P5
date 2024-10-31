@@ -1,3 +1,19 @@
-.container {
-    background-color: #fff;
+.background-dashboard {
+    background: #812eda;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    z-index: -1;
+}
+
+.dashboard {
+    background: #F8F8F8;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    flex-direction: column;
+    z-index: 1;
 }

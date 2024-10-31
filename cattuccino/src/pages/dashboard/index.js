@@ -8,8 +8,8 @@ function Dashboard() {
         <> 
             <Header />
             <Sidebar />
-            <div classNames={styles.container}>
-            </div>
+                <div className={styles.dashboard}>
+                </div>
         </>
     );
 }

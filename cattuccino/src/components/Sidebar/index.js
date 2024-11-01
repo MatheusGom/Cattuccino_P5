@@ -2,9 +2,8 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import styles from './Sidebar.module.css';
 
-function Sidebar({ userType }) {
+function Sidebar({ userType, activeButton, setActiveButton }) {
     const navigate = useNavigate();
-    const [activeButton, setActiveButton] = useState('home');
     const [showLogoutPopup, setShowLogoutPopup] = useState(false);
 
     const handleButtonClick = (button) => {

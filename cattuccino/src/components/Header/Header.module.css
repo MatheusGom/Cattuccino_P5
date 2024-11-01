@@ -1,5 +1,5 @@
 .head {
-    background-color: #fff;
+    background-color: #F8F8F8;
     width: 100%;
     position: absolute;
     top: 0;
@@ -16,6 +16,7 @@
 
 .head-title {
     margin-right: auto;
+    margin-left: 240px;
     font-size: 18px;
     line-height: normal;
     font-weight: 900;

@@ -2,15 +2,25 @@ import React from 'react';
 import styles from './Header.module.css';
 import { useState } from 'react';
 
-function Header() {
+function Header({ activeButton }) {
 
     const [searchValue, setSearchValue] = useState('');
+
+    const titleMap = {
+        home: 'Dashboard',
+        financial: 'Financeiro',
+        marketing: 'Marketing',
+        management: 'Gerenciamento',
+        profile: 'Perfil',
+        configurations: 'Configurações',
+        logout: 'Sair'
+    };
 
     return (
         <>
         
             <div className={styles.head}>
-                <h3 className={styles['head-title']}>Dashboard</h3>
+                <h3 className={styles['head-title']}>{titleMap[activeButton]}</h3>
                 <div className={styles['container']}>
                     <div className={styles.info}>
                         <img

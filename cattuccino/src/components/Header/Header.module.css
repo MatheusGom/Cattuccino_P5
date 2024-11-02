@@ -2,7 +2,7 @@
     background-color: #F8F8F8;
     width: 100%;
     position: absolute;
-    top: 0;
+    margin-top: 15px;
     left: 0;
     height: 7vh;
     display: flex;
@@ -17,9 +17,10 @@
 .head-title {
     margin-right: auto;
     margin-left: 240px;
-    font-size: 18px;
+    font-size: 20px;
     line-height: normal;
     font-weight: 900;
+    color: #500124;
 }
 
 .container {

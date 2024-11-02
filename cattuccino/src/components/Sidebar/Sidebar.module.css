@@ -9,8 +9,8 @@
 
 .sidebar {
     position: fixed;
-    top: 0;
-    left: 0;
+    margin-top: 24px;
+    margin-left: 20px;
     width: 200px;
     height: 100vh;
     background-color: #F8F8F8;
@@ -22,14 +22,15 @@
 
 .upper-logo {
     width: 1000px;
-    height: 48px;
+    height: 50px;
     display: flex;
     justify-content: center;
-    margin-right: 40px;
+    margin-left: -20px;
+    margin-top: -20px;
 }
 
 .upper-logo img {
-    width: 100px;
+    width: 140px;
     height: auto;
 }
 
@@ -40,10 +41,10 @@
 
 .title {
     color: #500124;
-    font-size: 15px;
+    font-size: 18px;
     font-weight: bold;
     margin-bottom: 1%;
-    margin-top: 20%;
+    margin-top: 15%;
     margin-left: 30%;
 }
 
@@ -69,6 +70,7 @@
     color: #B4ACAD;
     margin-left: 10px;
     transition: color 0.3s;
+    font-size: 20px;
 }
 
 .button-container:hover .side-buttons,

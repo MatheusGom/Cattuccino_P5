@@ -5,4 +5,43 @@
     align-items: center;
     height: 100vh;
     flex-direction: column;
+    padding-top: 80px; 
+}
+
+.faturamentoDiario {
+    display: flex;
+    width: 480px; 
+    height: 60px;
+    padding: 12px;
+    justify-content: left;
+    align-items: center;
+    flex-shrink: 0;
+    background-color: white;
+    border-radius: 8px; 
+    box-shadow: 0px 5px 6px rgba(0, 0, 0, 0.2); 
+    margin-bottom: 20px; 
+    margin-right: 220px;
+}
+.icone{
+    margin-left: 270px;
+    margin-top: 10px;
+    align-items: center;
+
+}
+.caixaRedesSociais {
+    width: 480px;
+    height: 120px;
+    background: #FFFFFF; 
+    box-shadow: 0px 5px 6px rgba(0, 0, 0, 0.2); 
+    border-radius: 19.3798px; 
+    margin-top: 20px; 
+}
+
+.caixaUsuariosAtivos {
+    width: 480px;
+    height: 229px;
+    background: #FFFFFF; 
+    box-shadow: 0px 5px 6px rgba(0, 0, 0, 0.2);
+    border-radius: 28px; 
+    margin-top: 20px; 
 }

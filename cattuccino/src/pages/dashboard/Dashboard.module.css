@@ -22,26 +22,169 @@
     margin-bottom: 20px; 
     margin-right: 220px;
 }
+.info-clientes {
+    display: flex;
+    flex-direction: column;
+}
+
+.titulo {
+    font-size: 14px;
+    color: #B0B0B0; 
+    margin: 0;
+}
+.tituloRedesSociais{
+    font-size: 14px;
+    color: #500124; 
+    margin: 0;
+}
+.subtituloRedesSociais{
+    font-size: 12px;
+    color: #B0B0B0; 
+    margin: 0;
+}
+.dados {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.numero {
+    font-size: 24px;
+    font-weight: bold;
+    color: #3D004D; 
+}
+
+.percentual {
+    font-size: 16px;
+    color: #E91E63; 
+}
 .icone{
     margin-left: 270px;
     margin-top: 10px;
     align-items: center;
 
 }
+
 .caixaRedesSociais {
     width: 480px;
-    height: 120px;
+    height: 200px;
     background: #FFFFFF; 
     box-shadow: 0px 5px 6px rgba(0, 0, 0, 0.2); 
     border-radius: 19.3798px; 
     margin-top: 20px; 
+    justify-content: space-between; 
+    padding: 0 20px;
+}
+.iconepizza{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-left: 170px;
+    width: 70px; /* Definindo um tamanho específico para o gráfico de pizza */
+    height: 70px;
+}
+.iconepizza img {
+    max-width: 100%; 
+    max-height: 100%;
+    object-fit: contain; /* Preserva a proporção da imagem */
+}
+.iconeredes {
+    margin-top: 10px;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
+.iconeredes img {
+    max-width: 100%;
+    max-height: 100%;
+    object-fit: contain;
+}
 .caixaUsuariosAtivos {
     width: 480px;
-    height: 229px;
+    height: auto; /* Altere para 'auto' para expandir conforme o conteúdo */
     background: #FFFFFF; 
     box-shadow: 0px 5px 6px rgba(0, 0, 0, 0.2);
     border-radius: 28px; 
-    margin-top: 20px; 
+    margin-top: 20px;
+    padding: 20px; /* Adicione padding para dar espaço interno */
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 10px;
+}
+.graficoatividade{
+    width: 100%; 
+    max-width: 450px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.graficoatividade img{
+    padding: 10px;
+    margin-left: -25px;
+    width: 100%; 
+    height: auto; 
+    object-fit: contain;
+}
+.linhaPercentual {
+    display: flex;
+    align-items: center;
+    gap: 5px; /* Espaço entre o "+23%" e o texto */
+}
+.container {
+    display: flex;
+    justify-content: center; /* Centraliza as imagens */
+    align-items: center;
+    gap: 15px;
+    padding: 10px 0; /* Espaço superior e inferior */
+    margin-top: -20px; 
+
+}
+.containernumeros{
+    display: flex;
+    justify-content: center; /* Centraliza as imagens */
+    align-items: center;
+    gap: 45px;
+    margin-top: -20px; 
+}
+.containerlinha{
+    display: flex;
+    justify-content: center; /* Centraliza as imagens */
+    align-items: center;
+    gap: 45px;
+    width: auto;
+    height: auto;
+}
+.box-image2{
+    flex: 1 1 60px;
+    flex-grow: 1;
+    max-width: 50px; /* Limite máximo de largura */
+    max-height: 50px; 
+    height: auto; /* Altura fixa para as imagens */
+    margin-top: -10px;
+    margin-left: -3px;
+}
+.numeroIndividual {
+    font-size: 14px;
+    font-weight: bold;
+    color: #3D004D; /* Cor para destacar o número */
+    text-align: center;
+}
+.box-image {
+    flex: 1 1 60px;
+    flex-grow: 1;
+    max-width: 60px; /* Limite máximo de largura */
+    max-height: 60px; 
+    height: auto; /* Altura fixa para as imagens */
+    transition: transform 0.3s ease, filter 0.3s ease;
+    object-fit: contain; /* Ajusta a imagem para caber na caixa */
+    border-radius: 10px; /* Bordas arredondadas para um visual consistente */
+}
+
+.box-image:hover {
+    cursor: pointer;
+    transform: translateY(-5px);
+    filter: drop-shadow(0px 1px 1px rgba(0, 0, 0, 0.30)) brightness(0.9);
 }

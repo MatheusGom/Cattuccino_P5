@@ -2,6 +2,25 @@ CREATE DATABASE cattuccino_db;
 
 USE cattuccino_db;
 
+CREATE TABLE USER (
+    ID INT AUTO_INCREMENT PRIMARY KEY,
+    NOME VARCHAR(200),
+    SENHA VARCHAR(100),
+    IDADE INT,
+    LOCALIZACAO VARCHAR(250),
+    TIPO_SANGUINEO VARCHAR(5),
+    FORMACAO VARCHAR(100),
+    DT_NASCIMENTO DATE,
+    COR VARCHAR(50),
+    GENERO VARCHAR(50),
+    DT_ADMISSAO DATE,
+    EXTROVERTID INT,
+    CRIATIV INT,
+    OCUPAD INT,
+    ORGANIZAD INT,
+    TRANQUIL INT,
+    GERENCIA INT
+);
 
 CREATE TABLE Financeiro (
     id_transacao INT AUTO_INCREMENT PRIMARY KEY,
@@ -96,8 +115,6 @@ INSERT INTO Financeiro (id_transacao, data_transacao, preco_unitario, qtd_compra
 INSERT INTO Financeiro (id_transacao, data_transacao, preco_unitario, qtd_comprada, preco_total, nome_produto, marca_produto, categoria_produto, descricao_produto, faturamento_produto, lucro_produto, cnpj_fornecedor, nome_fornecedor) VALUES (38, '07/10/2019', 14.9, 22, 327.8, 'Iogurte Natural', 'Danone', 'BEBIDA', 'Iogurte natural integral', 470.0, 142.2, '98.821.213/0001-89', 'Atacado Doce Prazer');
 INSERT INTO Financeiro (id_transacao, data_transacao, preco_unitario, qtd_comprada, preco_total, nome_produto, marca_produto, categoria_produto, descricao_produto, faturamento_produto, lucro_produto, cnpj_fornecedor, nome_fornecedor) VALUES (39, '07/10/2019', 12.2, 40, 488.0, 'Refrigerante', 'Coca-Cola', 'BEBIDA', 'Refrigerante sabor cola 2L', 680.0, 192.0, '85.315.878/0001-45', 'Mix Atacado');
 INSERT INTO Financeiro (id_transacao, data_transacao, preco_unitario, qtd_comprada, preco_total, nome_produto, marca_produto, categoria_produto, descricao_produto, faturamento_produto, lucro_produto, cnpj_fornecedor, nome_fornecedor) VALUES (40, '07/10/2019', 17.5, 10, 175.0, 'Ketchup', 'Heinz', 'CONDIMENTO', 'Ketchup de tomate', 270.0, 95.0, '15.233.539/0001-68', 'CEASA');
-
-
 
 CREATE TABLE Marketing (
     data_id DATE PRIMARY KEY,

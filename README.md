@@ -1,6 +1,6 @@
 <div align="center">
   <h1>
-    <img src="https://skillicons.dev/icons?i=react,nodejs,python" /><br>Dashboard Cattuccino 🇧🇷
+    <img src="https://skillicons.dev/icons?i=react,nodejs,python,flask,docker" /><br>Dashboard Cattuccino 🇧🇷
   </h1>  
 </div>
 Repositório destinado ao projeto de dashboard para a startup Cattuccino, da disciplina de Projetos 5, do 5° período no CESAR School.<br>
@@ -12,7 +12,9 @@ O projeto desenvolvido é uma plataforma dashboard com o objetivo de disponibili
 Para executar este projeto, é necessário possuir:
 <table>
   <tr>- npm: versão 10.8.1 ou superior</tr><br>
-  <tr>- node: versão 20.11.1 ou superior</tr>
+  <tr>- node: versão 20.11.1 ou superior</tr><br>
+  <tr>- python: versão 3.8 ou superior</tr><br>
+  <tr>- docker</tr>
 </table>
 
 ## Execução
@@ -25,22 +27,17 @@ Para executar o programa, é necessário seguir os seguintes passos:
       https://github.com/MatheusGom/Cattuccino_P5.git
   </dt>
   </tr>
-  <tr>- Navegar até a pasta Cattuccino_P5/cattuccino</tr><br>
+  <tr>- Caso esteja em um sistema windows, certifique-se de estar com o Docker Desktop aberto</tr><br>
+  <tr>- Certifique-se de que a porta 3306 esteja disponível para o servidor MySQL</tr><br>
+  <tr>- Navegar até a pasta raiz do projeto (Cattuccino_P5/cattuccino)</tr><br>
   <tr>
     - Usar o comando: 
     <dt>
 
-      npm install
+      docker-compose up --build
   </dt>
   </tr>
-  <tr>
-    - Em seguida, usar o comando: 
-    <dt>
-
-      npm start
-  </dt>
-  </tr>
-  <tr>Acessar, em seu navegador, o endereço http://localhost:3000/</tr>
+  <tr>Após a finalização, acessar, em seu navegador, o endereço http://localhost:3000/</tr>
 </table>
 
 ##
@@ -107,7 +104,7 @@ Para executar o programa, é necessário seguir os seguintes passos:
 
 <div align="center">
   <h1>
-    <img src="https://skillicons.dev/icons?i=react,nodejs,python" /><br>Cattuccino Dashboard 🇺🇸
+    <img src="https://skillicons.dev/icons?i=react,nodejs,python,flask,docker" /><br>Cattuccino Dashboard 🇺🇸
   </h1>  
 </div>
 Repository intended for the dashboard project for the startup Cattuccino, part of the Projects 5 course in the 5th semester at CESAR School.<br>
@@ -119,7 +116,9 @@ The developed project is a dashboard platform aimed at providing managers and bu
 To run this project, you must have:
 <table>
   <tr>- npm: version 10.8.1 or higher</tr><br>
-  <tr>- node: version 20.11.1 or higher</tr>
+  <tr>- node: version 20.11.1 or higher</tr><br>
+  <tr>- python: version 3.8 or higher</tr>
+  <tr>- docker</tr>
 </table>
 
 ## How to run
@@ -131,23 +130,17 @@ To run the program, the following steps must be followed:
 
       https://github.com/MatheusGom/Cattuccino_P5.git
   </dt>
-  </tr>
-  <tr>- Go to the folder Cattuccino_P5/cattuccino folder.</tr><br>
+  <tr>- If you are on a Windows system, make sure Docker Desktop is open</tr><br> 
+  <tr>- Ensure that port 3306 is available for the MySQL server</tr><br>
+  <tr>- Go to the root folder of the project (Cattuccino_P5/cattuccino)</tr><br>
   <tr>
     - Use this command: 
     <dt>
 
-      npm install
+      docker-compose up --build
   </dt>
   </tr>
-  <tr>
-    - And then this command: 
-    <dt>
-
-      npm start
-  </dt>
-  </tr>
-  <tr>Access the address http://localhost:3000/ in your browser.</tr>
+  <tr>After completion, access the address http://localhost:3000/ in your browser</tr>
 </table>
 
 ##

@@ -19,17 +19,17 @@ CREATE TABLE Usuario (
     OCUPAD INT,
     ORGANIZAD INT,
     TRANQUIL INT,
-    GERENCIA INT
+    GERENCIA INT /* 1 = Gerente | 0 = não gerente */
 );
 
 INSERT INTO Usuario (NOME, SENHA, IDADE, LOCALIZACAO, TIPO_SANGUINEO, FORMACAO, DT_NASCIMENTO, COR, GENERO, DT_ADMISSAO, EXTROVERTID, CRIATIV, OCUPAD, ORGANIZAD, TRANQUIL, GERENCIA)
 VALUES 
-('Estela', 'senha123', 29, 'São Paulo, SP', 'A+', 'Engenharia de Software', '1995-03-15', 'Branca', 'Feminino', '2020-05-10', 4, 8, 5, 9, 6, 3),
-('Paulo Megatron Campos', 'seguro!2022', 35, 'Areias, PE', 'O-', 'Administração', '1989-11-22', 'Branco', 'Masculino', '2019-08-01', 5, 6, 7, 8, 5, 7),
-('Paixao', 'pass123', 42, 'Curitiba, PR', 'B+', 'Marketing', '1982-07-09', 'Branco', 'Masculino', '2017-10-30', 6, 9, 6, 7, 8, 4),
-('Marcos Silva', 'nov@345', 30, 'Belo Horizonte, MG', 'AB+', 'Ciência da Computação', '1993-02-03', 'Negra', 'Masculino', '2021-01-15', 8, 7, 8, 6, 7, 5),
-('Matheus', 'seg!paula', 26, 'Areais, PE', 'A-', 'Psicologia', '1998-04-21', 'Pardo', 'Masculino', '2022-06-10', 9, 5, 7, 8, 6, 2),
-('Diogo Henrique', 'r@f@321', 37, 'Areias, PE', 'O+', 'Contabilidade', '1986-09-17', 'Pardo', 'Masculino', '2018-09-27', 5, 5, 5, 5, 5, 5);
+('Estela Lacerda', 'senha123', 20, 'Recife, PE', 'A+', 'Cibersegurança', '2004-10-01', 'Branca', 'Feminino', '2019-12-10', 4, 5, 4, 4, 4, 1),
+('Paulo Campos', 'seguro!2022', 23, 'Recife, PE', 'A+', 'Engenharia de Software', '2001-06-06', 'Branco', 'Masculino', '2019-12-01', 4, 4, 4, 4, 5, 1),
+('Arthur Paixao', 'pass123', 25, 'Recife, PE', 'B+', 'Ciência de Dados', '1999-07-09', 'Branco', 'Masculino', '2019-12-30', 5, 4, 4, 5, 4, 1),
+('Marcos Silva', 'nov@345', 30, 'Belo Horizonte, MG', 'AB+', 'Administração', '1993-02-03', 'Negro', 'Masculino', '2021-01-15', 5, 3, 1, 4, 5, 0),
+('Matheus', 'seg!paula', 20, 'Recie, PE', 'A-', 'Cibersegurança', '2004-04-21', 'Pardo', 'Masculino', '2019-12-10', 3, 5, 4, 5, 5, 1),
+('Diogo Henrique', 'r@f@321', 21, 'Areias, PE', 'O+', 'Engenharia de Software', '2003-09-01', 'Pardo', 'Masculino', '2019-12-27', 2, 4, 1, 3, 5, 1);
 
 
 CREATE TABLE Financeiro (

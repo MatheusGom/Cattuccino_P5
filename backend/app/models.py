@@ -4,6 +4,7 @@ class Usuario(db.Model):
     __tablename__ = 'Usuario'
     ID = db.Column(db.Integer, primary_key=True)
     NOME = db.Column(db.String(200))
+    EMAIL = db.Column(db.String(200))
     SENHA = db.Column(db.String(100))
     IDADE = db.Column(db.Integer)
     LOCALIZACAO = db.Column(db.String(250))
@@ -24,6 +25,7 @@ def serialize(self):
     return {
         'ID': self.ID,
         'NOME': self.NOME,
+        'EMAIL': self.EMAIL,
         'SENHA': self.SENHA,
         'IDADE': self.IDADE,
         'LOCALIZACAO': self.LOCALIZACAO,

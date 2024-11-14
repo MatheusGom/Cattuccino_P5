@@ -1,4 +1,4 @@
 Flask==2.3.2
-Flask-SQLAlchemy==3.0.3
-SQLAlchemy==2.0.15
+Flask-SQLAlchemy==2.5.1
+SQLAlchemy==1.4.46
 pymysql

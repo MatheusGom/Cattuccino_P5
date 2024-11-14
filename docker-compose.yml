@@ -27,9 +27,11 @@ services:
 
   db:
     image: mysql:5.7
+    hostname: db
     environment:
       - MYSQL_ROOT_PASSWORD=root
       - MYSQL_DATABASE=cattuccino_bd
+      - MYSQL_ROOT_HOST=%
     ports:
       - "3306:3306"
     volumes:
@@ -37,6 +39,11 @@ services:
       - ./Database.sql:/docker-entrypoint-initdb.d/Database.sql
     networks:
       - app-network
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+      interval: 10s
+      timeout: 5s
+      retries: 3
 
 networks:
   app-network:

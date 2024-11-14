@@ -21,24 +21,24 @@ class Usuario(db.Model):
     TRANQUIL = db.Column(db.Integer)
     GERENCIA = db.Column(db.Integer)
 
-def serialize(self):
-    return {
-        'ID': self.ID,
-        'NOME': self.NOME,
-        'EMAIL': self.EMAIL,
-        'SENHA': self.SENHA,
-        'IDADE': self.IDADE,
-        'LOCALIZACAO': self.LOCALIZACAO,
-        'TIPO_SANGUINEO': self.TIPO_SANGUINEO,
-        'FORMACAO': self.FORMACAO,
-        'DT_NASCIMENTO': self.DT_NASCIMENTO.isoformat(),
-        'COR': self.COR,
-        'GENERO': self.GENERO,
-        'DT_ADMISSAO': self.DT_ADMISSAO.isoformat(),
-        'EXTROVERTID': self.EXTROVERTID,
-        'CRIATIV': self.CRIATIV,
-        'OCUPAD': self.OCUPAD,
-        'ORGANIZAD': self.ORGANIZAD,
-        'TRANQUIL': self.TRANQUIL,
-        'GERENCIA': self.GERENCIA
-    }
+    def serialize(self):
+        return {
+            'ID': self.ID,
+            'NOME': self.NOME,
+            'EMAIL': self.EMAIL,
+            'SENHA': self.SENHA,
+            'IDADE': self.IDADE,
+            'LOCALIZACAO': self.LOCALIZACAO,
+            'TIPO_SANGUINEO': self.TIPO_SANGUINEO,
+            'FORMACAO': self.FORMACAO,
+            'DT_NASCIMENTO': self.DT_NASCIMENTO.isoformat(),
+            'COR': self.COR,
+            'GENERO': self.GENERO,
+            'DT_ADMISSAO': self.DT_ADMISSAO.isoformat(),
+            'EXTROVERTID': self.EXTROVERTID,
+            'CRIATIV': self.CRIATIV,
+            'OCUPAD': self.OCUPAD,
+            'ORGANIZAD': self.ORGANIZAD,
+            'TRANQUIL': self.TRANQUIL,
+            'GERENCIA': self.GERENCIA
+        }

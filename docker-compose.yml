@@ -28,10 +28,8 @@ services:
   db:
     image: mysql:5.7
     environment:
-      - MYSQL_ROOT_PASSWORD=sua_senha_root
-      - MYSQL_DATABASE=seu_nome_banco
-      - MYSQL_USER=seu_usuario
-      - MYSQL_PASSWORD=sua_senha
+      - MYSQL_ROOT_PASSWORD=root
+      - MYSQL_DATABASE=cattuccino_bd
     ports:
       - "3306:3306"
     volumes:

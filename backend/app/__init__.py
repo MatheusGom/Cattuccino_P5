@@ -37,7 +37,9 @@ def create_app():
         )
 
     # Importar e registrar o Blueprint
-    from .routes import usuarios_bp
+    from .routes import usuarios_bp, financeiro_bp, marketing_bp
     app.register_blueprint(usuarios_bp)
+    app.register_blueprint(financeiro_bp)
+    app.register_blueprint(marketing_bp)
 
     return app

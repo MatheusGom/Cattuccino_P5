@@ -27,9 +27,9 @@ INSERT INTO Usuario (NOME, EMAIL, SENHA, IDADE, LOCALIZACAO, TIPO_SANGUINEO, FOR
 VALUES 
 ('Estela Lacerda', 'elo@cesar.school', 'senha123', 20, 'Recife, PE', 'A+', 'Cibersegurança', '2004-10-01', 'Branca', 'Feminino', '2019-12-10', 4, 5, 4, 4, 4, 1),
 ('Paulo Campos', 'pmc3@cesar.school', 'seguro!2022', 23, 'Recife, PE', 'A+', 'Engenharia de Software', '2001-06-06', 'Branco', 'Masculino', '2019-12-01', 4, 4, 4, 4, 5, 1),
-('Arthur Paixao', 'aptm@cesar.school', 'pass123', 25, 'Recife, PE', 'B+', 'Ciência de Dados', '1999-07-09', 'Branco', 'Masculino', '2019-12-30', 5, 4, 4, 5, 4, 1),
-('Marcos Silva', 'marquinhos@hotmail.com', 'nov@345', 30, 'Belo Horizonte, MG', 'AB+', 'Administração', '1993-02-03', 'Negro', 'Masculino', '2021-01-15', 5, 3, 1, 4, 5, 0),
-('Matheus', 'mga@cesar.school', 'seg!paula', 20, 'Recie, PE', 'A-', 'Cibersegurança', '2004-04-21', 'Pardo', 'Masculino', '2019-12-10', 3, 5, 4, 5, 5, 1),
+('Arthur Paixao', 'aptm@cesar.school', 'pass123', 25, 'Recife, PE', 'B+', 'Ciencia de Dados', '1999-07-09', 'Branco', 'Masculino', '2019-12-30', 5, 4, 4, 5, 4, 1),
+('Marcos Silva', 'marquinhos@hotmail.com', 'nov@345', 30, 'Belo Horizonte, MG', 'AB+', 'Administracao', '1993-02-03', 'Negro', 'Masculino', '2021-01-15', 5, 3, 1, 4, 5, 0),
+('Matheus', 'mga@cesar.school', 'seg!paula', 20, 'Recie, PE', 'A-', 'Ciberseguranca', '2004-04-21', 'Pardo', 'Masculino', '2019-12-10', 3, 5, 4, 5, 5, 1),
 ('Diogo Henrique', 'dhmc@cesar.school', 'r@f@321', 21, 'Areias, PE', 'O+', 'Engenharia de Software', '2003-09-01', 'Pardo', 'Masculino', '2019-12-27', 2, 4, 1, 3, 5, 1);
 
 

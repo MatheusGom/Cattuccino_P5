@@ -4,6 +4,8 @@ import UserLogin from './pages/userLogin';
 import Dashboard from './pages/dashboard';
 import UsuariosPage from './pages/userPage';
 import InserirUsuarioPage from './pages/insertUser';
+import InserirMarketingPage from './pages/insertMarketing';
+import InserirFinanceiroPage from './pages/insertFinancial';
 
 function App() {
   return (
@@ -14,6 +16,8 @@ function App() {
         <Route path='/dashboard/:userType/:type' element={<Dashboard />} />
         <Route path='/dashboard/usuarios' element={<UsuariosPage />} />
         <Route path='/dashboard/usuarios/novo' element={<InserirUsuarioPage />} />
+        <Route path='/dashboard/financeiro/novo' element={<InserirFinanceiroPage />} />
+        <Route path='/dashboard/marketing/novo' element={<InserirMarketingPage />} />
       </Routes>
     </Router>
   );

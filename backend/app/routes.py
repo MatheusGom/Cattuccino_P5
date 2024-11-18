@@ -1,8 +1,11 @@
-from flask import request, jsonify, current_app as app
-from . import db
+from flask import Blueprint, request, jsonify
 from .models import Usuario
+from . import db
 
-@app.route('/usuarios', methods=['POST'])
+usuarios_bp = Blueprint('usuarios_bp', __name__)
+
+
+@usuarios_bp.route('/usuarios', methods=['POST'])
 def create_usuario():
     data = request.get_json()
     usuario = Usuario(**data)
@@ -10,17 +13,20 @@ def create_usuario():
     db.session.commit()
     return jsonify({'message': 'Usuário criado com sucesso!'}), 201
 
-@app.route('/usuarios', methods=['GET'])
+
+@usuarios_bp.route('/usuarios', methods=['GET'])
 def get_usuarios():
     usuarios = Usuario.query.all()
     return jsonify([usuario.serialize() for usuario in usuarios])
 
-@app.route('/usuarios/<int:id>', methods=['GET'])
+
+@usuarios_bp.route('/usuarios/<int:id>', methods=['GET'])
 def get_usuario(id):
     usuario = Usuario.query.get_or_404(id)
     return jsonify(usuario.serialize())
 
-@app.route('/usuarios/<int:id>', methods=['PUT'])
+
+@usuarios_bp.route('/usuarios/<int:id>', methods=['PUT'])
 def update_usuario(id):
     usuario = Usuario.query.get_or_404(id)
     data = request.get_json()
@@ -29,7 +35,8 @@ def update_usuario(id):
     db.session.commit()
     return jsonify({'message': 'Usuário atualizado com sucesso!'})
 
-@app.route('/usuarios/<int:id>', methods=['DELETE'])
+
+@usuarios_bp.route('/usuarios/<int:id>', methods=['DELETE'])
 def delete_usuario(id):
     usuario = Usuario.query.get_or_404(id)
     db.session.delete(usuario)

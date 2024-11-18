@@ -1,24 +1,27 @@
 import time
 from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
+from flask_cors import CORS
 from .config import Config
 
 db = SQLAlchemy()
+
 
 def create_app():
     app = Flask(__name__)
     app.config.from_object(Config)
 
-
+    CORS(app)
 
     max_retries = 10  # Número máximo de tentativas
     retry_interval = 5  # Intervalo de tempo entre as tentativas (em segundos)
     connected = False
     attempt = 0
 
+    db.init_app(app)
+
     while not connected and attempt < max_retries:
         try:
-            db.init_app(app)
             with app.app_context():
                 db.create_all()
             connected = True
@@ -29,9 +32,12 @@ def create_app():
             time.sleep(retry_interval)
 
     if not connected:
-        raise Exception("Não foi possível conectar ao banco de dados após várias tentativas.")
+        raise Exception(
+            "Não foi possível conectar ao banco de dados após várias tentativas."
+        )
 
-    with app.app_context():
-        from . import routes
+    # Importar e registrar o Blueprint
+    from .routes import usuarios_bp
+    app.register_blueprint(usuarios_bp)
 
     return app

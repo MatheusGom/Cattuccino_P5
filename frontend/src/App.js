@@ -14,8 +14,8 @@ function App() {
         <Route path='/' element={<Login />} />
         <Route path='/usuario/:userType' element={<UserLogin />} />
         <Route path='/dashboard/:userType/:type' element={<Dashboard />} />
-        <Route path='/dashboard/usuarios' element={<UsuariosPage />} />
-        <Route path='/dashboard/usuarios/novo' element={<InserirUsuarioPage />} />
+        <Route path='/dashboard/:userType/usuarios' element={<UsuariosPage />} />
+        <Route path='/dashboard/:userType/usuarios/novo' element={<InserirUsuarioPage />} />
         <Route path='/dashboard/financeiro/novo' element={<InserirFinanceiroPage />} />
         <Route path='/dashboard/marketing/novo' element={<InserirMarketingPage />} />
       </Routes>

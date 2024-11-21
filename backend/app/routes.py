@@ -1,6 +1,8 @@
 from flask import Blueprint, request, jsonify
 from .models import *
 from . import db
+from sqlalchemy.sql import func
+
 
 usuarios_bp = Blueprint('usuarios_bp', __name__)
 
@@ -126,3 +128,28 @@ def delete_marketing(data_id):
     db.session.delete(marketing)
     db.session.commit()
     return jsonify({'message': 'Dados de marketing deletados com sucesso!'})
+
+@marketing_bp.route('/revenue-by-day', methods=['GET'])
+def revenue_by_day():
+
+    result = (
+        db.session.query(
+            func.lower(Marketing.dia_semana).label('dia_semana'),
+            func.sum(Marketing.faturamento_diario).label('total_faturamento')
+        )
+        .group_by(func.lower(Marketing.dia_semana))
+        .all()
+    )
+
+
+    # Formatar os resultados em JSON
+    data = [
+        {
+            'dia_semana': row[0],  # Dias da semana permanecem em português
+            'total_faturamento': row[1]
+        }
+        for row in result
+    ]
+
+    # Retornar os dados no formato JSON
+    return jsonify(data)

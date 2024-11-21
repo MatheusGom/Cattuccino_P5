@@ -3,6 +3,11 @@
     height: 100vh;
 }
 
+.paws {
+    display: flex;
+    gap: 8px;
+}
+
 .users-body {
     display: flex;
     flex-direction: row;

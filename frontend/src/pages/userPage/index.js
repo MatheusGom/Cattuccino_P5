@@ -4,6 +4,7 @@ import axios from 'axios';
 import Header from '../../components/Header';
 import Sidebar from '../../components/Sidebar';
 import styles from './UserPage.module.css';
+import { FaPaw } from 'react-icons/fa';
 
 const UsuariosPage = () => {
     const [usuarios, setUsuarios] = useState([]);
@@ -33,6 +34,38 @@ const UsuariosPage = () => {
         } catch (error) {
             console.error('Erro ao buscar os usuários:', error);
             alert('Erro ao buscar os usuários. Verifique o console para mais detalhes.');
+        }
+    };
+
+    const renderPaws = (rating) => {
+        return (
+            <div className={styles['paws']}>
+                {[...Array(5)].map((_, index) => (
+                    <FaPaw
+                        key={index}
+                        color={index < rating ? '#FF1A66' : '#e4e5e9'}
+                        size={20}
+                    />
+                ))}
+            </div>
+        );
+    };
+
+    const getAttributeLabel = (attribute, genero) => {
+        if (genero === 'Masculino') {
+            return attribute;
+        } else if (genero === 'Feminino') {
+            return attribute.replace('Extrovertido', 'Extrovertida')
+                .replace('Criativo', 'Criativa')
+                .replace('Ocupado', 'Ocupada')
+                .replace('Organizado', 'Organizada')
+                .replace('Tranquilo', 'Tranquila');
+        } else {
+            return attribute.replace('Extrovertido', 'Extrovertide')
+                .replace('Criativo', 'Criative')
+                .replace('Ocupado', 'Ocupade')
+                .replace('Organizado', 'Organizade')
+                .replace('Tranquilo', 'Tranquile');
         }
     };
 
@@ -69,6 +102,13 @@ const UsuariosPage = () => {
                                 <p><strong>Cor:</strong> {selectedUser.COR || 'N/A'}</p>
                                 <p><strong>Gênero:</strong> {selectedUser.GENERO || 'N/A'}</p>
                                 <p><strong>Data de Admissão:</strong> {selectedUser.DT_ADMISSAO || 'N/A'}</p>
+                                <div className={styles['user-ratings']}>
+                                    <p><strong>{getAttributeLabel('Extrovertido', selectedUser.GENERO)}:</strong> {renderPaws(selectedUser.EXTROVERTID)}</p>
+                                    <p><strong>{getAttributeLabel('Criativo', selectedUser.GENERO)}:</strong> {renderPaws(selectedUser.CRIATIV)}</p>
+                                    <p><strong>{getAttributeLabel('Ocupado', selectedUser.GENERO)}:</strong> {renderPaws(selectedUser.OCUPAD)}</p>
+                                    <p><strong>{getAttributeLabel('Organizado', selectedUser.GENERO)}:</strong> {renderPaws(selectedUser.ORGANIZAD)}</p>
+                                    <p><strong>{getAttributeLabel('Tranquilo', selectedUser.GENERO)}:</strong> {renderPaws(selectedUser.TRANQUIL)}</p>
+                                </div>
                             </div>
                         ) : (
                             <p>Selecione um usuário para ver os detalhes.</p>

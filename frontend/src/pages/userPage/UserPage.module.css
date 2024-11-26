@@ -24,7 +24,8 @@
     background-color: #F8F8F8;
     padding: 20px;
     border-radius: 10px;
-    width: 30%;
+    width: 100%;
+    box-sizing: border-box;
 }
 
 .user-item {
@@ -34,7 +35,7 @@
     cursor: pointer;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     transition: background-color 0.3s;
-    width: 760px;
+    width: 90%;
 }
 
 .user-item:hover {
@@ -48,7 +49,9 @@
     border-radius: 20px;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
     padding: 20px;
-    width: 45%;
+    width: 100%;
+    max-width: 600px;
+    box-sizing: border-box;
 }
 
 .card-subtitle {
@@ -75,7 +78,7 @@
     justify-content: space-between;
     align-items: center;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    width: 760px;
+    width: 90%;
 }
 
 .add-member-btn {

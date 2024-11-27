@@ -1,0 +1,151 @@
+.container {
+    display: flex;
+    height: 100vh;
+    background-color: #f8f8f8;
+}
+
+.sidebar {
+    height: 100%;
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 200;
+    background-color: white;
+}
+
+.button-container {
+    display: flex;
+    width: 30%;
+    height: 10vh;
+    margin-top: 2vh;
+    justify-content: space-between;
+    gap: 2vh;
+}
+
+.selection-button {
+    display: flex;
+    width: 100%;
+    height: 50px;
+    padding: 12px;
+    font-weight: 900;
+    justify-content: space-between;
+    align-items: center;
+    border-radius: 15px;
+    border: 0px;
+    background: #FFF;
+    box-shadow: 0px 5px 6px 0px rgba(0, 0, 0, 0.20);
+}
+
+.active-button {
+    background-color: #ED1164;
+    color: #fff;
+}
+
+.selection-button:hover {
+    cursor: pointer;
+}
+
+.main-content {
+    margin-left: 250px;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+}
+
+.header {
+    width: 60%;
+    height: 60px;
+    top: 0;
+    z-index: 100;
+}
+
+.form-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    background-color: #f8f8f8;
+}
+
+.form {
+    padding: 20px;
+    border-radius: 10px;
+    width: 100%;
+    max-width: 1500px;
+    display: flex;
+    justify-content: space-around;
+}
+
+.form-col {
+    width: 48%;
+    display: flex;
+    flex-direction: column;
+}
+
+.row {
+    display: flex;
+    background-color: #fff;
+    justify-content: space-between;
+    margin-bottom: 15px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
+.form-p {
+    font-weight: 900;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    padding-left: 3vh;
+}
+
+.input {
+    width: 40%;
+    padding: 10px;
+    font-size: 1rem;
+    outline: none;
+    border: none;
+}
+
+.button {
+    background-color: #fff;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    color: #000;
+    padding: 5px 10px;
+    border: none;
+    border-radius: 5px;
+    font-size: 1rem;
+    cursor: pointer;
+    margin-top: 20px;
+    align-self: center;
+    width: 45%;
+    box-shadow: 0px 5px 6px 0px rgba(0, 0, 0, 0.20);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.button p {
+    font-weight: 900;
+}
+
+.button:hover {
+    transform: translateY(-5px);
+    box-shadow: 0px 8px 10px 0px rgba(0, 0, 0, 0.25);
+}
+
+@media (max-width: 600px) {
+    .row {
+        flex-direction: column;
+    }
+
+    .input {
+        width: 100%;
+        margin-bottom: 10px;
+    }
+
+    .button {
+        width: 100%;
+    }
+}

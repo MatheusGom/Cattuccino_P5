@@ -13,6 +13,7 @@ function Header({ activeButton }) {
         management: 'Gerenciamento',
         profile: 'Perfil',
         configurations: 'Configurações',
+        add: 'Adicionar Dados',
         logout: 'Sair'
     };
 

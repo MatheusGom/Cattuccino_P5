@@ -9,6 +9,8 @@ function Sidebar({ userType, activeButton, setActiveButton }) {
     const handleButtonClick = (button) => {
         if (button === 'logout') {
             setShowLogoutPopup(true);
+        } else if (button === 'add') {
+            navigate(`/dashboard/${userType}/dados/novo`);
         } else {
             setActiveButton(button);
         }
@@ -83,6 +85,19 @@ function Sidebar({ userType, activeButton, setActiveButton }) {
                         <p className={styles['button-text']}>Gerenciamento</p>
                     </div>
                 )}
+
+                <div
+                    className={`${styles['button-container']} ${activeButton === 'add' ? styles.active : ''}`}
+                    onClick={() => handleButtonClick('add')}
+                >
+                    <img className={styles['side-buttons']}
+                        src={activeButton === 'add'
+                            ? "/images/add_button_pressed.svg"
+                            : "/images/add_button.svg"}
+                        alt="Marketing Button"
+                    />
+                    <p className={styles['button-text']}>Dados</p>
+                </div>
 
                 <div className={styles.title}>
                     <p>CONTA</p>

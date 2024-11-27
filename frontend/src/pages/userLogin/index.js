@@ -1,10 +1,14 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
+import axios from 'axios';
 import styles from './UserLogin.module.css';
 
 function UserLogin() {
     const navigate = useNavigate();
     const { userType } = useParams();
+    const [email, setEmail] = useState('');
+    const [senha, setSenha] = useState('');
+    const [error, setError] = useState('');
 
     const backHome = () => {
         navigate('/');
@@ -20,17 +24,27 @@ function UserLogin() {
         }
     };
 
-    const handleLogin = (e) => {
+    const handleLogin = async (e) => {
         e.preventDefault();
-        navigate(`/dashboard/${userType}`);
+        try {
+            const response = await axios.post('http://localhost:5000/login', {
+                EMAIL: email,
+                SENHA: senha,
+            });
+            if (response.status === 200) {
+                navigate(`/dashboard/${userType}`);
+            }
+        } catch (err) {
+            setError('Credenciais inválidas, tente novamente.');
+        }
     };
 
     return (
         <>  
             <div className={styles['background-user-login']}>
                 <div className={styles.title}>
-                        <h1>Bem Vindo!</h1><br />
-                        <p>Seja bem vindo ao nosso site de análises do Cattuccino</p>
+                    <h1>Bem Vindo!</h1><br />
+                    <p>Seja bem vindo ao nosso site de análises do Cattuccino</p>
                 </div>
                 
                 <div className={styles.container}>
@@ -43,6 +57,8 @@ function UserLogin() {
                                     className={styles['form-input']}
                                     type='email'
                                     placeholder='E-mail'
+                                    value={email}
+                                    onChange={(e) => setEmail(e.target.value)}
                                     required
                                 />
                                 <img className={styles.icon} src='/images/mail.svg' alt='e-mail' />
@@ -52,6 +68,8 @@ function UserLogin() {
                                     className={styles['form-input']}
                                     type='password'
                                     placeholder='Senha'
+                                    value={senha}
+                                    onChange={(e) => setSenha(e.target.value)}
                                     required
                                 />
                                 <img className={styles.icon} src='/images/password.svg' alt='senha' />
@@ -63,6 +81,7 @@ function UserLogin() {
                                 </label>
                                 <span>Lembrar de mim</span>
                             </div>
+                            {error && <p className={styles.error}>{error}</p>}
                         </div>
                         <button className={styles.send} type='submit'>Acessar</button>
                     </form>

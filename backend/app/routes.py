@@ -18,9 +18,14 @@ def login():
     usuario = Usuario.query.filter_by(EMAIL=email, SENHA=senha).first()
     
     if usuario:
-        return jsonify({'message': 'Login realizado com sucesso!', 'user_id': usuario.ID}), 200
+        return jsonify({
+            'message': 'Login realizado com sucesso!', 
+            'user_id': usuario.ID,
+            'GERENCIA': usuario.GERENCIA
+        }), 200
     else:
         return jsonify({'message': 'Credenciais inválidas, tente novamente'}), 401
+
 
 @usuarios_bp.route('/usuarios', methods=['POST'])
 def create_usuario():

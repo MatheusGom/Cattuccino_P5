@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import axios from 'axios';
 import styles from './UserLogin.module.css';
@@ -8,7 +8,18 @@ function UserLogin() {
     const { userType } = useParams();
     const [email, setEmail] = useState('');
     const [senha, setSenha] = useState('');
+    const [rememberMe, setRememberMe] = useState(false);
     const [error, setError] = useState('');
+
+    useEffect(() => {
+        const rememberedEmail = localStorage.getItem('rememberedEmail');
+        const rememberedSenha = localStorage.getItem('rememberedSenha');
+        if (rememberedEmail && rememberedSenha) {
+            setEmail(rememberedEmail);
+            setSenha(rememberedSenha);
+            setRememberMe(true);
+        }
+    }, []);
 
     const backHome = () => {
         navigate('/');
@@ -32,10 +43,27 @@ function UserLogin() {
                 SENHA: senha,
             });
             if (response.status === 200) {
+                const usuario = response.data;
+                const isGerente = usuario.GERENCIA === 1;
+                if ((userType === '2' && !isGerente) || (userType === '1' && isGerente)) {
+                    setError('Você não tem permissão de acesso.');
+                    return;
+                }
+                if (rememberMe) {
+                    localStorage.setItem('rememberedEmail', email);
+                    localStorage.setItem('rememberedSenha', senha);
+                } else {
+                    localStorage.removeItem('rememberedEmail');
+                    localStorage.removeItem('rememberedSenha');
+                }
                 navigate(`/dashboard/${userType}`);
             }
         } catch (err) {
-            setError('Credenciais inválidas, tente novamente.');
+            if (err.response && err.response.status === 401) {
+                setError('E-mail e/ou senha inválidos, tente novamente.');
+            } else {
+                setError('Erro ao tentar realizar o login, por favor, tente novamente mais tarde.');
+            }
         }
     };
 
@@ -76,7 +104,11 @@ function UserLogin() {
                             </div>
                             <div className={styles['remember-me']}>
                                 <label className={styles.switch}>
-                                    <input type="checkbox" />
+                                    <input 
+                                        type="checkbox" 
+                                        checked={rememberMe}
+                                        onChange={(e) => setRememberMe(e.target.checked)}
+                                    />
                                     <span className={styles.slider}></span>
                                 </label>
                                 <span>Lembrar de mim</span>

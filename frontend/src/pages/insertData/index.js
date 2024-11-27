@@ -134,7 +134,7 @@ const InsertData = () => {
                                         type="date"
                                         name="data_transacao"
                                         value={formFinanceiro.data_transacao}
-                                        onChange={handleInputChange}
+                                        onChange={(e) => handleInputChange(e, setFormFinanceiro)}
                                         placeholder="Data da Transação"
                                         className={styles.input}
                                     />
@@ -145,7 +145,7 @@ const InsertData = () => {
                                         type="number"
                                         name="preco_unitario"
                                         value={formFinanceiro.preco_unitario}
-                                        onChange={handleInputChange}
+                                        onChange={(e) => handleInputChange(e, setFormFinanceiro)}
                                         placeholder="R$ 0,00"
                                         step="0.01"
                                         className={styles.input}
@@ -157,7 +157,7 @@ const InsertData = () => {
                                         type="number"
                                         name="qtd_comprada"
                                         value={formFinanceiro.qtd_comprada}
-                                        onChange={handleInputChange}
+                                        onChange={(e) => handleInputChange(e, setFormFinanceiro)}
                                         placeholder="0"
                                         className={styles.input}
                                     />
@@ -168,7 +168,7 @@ const InsertData = () => {
                                         type="number"
                                         name="preco_total"
                                         value={formFinanceiro.preco_total}
-                                        onChange={handleInputChange}
+                                        onChange={(e) => handleInputChange(e, setFormFinanceiro)}
                                         placeholder="R$0,00"
                                         step="0.01"
                                         className={styles.input}
@@ -180,7 +180,7 @@ const InsertData = () => {
                                         type="text"
                                         name="nome_produto"
                                         value={formFinanceiro.nome_produto}
-                                        onChange={handleInputChange}
+                                        onChange={(e) => handleInputChange(e, setFormFinanceiro)}
                                         placeholder="Nome"
                                         className={styles.input}
                                     />
@@ -191,7 +191,7 @@ const InsertData = () => {
                                         type="text"
                                         name="marca_produto"
                                         value={formFinanceiro.marca_produto}
-                                        onChange={handleInputChange}
+                                        onChange={(e) => handleInputChange(e, setFormFinanceiro)}
                                         placeholder="Marca"
                                         className={styles.input}
                                     />
@@ -204,7 +204,7 @@ const InsertData = () => {
                                         type="text"
                                         name="categoria_produto"
                                         value={formFinanceiro.categoria_produto}
-                                        onChange={handleInputChange}
+                                        onChange={(e) => handleInputChange(e, setFormFinanceiro)}
                                         placeholder="Categoria"
                                         className={styles.input}
                                     />
@@ -215,7 +215,7 @@ const InsertData = () => {
                                         type="text"
                                         name="descricao_produto"
                                         value={formFinanceiro.descricao_produto}
-                                        onChange={handleInputChange}
+                                        onChange={(e) => handleInputChange(e, setFormFinanceiro)}
                                         placeholder="Descrição"
                                         className={styles.input}
                                     />
@@ -226,7 +226,7 @@ const InsertData = () => {
                                         type="number"
                                         name="faturamento_produto"
                                         value={formFinanceiro.faturamento_produto}
-                                        onChange={handleInputChange}
+                                        onChange={(e) => handleInputChange(e, setFormFinanceiro)}
                                         placeholder="R$ 0,00"
                                         step="0.01"
                                         className={styles.input}
@@ -238,7 +238,7 @@ const InsertData = () => {
                                         type="number"
                                         name="lucro_produto"
                                         value={formFinanceiro.lucro_produto}
-                                        onChange={handleInputChange}
+                                        onChange={(e) => handleInputChange(e, setFormFinanceiro)}
                                         placeholder="R$ 0,00"
                                         step="0.01"
                                         className={styles.input}
@@ -250,7 +250,7 @@ const InsertData = () => {
                                         type="text"
                                         name="cnpj_fornecedor"
                                         value={formFinanceiro.cnpj_fornecedor}
-                                        onChange={handleInputChange}
+                                        onChange={(e) => handleInputChange(e, setFormFinanceiro)}
                                         placeholder="CNPJ"
                                         className={styles.input}
                                     />
@@ -261,7 +261,7 @@ const InsertData = () => {
                                         type="text"
                                         name="nome_fornecedor"
                                         value={formFinanceiro.nome_fornecedor}
-                                        onChange={handleInputChange}
+                                        onChange={(e) => handleInputChange(e, setFormFinanceiro)}
                                         placeholder="Nome"
                                         className={styles.input}
                                     />
@@ -284,7 +284,7 @@ const InsertData = () => {
                                         type="date"
                                         name="data_id"
                                         value={formMarketing.data_id}
-                                        onChange={handleInputChange}
+                                        onChange={(e) => handleInputChange(e, setFormMarketing)}
                                         placeholder="Data"
                                         className={styles.input}
                                     />
@@ -295,7 +295,7 @@ const InsertData = () => {
                                         type="text"
                                         name="dia_semana"
                                         value={formMarketing.dia_semana}
-                                        onChange={handleInputChange}
+                                        onChange={(e) => handleInputChange(e, setFormMarketing)}
                                         placeholder="Dia da Semana"
                                         className={styles.input}
                                     />
@@ -306,7 +306,7 @@ const InsertData = () => {
                                         type="text"
                                         name="horario_pico"
                                         value={formMarketing.horario_pico}
-                                        onChange={handleInputChange}
+                                        onChange={(e) => handleInputChange(e, setFormMarketing)}
                                         placeholder="Horário de Pico"
                                         className={styles.input}
                                     />
@@ -317,7 +317,7 @@ const InsertData = () => {
                                         type="number"
                                         name="gatos_adotados"
                                         value={formMarketing.gatos_adotados}
-                                        onChange={handleInputChange}
+                                        onChange={(e) => handleInputChange(e, setFormMarketing)}
                                         placeholder="Gatos Adotados"
                                         className={styles.input}
                                     />
@@ -328,7 +328,7 @@ const InsertData = () => {
                                         type="number"
                                         name="faturamento_diario"
                                         value={formMarketing.faturamento_diario}
-                                        onChange={handleInputChange}
+                                        onChange={(e) => handleInputChange(e, setFormMarketing)}
                                         placeholder="R$ 0,00"
                                         step="0.01"
                                         className={styles.input}
@@ -340,8 +340,19 @@ const InsertData = () => {
                                         type="number"
                                         name="alcance_instagram"
                                         value={formMarketing.alcance_instagram}
-                                        onChange={handleInputChange}
+                                        onChange={(e) => handleInputChange(e, setFormMarketing)}
                                         placeholder="Alcance Instagram"
+                                        className={styles.input}
+                                    />
+                                </div>
+                                <div className={styles.row}>
+                                    <p className={styles['form-p']}>Quantidade de Clientes</p>
+                                    <input
+                                        type="number"
+                                        name="qtd_clientes"
+                                        value={formMarketing.qtd_clientes}
+                                        onChange={(e) => handleInputChange(e, setFormMarketing)}
+                                        placeholder="0"
                                         className={styles.input}
                                     />
                                 </div>
@@ -353,7 +364,7 @@ const InsertData = () => {
                                         type="number"
                                         name="alcance_facebook"
                                         value={formMarketing.alcance_facebook}
-                                        onChange={handleInputChange}
+                                        onChange={(e) => handleInputChange(e, setFormMarketing)}
                                         placeholder="Alcance Facebook"
                                         className={styles.input}
                                     />
@@ -364,7 +375,7 @@ const InsertData = () => {
                                         type="number"
                                         name="alcance_tiktok"
                                         value={formMarketing.alcance_tiktok}
-                                        onChange={handleInputChange}
+                                        onChange={(e) => handleInputChange(e, setFormMarketing)}
                                         placeholder="Alcance TikTok"
                                         className={styles.input}
                                     />
@@ -375,7 +386,7 @@ const InsertData = () => {
                                         type="text"
                                         name="idade_instagram"
                                         value={formMarketing.idade_instagram}
-                                        onChange={handleInputChange}
+                                        onChange={(e) => handleInputChange(e, setFormMarketing)}
                                         placeholder="Idade Instagram"
                                         className={styles.input}
                                     />
@@ -386,7 +397,7 @@ const InsertData = () => {
                                         type="text"
                                         name="idade_facebook"
                                         value={formMarketing.idade_facebook}
-                                        onChange={handleInputChange}
+                                        onChange={(e) => handleInputChange(e, setFormMarketing)}
                                         placeholder="Idade Facebook"
                                         className={styles.input}
                                     />
@@ -397,7 +408,7 @@ const InsertData = () => {
                                         type="text"
                                         name="idade_tiktok"
                                         value={formMarketing.idade_tiktok}
-                                        onChange={handleInputChange}
+                                        onChange={(e) => handleInputChange(e, setFormMarketing)}
                                         placeholder="Idade TikTok"
                                         className={styles.input}
                                     />
@@ -408,8 +419,8 @@ const InsertData = () => {
                                         type="text"
                                         name="maioria_sexo"
                                         value={formMarketing.maioria_sexo}
-                                        onChange={handleInputChange}
-                                        placeholder="Maioria Sexo"
+                                        onChange={(e) => handleInputChange(e, setFormMarketing)}
+                                        placeholder="M - F"
                                         className={styles.input}
                                     />
                                 </div>

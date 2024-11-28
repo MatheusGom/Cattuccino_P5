@@ -237,14 +237,22 @@ const InsertData = () => {
                             <div className={styles['form-col']}>
                                 <div className={styles.row}>
                                     <p className={styles['form-p']}>Categoria do Produto</p>
-                                    <input
+                                    <select
                                         type="text"
                                         name="categoria_produto"
                                         value={formFinanceiro.categoria_produto}
                                         onChange={(e) => handleInputChange(e, setFormFinanceiro)}
                                         placeholder="Categoria"
                                         className={styles.input}
-                                    />
+                                    >
+                                        <option value="" disabled>
+                                            Selecione a Categoria
+                                        </option>
+                                        <option value="CAFE">Café</option>
+                                        <option value="INSUMO">Insumo</option>
+                                        <option value="CONDIMENTO">Condimento</option>
+                                        <option value="BEBIDA">Bebida</option>
+                                    </select>
                                 </div>
                                 <div className={styles.row}>
                                     <p className={styles['form-p']}>Descrição do Produto</p>

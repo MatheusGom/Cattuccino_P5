@@ -198,14 +198,19 @@ const InsertUser = () => {
                             </div>
                             <div className={styles.row}>
                                 <p className={styles['form-p']}>Gênero</p>
-                                <input
-                                    type="text"
+                                <select
                                     name="GENERO"
                                     value={form.GENERO}
                                     onChange={handleInputChange}
-                                    placeholder="Gênero"
                                     className={styles.input}
-                                />
+                                >
+                                    <option value="" disabled>
+                                        Selecione o gênero
+                                    </option>
+                                    <option value="Masculino">Masculino</option>
+                                    <option value="Feminino">Feminino</option>
+                                    <option value="Não Binário">Não Binário</option>
+                                </select>
                             </div>
                             <div className={styles.row}>
                                 <p className={styles['form-p']}>Data de Admissão</p>

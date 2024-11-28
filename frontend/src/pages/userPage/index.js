@@ -4,7 +4,6 @@ import axios from 'axios';
 import Header from '../../components/Header';
 import Sidebar from '../../components/Sidebar';
 import styles from './UserPage.module.css';
-import { FaPaw } from 'react-icons/fa';
 
 const UsuariosPage = () => {
     const [usuarios, setUsuarios] = useState([]);

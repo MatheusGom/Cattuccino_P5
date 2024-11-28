@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 
-const InserirUsuarioPage = () => {
+const InsertUser = () => {
     const [form, setForm] = useState({
         NOME: '',
         EMAIL: '',
@@ -186,4 +186,4 @@ const InserirUsuarioPage = () => {
     );
 };
 
-export default InserirUsuarioPage;
+export default InsertUser;

@@ -89,7 +89,7 @@ function UserLogin() {
 
                 <div className={styles.container}>
                     <form className={styles['login-form']} onSubmit={handleLogin}>
-                        <img className={styles.logo} onClick={backHome} src='/images/logo.svg' alt='Logo' /><br />
+                        <img className={styles.logo} onClick={backHome} src='/images/logo.svg' alt='Logo' title='Voltar'/><br />
                         <h2 className={styles.welcome}>{getUserMessage()}</h2>
                         <div className={styles.info}>
                             <div className={styles['input-container']}>

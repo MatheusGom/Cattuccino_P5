@@ -37,14 +37,15 @@ const UsuariosPage = () => {
         }
     };
 
-    const renderPaws = (rating) => {
+    const renderPaws = (rating, maxRating = 5) => {
         return (
             <div className={styles['paws']}>
-                {[...Array(5)].map((_, index) => (
-                    <FaPaw
+                {[...Array(maxRating)].map((_, index) => (
+                    <img
                         key={index}
-                        color={index < rating ? '#FF1A66' : '#e4e5e9'}
-                        size={20}
+                        src={rating > index ? '/images/full_paw.svg' : '/images/empty_paw.svg'}
+                        alt="Paw Icon"
+                        className={styles['rating-icon']}
                     />
                 ))}
             </div>
@@ -79,7 +80,7 @@ const UsuariosPage = () => {
                         <div className={styles['add-container']}>
                             <h2>Adicionar membro</h2>
                             <div className={styles['add-member-btn']} onClick={() => navigate('/dashboard/2/usuarios/novo')}>
-                                <img src='/images/addBtn.svg' alt="Botão para adicionar novo funcionário"/>
+                                <img src='/images/addBtn.svg' alt="Botão para adicionar novo funcionário" />
                             </div>
                         </div>
                         {usuarios.map(usuario => (
@@ -121,13 +122,13 @@ const UsuariosPage = () => {
                                     <button className={styles['card-button']}>
                                         Excluir Membro
                                         <div className={styles['image-btn']}>
-                                            <img src='/images/trashCan.svg' alt='Botão para excluir usuário'/>
+                                            <img src='/images/trashCan.svg' alt='Botão para excluir usuário' />
                                         </div>
                                     </button>
                                     <button className={styles['card-button']}>
                                         Editar Membro
                                         <div className={styles['image-btn']}>
-                                            <img src='/images/pencil.svg' alt='Botão para editar usuário'/>
+                                            <img src='/images/pencil.svg' alt='Botão para editar usuário' />
                                         </div>
                                     </button>
                                 </div>

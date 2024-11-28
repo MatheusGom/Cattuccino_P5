@@ -3,9 +3,9 @@ import Login from "./pages/login";
 import UserLogin from './pages/userLogin';
 import Dashboard from './pages/dashboard';
 import UsuariosPage from './pages/userPage';
-import InserirUsuarioPage from './pages/insertUser';
 import MarketingPage from './components/MarketingPage';
 import InsertData from './pages/insertData';
+import InsertUser from './pages/insertUser';
 
 function App() {
   return (
@@ -15,7 +15,7 @@ function App() {
         <Route path='/usuario/:userType' element={<UserLogin />} />
         <Route path='/dashboard/:userType/:type' element={<Dashboard />} />
         <Route path='/dashboard/:userType/usuarios' element={<UsuariosPage />} />
-        <Route path='/dashboard/:userType/usuarios/novo' element={<InserirUsuarioPage />} />
+        <Route path='/dashboard/:userType/usuarios/novo' element={<InsertUser />} />
         <Route path='/dashboard/:userType/dados/novo' element={<InsertData />} />
         <Route path='/dashboard/marketing/grafico' element={<MarketingPage/>} />
       </Routes>

@@ -8,6 +8,26 @@ import statsmodels.api as sm
 
 usuarios_bp = Blueprint('usuarios_bp', __name__)
 
+@usuarios_bp.route('/login', methods=['POST'])
+def login():
+    data = request.get_json()
+    email = data.get('EMAIL')
+    senha = data.get('SENHA')
+
+    if not email or not senha:
+        return jsonify({'message': 'Email e senha são obrigatórios'}), 400
+
+    usuario = Usuario.query.filter_by(EMAIL=email, SENHA=senha).first()
+    
+    if usuario:
+        return jsonify({
+            'message': 'Login realizado com sucesso!', 
+            'user_id': usuario.ID,
+            'GERENCIA': usuario.GERENCIA
+        }), 200
+    else:
+        return jsonify({'message': 'Credenciais inválidas, tente novamente'}), 401
+
 
 @usuarios_bp.route('/usuarios', methods=['POST'])
 def create_usuario():

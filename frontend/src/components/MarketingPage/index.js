@@ -64,7 +64,7 @@ const MarketingPage = () => {
       .attr('transform', `translate(0,${height - margin.bottom})`)
       .call(d3.axisBottom(x))
       .selectAll('text')
-      .attr('transform', 'rotate(-45)')
+      .attr('transform')
       .style('text-anchor', 'end');
 
     // Adiciona eixo Y

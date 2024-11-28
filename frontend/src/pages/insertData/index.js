@@ -145,7 +145,15 @@ const InsertData = () => {
                                         type="number"
                                         name="preco_unitario"
                                         value={formFinanceiro.preco_unitario}
-                                        onChange={(e) => handleInputChange(e, setFormFinanceiro)}
+                                        onChange={(e) => {
+                                            handleInputChange(e, setFormFinanceiro);
+                                            const precoTotal = e.target.value * formFinanceiro.qtd_comprada;
+                                            setFormFinanceiro((prevForm) => ({
+                                                ...prevForm,
+                                                preco_total: precoTotal,
+                                                lucro_produto: formFinanceiro.faturamento_produto - precoTotal,
+                                            }));
+                                        }}
                                         placeholder="R$ 0,00"
                                         step="0.01"
                                         className={styles.input}
@@ -157,7 +165,15 @@ const InsertData = () => {
                                         type="number"
                                         name="qtd_comprada"
                                         value={formFinanceiro.qtd_comprada}
-                                        onChange={(e) => handleInputChange(e, setFormFinanceiro)}
+                                        onChange={(e) => {
+                                            handleInputChange(e, setFormFinanceiro);
+                                            const precoTotal = formFinanceiro.preco_unitario * e.target.value;
+                                            setFormFinanceiro((prevForm) => ({
+                                                ...prevForm,
+                                                preco_total: precoTotal,
+                                                lucro_produto: formFinanceiro.faturamento_produto - precoTotal,
+                                            }));
+                                        }}
                                         placeholder="0"
                                         className={styles.input}
                                     />
@@ -168,7 +184,7 @@ const InsertData = () => {
                                         type="number"
                                         name="preco_total"
                                         value={formFinanceiro.preco_total}
-                                        onChange={(e) => handleInputChange(e, setFormFinanceiro)}
+                                        readOnly
                                         placeholder="R$0,00"
                                         step="0.01"
                                         className={styles.input}
@@ -226,7 +242,15 @@ const InsertData = () => {
                                         type="number"
                                         name="faturamento_produto"
                                         value={formFinanceiro.faturamento_produto}
-                                        onChange={(e) => handleInputChange(e, setFormFinanceiro)}
+                                        onChange={(e) => {
+                                            handleInputChange(e, setFormFinanceiro);
+                                            const lucroProduto =
+                                                e.target.value - formFinanceiro.preco_total;
+                                            setFormFinanceiro((prevForm) => ({
+                                                ...prevForm,
+                                                lucro_produto: lucroProduto,
+                                            }));
+                                        }}
                                         placeholder="R$ 0,00"
                                         step="0.01"
                                         className={styles.input}
@@ -238,7 +262,7 @@ const InsertData = () => {
                                         type="number"
                                         name="lucro_produto"
                                         value={formFinanceiro.lucro_produto}
-                                        onChange={(e) => handleInputChange(e, setFormFinanceiro)}
+                                        readOnly
                                         placeholder="R$ 0,00"
                                         step="0.01"
                                         className={styles.input}
@@ -268,7 +292,7 @@ const InsertData = () => {
                                 </div>
                                 <button type="submit" className={styles.button}>
                                     <p>Adicionar</p>
-                                    <img src='/images/add_Data.svg' alt='Botão de adicionar' />
+                                    <img src="/images/add_Data.svg" alt="Botão de adicionar" />
                                 </button>
                             </div>
                         </form>

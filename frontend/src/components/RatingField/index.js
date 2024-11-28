@@ -1,7 +1,6 @@
-import React, { useState } from 'react';
 import styles from './RatingField.module.css';
 
-const RatingField = ({ label, name, value, onChange }) => {
+const RatingField = ({ name, value, onChange }) => {
     const maxRating = 5;
 
     const handleClick = (rating) => {

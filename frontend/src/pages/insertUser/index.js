@@ -25,14 +25,31 @@ const InsertUser = () => {
         OCUPAD: '',
         ORGANIZAD: '',
         TRANQUIL: '',
-        GERENCIA: '',
+        GERENCIA: 0,
     });
 
     const [activeButton, setActiveButton] = useState('management');
 
     const handleInputChange = (e) => {
         const { name, value } = e.target;
-        setForm({ ...form, [name]: value });
+
+        if (name === 'DT_NASCIMENTO') {
+            const birthDate = new Date(value);
+            const today = new Date();
+            let age = today.getFullYear() - birthDate.getFullYear();
+            const monthDiff = today.getMonth() - birthDate.getMonth();
+            if (monthDiff < 0 || (monthDiff === 0 && today.getDate() < birthDate.getDate())) {
+                age--;
+            }
+
+            setForm((prevForm) => ({
+                ...prevForm,
+                DT_NASCIMENTO: value,
+                IDADE: age > 0 ? age : '',
+            }));
+        } else {
+            setForm({ ...form, [name]: value });
+        }
     };
 
     const handleSubmit = async (e) => {
@@ -112,6 +129,16 @@ const InsertUser = () => {
                                 />
                             </div>
                             <div className={styles.row}>
+                                <p className={styles['form-p']}>Data de Nascimento</p>
+                                <input
+                                    type="date"
+                                    name="DT_NASCIMENTO"
+                                    value={form.DT_NASCIMENTO}
+                                    onChange={handleInputChange}
+                                    className={styles.input}
+                                />
+                            </div>
+                            <div className={styles.row}>
                                 <p className={styles['form-p']}>Idade</p>
                                 <input
                                     type="number"
@@ -120,17 +147,7 @@ const InsertUser = () => {
                                     onChange={handleInputChange}
                                     placeholder="Idade"
                                     className={styles.input}
-                                />
-                            </div>
-                            <div className={styles.row}>
-                                <p className={styles['form-p']}>Localização</p>
-                                <input
-                                    type="text"
-                                    name="LOCALIZACAO"
-                                    value={form.LOCALIZACAO}
-                                    onChange={handleInputChange}
-                                    placeholder="Localização"
-                                    className={styles.input}
+                                    readOnly
                                 />
                             </div>
                             <div className={styles.row}>
@@ -147,6 +164,17 @@ const InsertUser = () => {
                         </div>
                         <div className={styles['form-col-r']}>
                             <div className={styles.row}>
+                                <p className={styles['form-p']}>Localização</p>
+                                <input
+                                    type="text"
+                                    name="LOCALIZACAO"
+                                    value={form.LOCALIZACAO}
+                                    onChange={handleInputChange}
+                                    placeholder="Localização"
+                                    className={styles.input}
+                                />
+                            </div>
+                            <div className={styles.row}>
                                 <p className={styles['form-p']}>Formação</p>
                                 <input
                                     type="text"
@@ -154,16 +182,6 @@ const InsertUser = () => {
                                     value={form.FORMACAO}
                                     onChange={handleInputChange}
                                     placeholder="Formação"
-                                    className={styles.input}
-                                />
-                            </div>
-                            <div className={styles.row}>
-                                <p className={styles['form-p']}>Data de Nascimento</p>
-                                <input
-                                    type="date"
-                                    name="DT_NASCIMENTO"
-                                    value={form.DT_NASCIMENTO}
-                                    onChange={handleInputChange}
                                     className={styles.input}
                                 />
                             </div>
@@ -247,6 +265,23 @@ const InsertUser = () => {
                                         value={form.TRANQUIL}
                                         onChange={handleInputChange}
                                     />
+                                </div>
+                                <div className={styles['row-cl']}>
+                                    <p className={styles['form-p']}>Gerência</p>
+                                    <label className={styles['checkbox-label']}>
+                                        <input
+                                            type="checkbox"
+                                            className={styles['checkbox-input']}
+                                            checked={form.GERENCIA === 1}
+                                            onChange={(e) =>
+                                                setForm((prevForm) => ({
+                                                    ...prevForm,
+                                                    GERENCIA: e.target.checked ? 1 : 0,
+                                                }))
+                                            }
+                                        />
+                                        <span className={styles['checkbox-custom']} />
+                                    </label>
                                 </div>
                             </div>
                             <button type="submit" className={styles.button}>

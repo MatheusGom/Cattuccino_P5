@@ -1,11 +1,7 @@
 .users-background {
     background-color: #F8F8F8;
-    height: 100vh;
-}
-
-.paws {
-    display: flex;
-    gap: 8px;
+    min-height: 100vh;
+    width: 100%;
 }
 
 .users-body {
@@ -138,4 +134,19 @@
     display: flex;
     justify-content: center;
     align-items: center;
+}
+
+.user-ratings p {
+    font-size: 20px;
+}
+
+.paws {
+    padding-top: 1vh;
+    padding-bottom: 1vh;
+    display: flex;
+    gap: 5px;
+}
+
+.paws img {
+    width: 35%;
 }

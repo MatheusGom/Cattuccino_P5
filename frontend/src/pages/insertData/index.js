@@ -43,7 +43,28 @@ const InsertData = () => {
 
     const handleInputChange = (e, formSetter) => {
         const { name, value } = e.target;
-        formSetter((prevForm) => ({ ...prevForm, [name]: value }));
+
+        if (name === 'data_id') {
+            const date = new Date(value);
+            const weekDays = [
+                'SEGUNDA',
+                'TERCA',
+                'QUARTA',
+                'QUINTA',
+                'SEXTA',
+                'SABADO',
+                'DOMINGO',
+            ];
+            const dayOfWeek = weekDays[date.getDay()];
+
+            formSetter((prevForm) => ({
+                ...prevForm,
+                data_id: value,
+                dia_semana: dayOfWeek,
+            }));
+        } else {
+            formSetter((prevForm) => ({ ...prevForm, [name]: value }));
+        }
     };
 
     const handleSubmitFinanceiro = async (e) => {
@@ -319,7 +340,7 @@ const InsertData = () => {
                                         type="text"
                                         name="dia_semana"
                                         value={formMarketing.dia_semana}
-                                        onChange={(e) => handleInputChange(e, setFormMarketing)}
+                                        readOnly
                                         placeholder="Dia da Semana"
                                         className={styles.input}
                                     />

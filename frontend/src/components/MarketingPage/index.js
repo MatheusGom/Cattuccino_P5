@@ -9,7 +9,7 @@ const MarketingPage = () => {
   useEffect(() => {
     const fetchMarketingData = async () => {
       try {
-        const response = await axios.get('http://localhost:5000/revenue-by-day');
+        const response = await axios.get('http://localhost:5000/marketing/revenue-by-day');
         console.log('Dados de Marketing recebidos:', response.data);
         setMarketingData(response.data);
         drawChart(response.data);

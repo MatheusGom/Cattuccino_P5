@@ -202,6 +202,7 @@ const InsertUser = () => {
                         </div>
                         <div className={styles['classificatory-container']}>
                             <div className={styles['classificatory-inputs']}>
+                                <h2 className={styles['personal-info']}>Dados classificatórios</h2>
                                 <div className={styles['row-cl']}>
                                     <p className={styles['form-p']}>Extrovertido</p>
                                     <RatingField

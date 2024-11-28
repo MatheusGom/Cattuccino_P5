@@ -8,6 +8,7 @@ import styles from './UserPage.module.css';
 const UsuariosPage = () => {
     const [usuarios, setUsuarios] = useState([]);
     const [selectedUser, setSelectedUser] = useState(null);
+    const [showConfirmPopup, setShowConfirmPopup] = useState(false);
     const { userType } = useParams();
     const [activeButton, setActiveButton] = useState('management');
     const navigate = useNavigate();
@@ -33,6 +34,21 @@ const UsuariosPage = () => {
         } catch (error) {
             console.error('Erro ao buscar os usuários:', error);
             alert('Erro ao buscar os usuários. Verifique o console para mais detalhes.');
+        }
+    };
+
+    const handleDeleteUser = async () => {
+        if (selectedUser) {
+            try {
+                const response = await axios.delete(`http://localhost:5000/usuarios/${selectedUser.ID}`);
+                alert(response.data.message);
+                setUsuarios((prevUsuarios) => prevUsuarios.filter((usuario) => usuario.ID !== selectedUser.ID));
+                setSelectedUser(null);
+                setShowConfirmPopup(false);
+            } catch (error) {
+                console.error("Erro ao excluir o usuário:", error);
+                alert("Erro ao excluir o usuário. Verifique o console para mais detalhes.");
+            }
         }
     };
 
@@ -118,7 +134,10 @@ const UsuariosPage = () => {
                                     </div>
                                 </div>
                                 <div className={styles['button-container']}>
-                                    <button className={styles['card-button']}>
+                                    <button
+                                        className={styles['card-button']}
+                                        onClick={() => setShowConfirmPopup(true)}
+                                    >
                                         Excluir Membro
                                         <div className={styles['image-btn']}>
                                             <img src='/images/trashCan.svg' alt='Botão para excluir usuário' />
@@ -138,6 +157,27 @@ const UsuariosPage = () => {
                     </div>
                 </div>
             </div>
+            {showConfirmPopup && (
+                <div className={styles['popup-overlay']}>
+                    <div className={styles['popup-container']}>
+                        <h3>Tem certeza de que deseja excluir este usuário?</h3>
+                        <div className={styles['popup-buttons']}>
+                            <button
+                                className={styles['popup-button']}
+                                onClick={handleDeleteUser}
+                            >
+                                Confirmar
+                            </button>
+                            <button
+                                className={styles['popup-button']}
+                                onClick={() => setShowConfirmPopup(false)}
+                            >
+                                Cancelar
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            )}
         </>
     );
 };

@@ -13,7 +13,7 @@ function App() {
       <Routes>
         <Route path='/' element={<Login />} />
         <Route path='/usuario/:userType' element={<UserLogin />} />
-        <Route path='/dashboard/:userType/:type' element={<Dashboard />} />
+        <Route path='/dashboard/:userType' element={<Dashboard />} />
         <Route path='/dashboard/:userType/usuarios' element={<UsuariosPage />} />
         <Route path='/dashboard/:userType/usuarios/novo' element={<InsertUser />} />
         <Route path='/dashboard/:userType/dados/novo' element={<InsertData />} />

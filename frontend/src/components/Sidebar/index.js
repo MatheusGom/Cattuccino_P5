@@ -9,10 +9,12 @@ function Sidebar({ userType, activeButton, setActiveButton }) {
     const handleButtonClick = (button) => {
         if (button === 'logout') {
             setShowLogoutPopup(true);
+        } else if (button === 'home') {
+            navigate(`/dashboard/${userType}`);
         } else if (button === 'add') {
             navigate(`/dashboard/${userType}/dados/novo`);
         } else if (button === 'management') { 
-            navigate(`/dashboard/${userType}/usuarios`)
+            navigate(`/dashboard/${userType}/usuarios`);
         } else {
             setActiveButton(button);
         }

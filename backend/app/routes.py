@@ -67,25 +67,7 @@ def delete_usuario(id):
     db.session.commit()
     return jsonify({'message': 'Usuário deletado com sucesso!'})
 
-@usuarios_bp.route('/login', methods=['POST'])
-def login():
-    data = request.get_json()
-    email = data.get('email')
-    password = data.get('password')
 
-    if not email or not password:
-        return jsonify({'error': 'Email e senha são obrigatórios'}), 400
-
-    usuario = Usuario.query.filter_by(EMAIL=email).first()
-
-    if not usuario:
-        return jsonify({'error': 'Usuário não encontrado'}), 404
-
-    return jsonify({
-        'message': 'Login bem-sucedido',
-        'role': usuario.GERENCIA,  
-        'user': usuario.serialize()
-    }), 200
 
 
 financeiro_bp = Blueprint('financeiro_bp', __name__)
@@ -243,6 +225,117 @@ def distributions():
     return jsonify(data)
 
 
+@marketing_bp.route('/marketing/gender-analysis', methods=['GET'])
+def gender_analysis():
+    # Obter dados do banco de dados
+    df = pd.read_sql_table('Marketing', con=db.engine)
+
+    # Contar as ocorrências de cada gênero
+    gender_counts = df['maioria_sexo'].value_counts()
+
+    # Retornar os dados no formato JSON
+    return jsonify({
+        'generos': gender_counts.index.tolist(),
+        'ocorrencias': gender_counts.values.tolist()
+    })
+
+
+@marketing_bp.route('/marketing/peak-hours', methods=['GET'])
+def peak_hours():
+    # Obter dados do banco de dados
+    df = pd.read_sql_table('Marketing', con=db.engine)
+    df['horario_pico'] = pd.to_datetime(df['horario_pico'], format='%H:%M').dt.time
+
+    # Lista dos dias da semana em ordem
+    dias_ordenados = ['DOMINGO', 'SEGUNDA', 'TERÇA', 'QUARTA', 'QUINTA', 'SEXTA', 'SÁBADO']
+
+    # Agrupar por dia da semana e encontrar o horário de pico mais frequente
+    horario_pico_dia = (
+        df.groupby('dia_semana')['horario_pico']
+        .agg(lambda x: x.mode()[0] if not x.mode().empty else None)
+    )
+    horario_pico_dia = horario_pico_dia.reindex(dias_ordenados)
+
+    # Converter horários para string no formato HH:MM
+    horarios_formatados = horario_pico_dia.apply(lambda t: t.strftime('%H:%M') if t else None)
+
+    # Retornar os dados no formato JSON
+    return jsonify({
+        'dias': dias_ordenados,
+        'horarios': horarios_formatados.tolist()
+    })
+
+
+@marketing_bp.route('/marketing/average-reach', methods=['GET'])
+def average_reach_by_age():
+    # Obter dados do banco de dados
+    df = pd.read_sql_table('Marketing', con=db.engine)
+
+    # Converter colunas de alcance para numérico, substituindo strings inválidas por NaN
+    df['alcance_instagram'] = pd.to_numeric(df['alcance_instagram'], errors='coerce')
+    df['alcance_facebook'] = pd.to_numeric(df['alcance_facebook'], errors='coerce')
+    df['alcance_tiktok'] = pd.to_numeric(df['alcance_tiktok'], errors='coerce')
+
+    # Remover valores nulos das colunas de alcance e faixa etária
+    df = df.dropna(subset=['idade_instagram', 'idade_facebook', 'idade_tiktok', 'alcance_instagram', 'alcance_facebook', 'alcance_tiktok'])
+
+    # Agrupar por faixa etária e calcular o alcance médio
+    alcance_instagram = df.groupby('idade_instagram')['alcance_instagram'].mean().reset_index()
+    alcance_facebook = df.groupby('idade_facebook')['alcance_facebook'].mean().reset_index()
+    alcance_tiktok = df.groupby('idade_tiktok')['alcance_tiktok'].mean().reset_index()
+
+    # Retornar os dados no formato JSON
+    return jsonify({
+        'instagram': alcance_instagram.to_dict(orient='records'),
+        'facebook': alcance_facebook.to_dict(orient='records'),
+        'tiktok': alcance_tiktok.to_dict(orient='records'),
+    })
+
+@marketing_bp.route('/marketing/reach-by-day', methods=['GET'])
+def reach_by_day():
+    # Obter dados do banco de dados
+    df = pd.read_sql_table('Marketing', con=db.engine)
+
+    # Converter colunas de alcance para numérico, substituindo strings inválidas por NaN
+    df['alcance_instagram'] = pd.to_numeric(df['alcance_instagram'], errors='coerce')
+    df['alcance_facebook'] = pd.to_numeric(df['alcance_facebook'], errors='coerce')
+    df['alcance_tiktok'] = pd.to_numeric(df['alcance_tiktok'], errors='coerce')
+
+    # Função para remover outliers usando o método IQR
+    def remover_outliers(df, col):
+        Q1 = df[col].quantile(0.25)
+        Q3 = df[col].quantile(0.75)
+        IQR = Q3 - Q1
+        limite_inferior = Q1 - 1.5 * IQR
+        limite_superior = Q3 + 1.5 * IQR
+        return df[(df[col] >= limite_inferior) & (df[col] <= limite_superior)]
+
+    # Remover outliers das colunas de alcance
+    df = remover_outliers(df, 'alcance_tiktok')
+
+    # Remover valores nulos das colunas de alcance
+    df = df.dropna(subset=['alcance_instagram', 'alcance_facebook', 'alcance_tiktok'])
+
+    # Lista ordenada dos dias da semana
+    dias_ordenados = ['DOMINGO', 'SEGUNDA', 'TERÇA', 'QUARTA', 'QUINTA', 'SEXTA', 'SÁBADO']
+
+    # Agrupar por dia da semana e somar os alcances
+    alcance_por_dia = (
+        df.groupby('dia_semana')[['alcance_instagram', 'alcance_facebook', 'alcance_tiktok']]
+        .sum()
+        .reindex(dias_ordenados)
+    )
+
+    # Retornar os dados no formato JSON
+    return jsonify({
+        'dias': alcance_por_dia.index.tolist(),
+        'instagram': alcance_por_dia['alcance_instagram'].tolist(),
+        'facebook': alcance_por_dia['alcance_facebook'].tolist(),
+        'tiktok': alcance_por_dia['alcance_tiktok'].tolist()
+    })
+
+
+#========================
 
 # Financeiro
 @financeiro_bp.route('/financial/top-suppliers', methods=['GET'])
@@ -298,44 +391,77 @@ def profit_revenue_ratio():
 
     return jsonify(data)
 
-@financeiro_bp.route('/financial/multiple-regression', methods=['GET'])
-def multiple_regression():
+
+@financeiro_bp.route('/financial/category-proportions', methods=['GET'])
+def category_proportions():
     # Obter dados do banco de dados
-    data = db.session.query(
-        Financeiro.preco_unitario,
-        Financeiro.lucro_produto,
-        Financeiro.marca_produto,
-        Financeiro.cnpj_fornecedor
-    ).all()
+    df = pd.read_sql_table('Financeiro', con=db.engine)
 
-    # Converter para DataFrame
-    df = pd.DataFrame(data, columns=['preco_unitario', 'lucro_produto', 'marca_produto', 'cnpj_fornecedor'])
+    # Contar o número de produtos por categoria
+    categoria_counts = df['categoria_produto'].value_counts()
 
-    # Limpeza dos dados
-    df = df.dropna()
-    df = df[(df['preco_unitario'] >= 0) & (df['lucro_produto'] >= 0)]
+    # Calcular as proporções
+    proporcoes = (categoria_counts / categoria_counts.sum() * 100).round(1)
 
-    # Criar variáveis dummy
-    df_dummies = pd.get_dummies(df, columns=['marca_produto', 'cnpj_fornecedor'], drop_first=True)
-
-    # Definir variáveis independentes (X) e dependente (y)
-    X = df_dummies.drop(['lucro_produto'], axis=1)
-    y = df_dummies['lucro_produto']
-
-    # Adicionar constante
-    X = sm.add_constant(X)
-
-    # Ajustar modelo de regressão linear múltipla
-    model = sm.OLS(y, X).fit()
-
-    # Retornar resumo do modelo e dados principais
-    coefficients = model.params.to_dict()
+    # Retornar os dados no formato JSON
     return jsonify({
-        'summary': model.summary().as_text(),
-        'coefficients': coefficients,
-        'data': {
-            'preco_unitario': df['preco_unitario'].tolist(),
-            'lucro_produto': df['lucro_produto'].tolist(),
-            'marca_produto': df['marca_produto'].tolist()
-        }
+        'categories': categoria_counts.index.tolist(),
+        'counts': categoria_counts.tolist(),
+        'proportions': proporcoes.tolist()
     })
+
+
+@financeiro_bp.route('/financial/top-products', methods=['GET'])
+def top_products():
+    # Obter dados do banco de dados
+    df = pd.read_sql_table('Financeiro', con=db.engine)
+
+    # Ordenar pelo lucro e selecionar os 3 produtos mais lucrativos
+    top_3_produtos = df.nlargest(3, 'lucro_produto')
+
+    # Retornar os dados no formato JSON
+    return jsonify({
+        'produtos': top_3_produtos['nome_produto'].tolist(),
+        'lucros': top_3_produtos['lucro_produto'].tolist()
+    })
+    
+@financeiro_bp.route('/financial/category-distribution', methods=['GET'])
+def category_distribution():
+    # Obter dados do banco de dados
+    df = pd.read_sql_table('Financeiro', con=db.engine)
+
+    # Agrupar os dados por categoria e calcular a quantidade total comprada
+    df_grouped = (
+        df.groupby('categoria_produto')
+        .agg(quantidade_total=('qtd_comprada', 'sum'))
+        .reset_index()
+    )
+
+    # Retornar os dados no formato JSON
+    return jsonify({
+        'categorias': df_grouped['categoria_produto'].tolist(),
+        'quantidades': df_grouped['quantidade_total'].tolist()
+    })
+
+
+@financeiro_bp.route('/financial/profit-margin', methods=['GET'])
+def profit_margin_by_category():
+    # Obter dados do banco de dados
+    df = pd.read_sql_table('Financeiro', con=db.engine)
+
+    # Calcular a margem de lucro
+    df['margem_lucro'] = (df['lucro_produto'] / df['faturamento_produto']) * 100
+
+    # Agrupar por categoria e calcular a margem de lucro média
+    margem_por_categoria = (
+        df.groupby('categoria_produto')['margem_lucro']
+        .mean()
+        .reset_index()
+    )
+
+    # Retornar os dados no formato JSON
+    return jsonify({
+        'categorias': margem_por_categoria['categoria_produto'].tolist(),
+        'margens': margem_por_categoria['margem_lucro'].round(2).tolist()
+    })
+

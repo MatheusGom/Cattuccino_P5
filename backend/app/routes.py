@@ -5,6 +5,7 @@ from sqlalchemy.sql import func
 import pandas as pd
 import numpy as np
 import statsmodels.api as sm
+import datetime
 
 usuarios_bp = Blueprint('usuarios_bp', __name__)
 
@@ -244,10 +245,12 @@ def gender_analysis():
 def peak_hours():
     # Obter dados do banco de dados
     df = pd.read_sql_table('Marketing', con=db.engine)
-    df['horario_pico'] = pd.to_datetime(df['horario_pico'], format='%H:%M').dt.time
+    
+    # Converter a coluna 'horario_pico' para formato datetime
+    df['horario_pico'] = pd.to_datetime(df['horario_pico'], format='%H:%M', errors='coerce').dt.time
 
     # Lista dos dias da semana em ordem
-    dias_ordenados = ['DOMINGO', 'SEGUNDA', 'TERÇA', 'QUARTA', 'QUINTA', 'SEXTA', 'SÁBADO']
+    dias_ordenados = ['DOMINGO', 'SEGUNDA', 'TERCA', 'QUARTA', 'QUINTA', 'SEXTA', 'SABADO']
 
     # Agrupar por dia da semana e encontrar o horário de pico mais frequente
     horario_pico_dia = (
@@ -256,15 +259,15 @@ def peak_hours():
     )
     horario_pico_dia = horario_pico_dia.reindex(dias_ordenados)
 
-    # Converter horários para string no formato HH:MM
-    horarios_formatados = horario_pico_dia.apply(lambda t: t.strftime('%H:%M') if t else None)
+    # Converter horários para string no formato HH:MM, garantindo que sejam válidos
+    horarios_formatados = horario_pico_dia.apply(lambda t: t.strftime('%H:%M') if isinstance(t, datetime.time) else None)
 
     # Retornar os dados no formato JSON
     return jsonify({
         'dias': dias_ordenados,
         'horarios': horarios_formatados.tolist()
     })
-
+    
 
 @marketing_bp.route('/marketing/average-reach', methods=['GET'])
 def average_reach_by_age():
@@ -317,13 +320,13 @@ def reach_by_day():
     df = df.dropna(subset=['alcance_instagram', 'alcance_facebook', 'alcance_tiktok'])
 
     # Lista ordenada dos dias da semana
-    dias_ordenados = ['DOMINGO', 'SEGUNDA', 'TERÇA', 'QUARTA', 'QUINTA', 'SEXTA', 'SÁBADO']
+    dias_ordenados = ['DOMINGO', 'SEGUNDA', 'TERCA', 'QUARTA', 'QUINTA', 'SEXTA', 'SABADO']
 
     # Agrupar por dia da semana e somar os alcances
     alcance_por_dia = (
         df.groupby('dia_semana')[['alcance_instagram', 'alcance_facebook', 'alcance_tiktok']]
         .sum()
-        .reindex(dias_ordenados)
+        .reindex(dias_ordenados, fill_value=0)  # Preenche valores ausentes com 0
     )
 
     # Retornar os dados no formato JSON

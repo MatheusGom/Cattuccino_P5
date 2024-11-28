@@ -8,8 +8,10 @@ function UserLogin() {
     const { userType } = useParams();
     const [email, setEmail] = useState('');
     const [senha, setSenha] = useState('');
+    const [showPassword, setShowPassword] = useState(false);
     const [rememberMe, setRememberMe] = useState(false);
     const [error, setError] = useState('');
+    const [showErrorModal, setShowErrorModal] = useState(false);
 
     useEffect(() => {
         const rememberedEmail = localStorage.getItem('rememberedEmail');
@@ -20,6 +22,10 @@ function UserLogin() {
             setRememberMe(true);
         }
     }, []);
+
+    const togglePasswordVisibility = () => {
+        setShowPassword((prevState) => !prevState);
+    };
 
     const backHome = () => {
         navigate('/');
@@ -47,6 +53,7 @@ function UserLogin() {
                 const isGerente = usuario.GERENCIA === 1;
                 if ((userType === '2' && !isGerente) || (userType === '1' && isGerente)) {
                     setError('Você não tem permissão de acesso.');
+                    setShowErrorModal(true);
                     return;
                 }
                 if (rememberMe) {
@@ -64,17 +71,22 @@ function UserLogin() {
             } else {
                 setError('Erro ao tentar realizar o login, por favor, tente novamente mais tarde.');
             }
+            setShowErrorModal(true);
         }
     };
 
+    const closeErrorModal = () => {
+        setShowErrorModal(false);
+    };
+
     return (
-        <>  
+        <>
             <div className={styles['background-user-login']}>
                 <div className={styles.title}>
                     <h1>Bem Vindo!</h1><br />
                     <p>Seja bem vindo ao nosso site de análises do Cattuccino</p>
                 </div>
-                
+
                 <div className={styles.container}>
                     <form className={styles['login-form']} onSubmit={handleLogin}>
                         <img className={styles.logo} onClick={backHome} src='/images/logo.svg' alt='Logo' /><br />
@@ -94,18 +106,24 @@ function UserLogin() {
                             <div className={styles['input-container']}>
                                 <input
                                     className={styles['form-input']}
-                                    type='password'
+                                    type={showPassword ? 'text' : 'password'}
                                     placeholder='Senha'
                                     value={senha}
                                     onChange={(e) => setSenha(e.target.value)}
                                     required
                                 />
-                                <img className={styles.icon} src='/images/password.svg' alt='senha' />
+                                <img
+                                    className={styles.icon}
+                                    src={showPassword ? '/images/hide.svg' : '/images/show.svg'}
+                                    alt={showPassword ? 'Ocultar senha' : 'Mostrar senha'}
+                                    onClick={togglePasswordVisibility}
+                                    style={{ cursor: 'pointer' }}
+                                />
                             </div>
                             <div className={styles['remember-me']}>
                                 <label className={styles.switch}>
-                                    <input 
-                                        type="checkbox" 
+                                    <input
+                                        type="checkbox"
                                         checked={rememberMe}
                                         onChange={(e) => setRememberMe(e.target.checked)}
                                     />
@@ -119,6 +137,17 @@ function UserLogin() {
                     </form>
                 </div>
             </div>
+
+            {showErrorModal && (
+                <div className={styles['error-modal']}>
+                    <div className={styles['modal-content']}>
+                        <p>{error}</p>
+                        <button className={styles['close-button']} onClick={closeErrorModal}>
+                            Fechar
+                        </button>
+                    </div>
+                </div>
+            )}
         </>
     );
 }

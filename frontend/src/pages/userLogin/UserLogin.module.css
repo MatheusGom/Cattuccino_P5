@@ -92,6 +92,11 @@
     color: #888;
 }
 
+.icon {
+    width: 24px;
+    height: 24px;
+}
+
 .email-icon {
     width: 24px;
     height: 24px;
@@ -178,6 +183,49 @@ input:checked+.slider:before {
     cursor: pointer;
     transform: translateY(-5px);
     box-shadow: 0px 10px 12px 0px rgba(0, 0, 0, 0.30);
+}
+
+.error-modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: rgba(0, 0, 0, 0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+}
+
+.modal-content {
+    background: white;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+    text-align: center;
+    max-width: 400px;
+    width: 90%;
+}
+
+.modal-content p {
+    font-size: 1.2rem;
+    margin-bottom: 20px;
+}
+
+.close-button {
+    background-color: #ed1164;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 1rem;
+    transition: background-color 0.3s ease;
+}
+
+.close-button:hover {
+    background-color: #bf0e4d;
 }
 
 @media (max-width: 768px) {

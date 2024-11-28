@@ -1,0 +1,15 @@
+.rating-icons {
+    display: flex;
+    gap: 5px;
+}
+
+.rating-icon {
+    width: 24px;
+    height: 24px;
+    cursor: pointer;
+    transition: transform 0.2s ease;
+}
+
+.rating-icon:hover {
+    transform: scale(1.1);
+}

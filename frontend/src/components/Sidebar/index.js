@@ -11,6 +11,8 @@ function Sidebar({ userType, activeButton, setActiveButton }) {
             setShowLogoutPopup(true);
         } else if (button === 'add') {
             navigate(`/dashboard/${userType}/dados/novo`);
+        } else if (button === 'management') { 
+            navigate(`/dashboard/${userType}/usuarios`)
         } else {
             setActiveButton(button);
         }

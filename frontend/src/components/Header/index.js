@@ -14,6 +14,7 @@ function Header({ activeButton }) {
         profile: 'Perfil',
         configurations: 'Configurações',
         add: 'Adicionar Dados',
+        user: 'Adicionar Membro',
         logout: 'Sair'
     };
 

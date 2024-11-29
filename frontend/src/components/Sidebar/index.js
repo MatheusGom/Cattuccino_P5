@@ -11,6 +11,8 @@ function Sidebar({ userType, activeButton, setActiveButton }) {
             setShowLogoutPopup(true);
         } else if (button === 'home') {
             navigate(`/dashboard/${userType}`);
+        } else if (button === 'marketing') {
+            navigate(`/dashboard/${userType}/marketing`);
         } else if (button === 'add') {
             navigate(`/dashboard/${userType}/dados/novo`);
         } else if (button === 'management') { 

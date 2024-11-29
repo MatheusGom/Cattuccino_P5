@@ -9,6 +9,7 @@ import datetime
 
 usuarios_bp = Blueprint('usuarios_bp', __name__)
 
+
 @usuarios_bp.route('/login', methods=['POST'])
 def login():
     data = request.get_json()
@@ -19,10 +20,10 @@ def login():
         return jsonify({'message': 'Email e senha são obrigatórios'}), 400
 
     usuario = Usuario.query.filter_by(EMAIL=email, SENHA=senha).first()
-    
+
     if usuario:
         return jsonify({
-            'message': 'Login realizado com sucesso!', 
+            'message': 'Login realizado com sucesso!',
             'user_id': usuario.ID,
             'GERENCIA': usuario.GERENCIA
         }), 200
@@ -67,8 +68,6 @@ def delete_usuario(id):
     db.session.delete(usuario)
     db.session.commit()
     return jsonify({'message': 'Usuário deletado com sucesso!'})
-
-
 
 
 financeiro_bp = Blueprint('financeiro_bp', __name__)
@@ -157,6 +156,8 @@ def delete_marketing(data_id):
 ###### Analises ######
 
 # Marketing
+
+
 @marketing_bp.route('/marketing/revenue-by-day', methods=['GET'])
 def revenue_by_day():
 
@@ -168,7 +169,6 @@ def revenue_by_day():
         .group_by(func.lower(Marketing.dia_semana))
         .all()
     )
-
 
     # Formatar os resultados em JSON
     data = [
@@ -182,16 +182,22 @@ def revenue_by_day():
     # Retornar os dados no formato JSON
     return jsonify(data)
 
+
 @marketing_bp.route('/marketing/distributions', methods=['GET'])
 def distributions():
     result = (
         db.session.query(
-            func.avg(Marketing.faturamento_diario).label('avg_faturamento_diario'),
-            func.stddev(Marketing.faturamento_diario).label('std_faturamento_diario'),
-            func.avg(Marketing.alcance_instagram).label('avg_alcance_instagram'),
-            func.stddev(Marketing.alcance_instagram).label('std_alcance_instagram'),
+            func.avg(Marketing.faturamento_diario).label(
+                'avg_faturamento_diario'),
+            func.stddev(Marketing.faturamento_diario).label(
+                'std_faturamento_diario'),
+            func.avg(Marketing.alcance_instagram).label(
+                'avg_alcance_instagram'),
+            func.stddev(Marketing.alcance_instagram).label(
+                'std_alcance_instagram'),
             func.avg(Marketing.alcance_facebook).label('avg_alcance_facebook'),
-            func.stddev(Marketing.alcance_facebook).label('std_alcance_facebook'),
+            func.stddev(Marketing.alcance_facebook).label(
+                'std_alcance_facebook'),
             func.avg(Marketing.alcance_tiktok).label('avg_alcance_tiktok'),
             func.stddev(Marketing.alcance_tiktok).label('std_alcance_tiktok'),
             func.avg(Marketing.qtd_clientes).label('avg_qtd_clientes'),
@@ -245,12 +251,14 @@ def gender_analysis():
 def peak_hours():
     # Obter dados do banco de dados
     df = pd.read_sql_table('Marketing', con=db.engine)
-    
+
     # Converter a coluna 'horario_pico' para formato datetime
-    df['horario_pico'] = pd.to_datetime(df['horario_pico'], format='%H:%M', errors='coerce').dt.time
+    df['horario_pico'] = pd.to_datetime(
+        df['horario_pico'], format='%H:%M', errors='coerce').dt.time
 
     # Lista dos dias da semana em ordem
-    dias_ordenados = ['DOMINGO', 'SEGUNDA', 'TERCA', 'QUARTA', 'QUINTA', 'SEXTA', 'SABADO']
+    dias_ordenados = ['DOMINGO', 'SEGUNDA', 'TERCA',
+                      'QUARTA', 'QUINTA', 'SEXTA', 'SABADO']
 
     # Agrupar por dia da semana e encontrar o horário de pico mais frequente
     horario_pico_dia = (
@@ -260,14 +268,15 @@ def peak_hours():
     horario_pico_dia = horario_pico_dia.reindex(dias_ordenados)
 
     # Converter horários para string no formato HH:MM, garantindo que sejam válidos
-    horarios_formatados = horario_pico_dia.apply(lambda t: t.strftime('%H:%M') if isinstance(t, datetime.time) else None)
+    horarios_formatados = horario_pico_dia.apply(
+        lambda t: t.strftime('%H:%M') if isinstance(t, datetime.time) else None)
 
     # Retornar os dados no formato JSON
     return jsonify({
         'dias': dias_ordenados,
         'horarios': horarios_formatados.tolist()
     })
-    
+
 
 @marketing_bp.route('/marketing/average-reach', methods=['GET'])
 def average_reach_by_age():
@@ -275,17 +284,23 @@ def average_reach_by_age():
     df = pd.read_sql_table('Marketing', con=db.engine)
 
     # Converter colunas de alcance para numérico, substituindo strings inválidas por NaN
-    df['alcance_instagram'] = pd.to_numeric(df['alcance_instagram'], errors='coerce')
-    df['alcance_facebook'] = pd.to_numeric(df['alcance_facebook'], errors='coerce')
+    df['alcance_instagram'] = pd.to_numeric(
+        df['alcance_instagram'], errors='coerce')
+    df['alcance_facebook'] = pd.to_numeric(
+        df['alcance_facebook'], errors='coerce')
     df['alcance_tiktok'] = pd.to_numeric(df['alcance_tiktok'], errors='coerce')
 
     # Remover valores nulos das colunas de alcance e faixa etária
-    df = df.dropna(subset=['idade_instagram', 'idade_facebook', 'idade_tiktok', 'alcance_instagram', 'alcance_facebook', 'alcance_tiktok'])
+    df = df.dropna(subset=['idade_instagram', 'idade_facebook', 'idade_tiktok',
+                   'alcance_instagram', 'alcance_facebook', 'alcance_tiktok'])
 
     # Agrupar por faixa etária e calcular o alcance médio
-    alcance_instagram = df.groupby('idade_instagram')['alcance_instagram'].mean().reset_index()
-    alcance_facebook = df.groupby('idade_facebook')['alcance_facebook'].mean().reset_index()
-    alcance_tiktok = df.groupby('idade_tiktok')['alcance_tiktok'].mean().reset_index()
+    alcance_instagram = df.groupby('idade_instagram')[
+        'alcance_instagram'].mean().reset_index()
+    alcance_facebook = df.groupby('idade_facebook')[
+        'alcance_facebook'].mean().reset_index()
+    alcance_tiktok = df.groupby('idade_tiktok')[
+        'alcance_tiktok'].mean().reset_index()
 
     # Retornar os dados no formato JSON
     return jsonify({
@@ -294,14 +309,17 @@ def average_reach_by_age():
         'tiktok': alcance_tiktok.to_dict(orient='records'),
     })
 
+
 @marketing_bp.route('/marketing/reach-by-day', methods=['GET'])
 def reach_by_day():
     # Obter dados do banco de dados
     df = pd.read_sql_table('Marketing', con=db.engine)
 
     # Converter colunas de alcance para numérico, substituindo strings inválidas por NaN
-    df['alcance_instagram'] = pd.to_numeric(df['alcance_instagram'], errors='coerce')
-    df['alcance_facebook'] = pd.to_numeric(df['alcance_facebook'], errors='coerce')
+    df['alcance_instagram'] = pd.to_numeric(
+        df['alcance_instagram'], errors='coerce')
+    df['alcance_facebook'] = pd.to_numeric(
+        df['alcance_facebook'], errors='coerce')
     df['alcance_tiktok'] = pd.to_numeric(df['alcance_tiktok'], errors='coerce')
 
     # Função para remover outliers usando o método IQR
@@ -317,16 +335,20 @@ def reach_by_day():
     df = remover_outliers(df, 'alcance_tiktok')
 
     # Remover valores nulos das colunas de alcance
-    df = df.dropna(subset=['alcance_instagram', 'alcance_facebook', 'alcance_tiktok'])
+    df = df.dropna(subset=['alcance_instagram',
+                   'alcance_facebook', 'alcance_tiktok'])
 
     # Lista ordenada dos dias da semana
-    dias_ordenados = ['DOMINGO', 'SEGUNDA', 'TERCA', 'QUARTA', 'QUINTA', 'SEXTA', 'SABADO']
+    dias_ordenados = ['DOMINGO', 'SEGUNDA', 'TERCA',
+                      'QUARTA', 'QUINTA', 'SEXTA', 'SABADO']
 
     # Agrupar por dia da semana e somar os alcances
     alcance_por_dia = (
-        df.groupby('dia_semana')[['alcance_instagram', 'alcance_facebook', 'alcance_tiktok']]
+        df.groupby('dia_semana')[['alcance_instagram',
+                                  'alcance_facebook', 'alcance_tiktok']]
         .sum()
-        .reindex(dias_ordenados, fill_value=0)  # Preenche valores ausentes com 0
+        # Preenche valores ausentes com 0
+        .reindex(dias_ordenados, fill_value=0)
     )
 
     # Retornar os dados no formato JSON
@@ -337,59 +359,12 @@ def reach_by_day():
         'tiktok': alcance_por_dia['alcance_tiktok'].tolist()
     })
 
-@marketing_bp.route('/marketing/multivariate-timeseries', methods=['GET'])
-def multivariate_timeseries():
-    # Obter dados do banco de dados
-    df = pd.read_sql_table('Marketing', con=db.engine)
 
-    # Selecionar as colunas relevantes e remover valores ausentes
-    df_multivar_faq = df[['faturamento_diario', 'data_id', 'qtd_clientes']].dropna()
-
-    # Garantir que 'data_id' esteja no formato datetime
-    df_multivar_faq['data_id'] = pd.to_datetime(df_multivar_faq['data_id'])
-
-    # Adicionar a coluna de ano
-    df_multivar_faq['ano'] = df_multivar_faq['data_id'].dt.year
-
-    # Lista de anos únicos
-    anos = df_multivar_faq['ano'].unique()
-    result = {}
-
-    # Iterar pelos anos
-    for ano in anos:
-        dados_ano = df_multivar_faq[df_multivar_faq['ano'] == ano]
-
-        # Agrupar por semana e calcular somas
-        dados_agrupados = (
-            dados_ano.set_index('data_id')
-            .resample('W')[['qtd_clientes', 'faturamento_diario']]
-            .sum()
-        )
-
-        # Filtrar semanas dentro do ano
-        dados_agrupados = dados_agrupados[dados_agrupados.index.year == ano]
-
-        # Calcular médias semanais
-        soma_total_clientes = dados_ano['qtd_clientes'].sum()
-        soma_total_faturamento = dados_ano['faturamento_diario'].sum()
-        numero_de_intervalos = len(dados_agrupados)
-        media_total_clientes = soma_total_clientes / numero_de_intervalos
-        media_total_faturamento = soma_total_faturamento / numero_de_intervalos
-
-        # Adicionar dados ao resultado
-        result[ano] = {
-            'semanas': dados_agrupados.index.strftime('%Y-%m-%d').tolist(),
-            'clientes_semanais': dados_agrupados['qtd_clientes'].tolist(),
-            'faturamento_semanal': dados_agrupados['faturamento_diario'].tolist(),
-            'media_clientes': media_total_clientes,
-            'media_faturamento': media_total_faturamento,
-        }
-
-    return jsonify(result)
-
-#========================
+# ========================
 
 # Financeiro
+
+
 @financeiro_bp.route('/financial/top-suppliers', methods=['GET'])
 def revenue_by_supplier():
     result = (
@@ -415,12 +390,14 @@ def revenue_by_supplier():
     # Retornar os dados no formato JSON
     return jsonify(data)
 
+
 @financeiro_bp.route('/financial/profit-revenue-ratio', methods=['GET'])
 def profit_revenue_ratio():
     result = (
         db.session.query(
             Financeiro.categoria_produto.label('categoria_produto'),
-            func.sum(Financeiro.faturamento_produto).label('total_faturamento'),
+            func.sum(Financeiro.faturamento_produto).label(
+                'total_faturamento'),
             func.sum(Financeiro.lucro_produto).label('total_lucro')
         )
         .group_by(Financeiro.categoria_produto)
@@ -432,7 +409,8 @@ def profit_revenue_ratio():
     for row in result:
         total_faturamento = row.total_faturamento or 0
         total_lucro = row.total_lucro or 0
-        relacao = (total_lucro / total_faturamento * 100) if total_faturamento > 0 else 0
+        relacao = (total_lucro / total_faturamento *
+                   100) if total_faturamento > 0 else 0
         data.append({
             'categoria_produto': row.categoria_produto,
             'relacao_lucro_faturamento': round(relacao, 2),
@@ -476,7 +454,8 @@ def top_products():
         'produtos': top_3_produtos['nome_produto'].tolist(),
         'lucros': top_3_produtos['lucro_produto'].tolist()
     })
-    
+
+
 @financeiro_bp.route('/financial/category-distribution', methods=['GET'])
 def category_distribution():
     # Obter dados do banco de dados
@@ -502,7 +481,8 @@ def profit_margin_by_category():
     df = pd.read_sql_table('Financeiro', con=db.engine)
 
     # Calcular a margem de lucro
-    df['margem_lucro'] = (df['lucro_produto'] / df['faturamento_produto']) * 100
+    df['margem_lucro'] = (df['lucro_produto'] /
+                          df['faturamento_produto']) * 100
 
     # Agrupar por categoria e calcular a margem de lucro média
     margem_por_categoria = (
@@ -516,4 +496,3 @@ def profit_margin_by_category():
         'categorias': margem_por_categoria['categoria_produto'].tolist(),
         'margens': margem_por_categoria['margem_lucro'].round(2).tolist()
     })
-

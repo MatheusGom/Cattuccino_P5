@@ -3,7 +3,7 @@ import Login from "./pages/login";
 import UserLogin from './pages/userLogin';
 import Dashboard from './pages/dashboard';
 import UsuariosPage from './pages/userPage';
-import MarketingPage from './components/MarketingPage';
+import MarketingPage from './pages/MarketingPage';
 import InsertData from './pages/insertData';
 import InsertUser from './pages/insertUser';
 
@@ -17,7 +17,7 @@ function App() {
         <Route path='/dashboard/:userType/usuarios' element={<UsuariosPage />} />
         <Route path='/dashboard/:userType/usuarios/novo' element={<InsertUser />} />
         <Route path='/dashboard/:userType/dados/novo' element={<InsertData />} />
-        <Route path='/dashboard/marketing/grafico' element={<MarketingPage/>} />
+        <Route path='/dashboard/:userType/marketing' element={<MarketingPage/>} />
       </Routes>
     </Router>
   );

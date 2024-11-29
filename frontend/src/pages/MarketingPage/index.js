@@ -349,7 +349,7 @@ const MarketingPage = () => {
     const svgElement = svg.node();
     const width = svgElement.clientWidth;
     const height = svgElement.clientHeight;
-    const margin = { top: 40, right: 30, bottom: 50, left: 50 };
+    const margin = { top: 40, right: 30, bottom: 50, left: 60 };
 
     const orderedDays = ["SEGUNDA", "TERCA", "QUARTA", "QUINTA", "SEXTA", "SABADO", "DOMINGO"];
     const formattedData = orderedDays.map(day => ({
@@ -398,7 +398,7 @@ const MarketingPage = () => {
             // Parte arredondada no topo
             barGroup.append('rect')
                 .attr('x', x(d.dia))
-                .attr('y', y(parseInt(d.horario_pico?.split(':')[0]) || 0) + 10)
+                .attr('y', y(parseInt(d.horario_pico?.split(':')[0]) || 0))
                 .attr('width', barWidth)
                 .attr('height', Math.min(baseHeight, radius)) // Altura do topo arredondado
                 .attr('rx', radius) // Aplica o arredondamento no topo
@@ -407,8 +407,8 @@ const MarketingPage = () => {
             // Parte retangular para a base
             barGroup.append('rect')
                 .attr('x', x(d.dia))
-                .attr('y', y(parseInt(d.horario_pico?.split(':')[0]) || 0) + Math.min(baseHeight, radius))
-                .attr('height', baseHeight - Math.min(baseHeight, radius)) // Altura restante
+                .attr('y', y(parseInt(d.horario_pico?.split(':')[0]) || 0) + Math.min(baseHeight, radius) + -10)
+                .attr('height', baseHeight - Math.min(baseHeight, radius) + 10) // Altura restante
                 .attr('width', barWidth)
                 .attr('fill', 'url(#barGradient)');
         });
@@ -443,9 +443,9 @@ const MarketingPage = () => {
     svg.append('text')
         .attr('text-anchor', 'middle')
         .attr('transform', 'rotate(-90)')
-        .attr('y', margin.left / 6)
+        .attr('y', margin.left / 4)
         .attr('x', -height / 2.25)
-        .text('Horário Pico');
+        .text('Horario Pico');
   };
   
   const drawReachChart = (data) => {

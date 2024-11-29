@@ -10,6 +10,9 @@ const MarketingPage = () => {
   const { userType } = useParams();
   const [activeButton, setActiveButton] = useState('marketing');
 
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [activeChart, setActiveChart] = useState(null);
+
   useEffect(() => {
     setActiveButton('marketing');
   }, []);
@@ -26,15 +29,15 @@ const MarketingPage = () => {
   const reachChartRef = useRef();
   const [averageReachData, setAverageReachData] = useState(null);
   const averageReachChartRef = useRef();
-  const [multivariateData, setMultivariateData] = useState(null);
-  const multivariateChartRef = useRef();
 
   useEffect(() => {
     const fetchRevenueByDay = async () => {
       try {
         const response = await axios.get('http://localhost:5000/marketing/revenue-by-day');
         setMarketingData(response.data);
-        if (response.data.length > 0) { drawRevenueChart(response.data); }
+        if (response.data.length > 0) {
+          drawRevenueChart(response.data, chartRef.current);
+        }
       } catch (error) {
         console.error('Erro ao buscar dados de marketing:', error);
         alert('Erro ao buscar dados de marketing. Verifique o console para mais detalhes.');
@@ -45,7 +48,9 @@ const MarketingPage = () => {
       try {
         const response = await axios.get('http://localhost:5000/marketing/distributions');
         setDistributionData(response.data);
-        if (response.data) { drawDistributionChart(response.data); }
+        if (response.data.length > 0) {
+          drawDistributionChart(response.data, chartRef.current);
+        }
       } catch (error) {
         console.error('Erro ao buscar dados de distribuição:', error);
         alert('Erro ao buscar dados de distribuição. Verifique o console para mais detalhes.');
@@ -56,7 +61,9 @@ const MarketingPage = () => {
       try {
         const response = await axios.get('http://localhost:5000/marketing/gender-analysis');
         setGenderData(response.data);
-        if (response.data.generos && response.data.ocorrencias) { drawGenderChart(response.data); }
+        if (response.data.length > 0) {
+          drawGenderChart(response.data, genderChartRef.current);
+        }
       } catch (error) {
         console.error('Erro ao buscar dados de análise de gênero:', error);
         alert('Erro ao buscar dados de análise de gênero. Verifique o console para mais detalhes.');
@@ -104,13 +111,13 @@ const MarketingPage = () => {
     fetchAverageReachData();
   }, []);
 
-  const drawRevenueChart = (data) => {
-    const svg = d3.select(chartRef.current);
-    const width = 450;
-    const height = 180;
-    const margin = { top: 20, right: 30, bottom: 50, left: 50 };
-
+  const drawRevenueChart = (data, svgElement) => {
+    const svg = d3.select(svgElement);
     svg.selectAll('*').remove();
+
+    const width = svgElement.clientWidth;
+    const height = svgElement.clientHeight;
+    const margin = { top: 20, right: 30, bottom: 50, left: 50 };
 
     const orderedDays = ["segunda", "terca", "quarta", "quinta", "sexta", "sabado", "domingo"];
     const formattedData = orderedDays.map(day => ({
@@ -156,13 +163,13 @@ const MarketingPage = () => {
       .call(d3.axisLeft(y));
   };
 
-  const drawDistributionChart = (data) => {
-    const svg = d3.select(distributionChartRef.current);
-    const width = 800;
-    const height = 400;
-    const margin = { top: 20, right: 30, bottom: 50, left: 50 };
-
+  const drawDistributionChart = (data, svgElement) => {
+    const svg = d3.select(svgElement);
     svg.selectAll('*').remove();
+
+    const width = svgElement.clientWidth;
+    const height = svgElement.clientHeight;
+    const margin = { top: 20, right: 30, bottom: 50, left: 50 };
 
     if (!data) return;
 
@@ -202,13 +209,13 @@ const MarketingPage = () => {
       .call(d3.axisLeft(y));
   };
 
-  const drawGenderChart = (data) => {
+  const drawGenderChart = (data, svgElement) => {
     const svg = d3.select(genderChartRef.current);
-    const width = 800;
-    const height = 400;
-    const radius = Math.min(width, height) / 2 - 10;
-
     svg.selectAll('*').remove();
+
+    const width = svgElement.clientWidth;
+    const height = svgElement.clientHeight;
+    const radius = Math.min(width, height) / 2 - 20;
 
     if (!data) return;
 
@@ -241,11 +248,12 @@ const MarketingPage = () => {
 
   const drawPeakHoursChart = (data) => {
     const svg = d3.select(peakHoursChartRef.current);
-    const width = 800;
-    const height = 400;
-    const margin = { top: 20, right: 30, bottom: 50, left: 50 };
-
     svg.selectAll('*').remove();
+
+    const svgElement = svg.node();
+    const width = svgElement.clientWidth;
+    const height = svgElement.clientHeight;
+    const margin = { top: 20, right: 30, bottom: 50, left: 50 };
 
     const orderedDays = ["SEGUNDA", "TERCA", "QUARTA", "QUINTA", "SEXTA", "SABADO", "DOMINGO"];
     const formattedData = orderedDays.map(day => ({
@@ -295,11 +303,12 @@ const MarketingPage = () => {
 
   const drawReachChart = (data) => {
     const svg = d3.select(reachChartRef.current);
-    const width = 800;
-    const height = 400;
-    const margin = { top: 20, right: 30, bottom: 50, left: 50 };
-
     svg.selectAll('*').remove();
+
+    const svgElement = svg.node();
+    const width = svgElement.clientWidth;
+    const height = svgElement.clientHeight;
+    const margin = { top: 20, right: 30, bottom: 50, left: 50 };
 
     const { dias, instagram, facebook, tiktok } = data;
 
@@ -360,14 +369,14 @@ const MarketingPage = () => {
       .call(d3.axisLeft(y));
   };
 
-
   const drawAverageReachChart = (data) => {
     const svg = d3.select(averageReachChartRef.current);
-    const width = 800;
-    const height = 400;
-    const margin = { top: 20, right: 30, bottom: 50, left: 50 };
-
     svg.selectAll('*').remove();
+
+    const svgElement = svg.node();
+    const width = svgElement.clientWidth;
+    const height = svgElement.clientHeight;
+    const margin = { top: 20, right: 30, bottom: 50, left: 50 };
 
     const platforms = ['instagram', 'facebook', 'tiktok'];
     const colors = ['#1f77b4', '#ff7f0e', '#2ca02c'];
@@ -406,7 +415,54 @@ const MarketingPage = () => {
         .call(d3.axisLeft(y));
     });
   };
-  
+
+  const handleCardClick = (chartType) => {
+    setActiveChart(chartType);
+    setIsModalOpen(true);
+  };
+
+  const closeModal = () => {
+    setIsModalOpen(false);
+    setActiveChart(null);
+  };
+
+  const ModalContent = ({ activeChart, data }) => {
+    const modalChartRef = useRef();
+
+    useEffect(() => {
+      if (modalChartRef.current) {
+        switch (activeChart) {
+          case 'revenue':
+            drawRevenueChart(data.marketingData, modalChartRef.current);
+            break;
+          case 'distribution':
+            drawDistributionChart(data.distributionData, modalChartRef.current);
+            break;
+          case 'gender':
+            drawGenderChart(data.genderData, modalChartRef.current);
+            break;
+          case 'peakHours':
+            drawPeakHoursChart(data.peakHoursData, modalChartRef.current);
+            break;
+          case 'reach':
+            drawReachChart(data.reachData, modalChartRef.current);
+            break;
+          case 'averageReach':
+            drawAverageReachChart(data.averageReachData, modalChartRef.current);
+            break;
+          default:
+            break;
+        }
+      }
+    }, [activeChart, data]);
+
+    return (
+      <div className={styles.modalChart}>
+        <svg ref={modalChartRef} width="100%" height="100%"></svg>
+      </div>
+    );
+  };
+
   return (
     <div className={styles.container}>
       <div className={styles.sidebar}>
@@ -414,35 +470,59 @@ const MarketingPage = () => {
       </div>
       <div className={styles['main-content']}>
         <div className={styles.header}>
-          <Header title="Marketing" />
+          <Header activeButton={activeButton} />
         </div>
         <div className={styles['content-grid']}>
-          <div className={styles.card}>
-            <h2>Faturamento Semanal</h2>
-            <svg ref={chartRef}></svg>
+          <div className={styles['graphic-line']}>
+            <div className={styles.card} onClick={() => handleCardClick('revenue')}>
+              <h2>Faturamento Semanal</h2>
+              <svg ref={chartRef}></svg>
+            </div>
+            <div className={styles.card} onClick={() => handleCardClick('distribution')}>
+              <h2>Análise de Distribuição</h2>
+              <svg ref={distributionChartRef}></svg>
+            </div>
+            <div className={styles.card} onClick={() => handleCardClick('gender')}>
+              <h2>Análise de Gênero</h2>
+              <svg ref={genderChartRef}></svg>
+            </div>
           </div>
-          <div className={styles.card}>
-            <h2>Análise de Distribuição</h2>
-            <svg ref={distributionChartRef}></svg>
-          </div>
-          <div className={styles.card}>
-            <h2>Análise de Gênero</h2>
-            <svg ref={genderChartRef}></svg>
-          </div>
-          <div className={styles.card}>
-            <h2>Horários de Pico</h2>
-            <svg ref={peakHoursChartRef}></svg>
-          </div>
-          <div className={styles.card}>
-            <h2>Alcance por Dia da Semana</h2>
-            <svg ref={reachChartRef}></svg>
-          </div>
-          <div className={styles.card}>
-            <h2>Alcance Médio por Faixa Etária</h2>
-            <svg ref={averageReachChartRef}></svg>
+          <div className={styles['graphic-line']}>
+            <div className={styles.card} onClick={() => handleCardClick('peakHours')}>
+              <h2>Horários de Pico</h2>
+              <svg ref={peakHoursChartRef}></svg>
+            </div>
+            <div className={styles.card} onClick={() => handleCardClick('reach')}>
+              <h2>Alcance por Dia da Semana</h2>
+              <svg ref={reachChartRef}></svg>
+            </div>
+            <div className={styles.card} onClick={() => handleCardClick('averageReach')}>
+              <h2>Alcance Médio por Faixa Etária</h2>
+              <svg ref={averageReachChartRef}></svg>
+            </div>
           </div>
         </div>
       </div>
+      {isModalOpen && (
+        <div className={styles.modalOverlay} onClick={closeModal}>
+          <div className={styles.modalContent} onClick={(e) => e.stopPropagation()}>
+            <button className={styles.closeButton} onClick={closeModal} aria-label="Fechar">
+              &times;
+            </button>
+            <h2 className={styles.modalTitle}>
+              {activeChart && `${activeChart.charAt(0).toUpperCase() + activeChart.slice(1)} Chart`}
+            </h2>
+            <ModalContent activeChart={activeChart} data={{
+              marketingData,
+              distributionData,
+              genderData,
+              peakHoursData,
+              reachData,
+              averageReachData
+            }} />
+          </div>
+        </div>
+      )}
     </div>
   );
 };

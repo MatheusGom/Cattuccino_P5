@@ -346,6 +346,18 @@ const FinancialPage = () => {
         <div className={styles.header}>
           <Header activeButton={activeButton} />
         </div>
+        {/* ======================================*/ }
+        {/* Resumo Financeiro */}
+        {financialSummaryData ? (
+          <div className={styles.summary}>
+            <FinancialSummary data={financialSummaryData} />
+          </div>
+        ) : (
+          <p>Carregando resumo financeiro...</p>
+        )}
+        {/* ======================================*/ }
+
+        {/* Gráficos */}
         <div className={styles['content-grid']}>
           <div className={styles.card}>
             <h2>Top Fornecedores</h2>

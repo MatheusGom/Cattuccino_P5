@@ -494,3 +494,39 @@ def profit_margin_by_category():
         'categorias': margem_por_categoria['categoria_produto'].tolist(),
         'margens': margem_por_categoria['margem_lucro'].round(2).tolist()
     })
+
+@financeiro_bp.route('/financial/summary', methods=['GET'])
+def financial_summary():
+    # Obter dados do banco de dados
+    df = pd.read_sql_table('Financeiro', con=db.engine)
+
+    # Garantir que as datas estão no formato correto
+    df['data_transacao'] = pd.to_datetime(df['data_transacao'], dayfirst=True)
+
+    # Calcular faturamento diário (última data no dataset)
+    ultimo_dia = df['data_transacao'].max()
+    faturamento_diario = df[df['data_transacao'] == ultimo_dia]['faturamento_produto'].sum()
+
+    # Calcular faturamento total
+    faturamento_total = df['faturamento_produto'].sum()
+
+    # Calcular a variação percentual diária (comparar com o dia anterior)
+    penultimo_dia = df[df['data_transacao'] < ultimo_dia]['data_transacao'].max()
+    faturamento_diario_anterior = df[df['data_transacao'] == penultimo_dia]['faturamento_produto'].sum()
+
+    variacao_diaria = ((faturamento_diario - faturamento_diario_anterior) / faturamento_diario_anterior) * 100 if faturamento_diario_anterior else 0
+
+    # Calcular a variação percentual total (em relação ao total acumulado do mês anterior)
+    mes_atual = ultimo_dia.month
+    mes_anterior = mes_atual - 1 if mes_atual > 1 else 12
+    faturamento_mes_anterior = df[df['data_transacao'].dt.month == mes_anterior]['faturamento_produto'].sum()
+    variacao_total = ((faturamento_total - faturamento_mes_anterior) / faturamento_mes_anterior) * 100 if faturamento_mes_anterior else 0
+
+    # Retornar os dados no formato JSON
+    return jsonify({
+        'faturamento_diario': round(faturamento_diario, 2),
+        'variacao_diaria': round(variacao_diaria, 2),
+        'faturamento_total': round(faturamento_total, 2),
+        'variacao_total': round(variacao_total, 2)
+    })
+    

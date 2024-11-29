@@ -223,65 +223,32 @@ const MarketingPage = () => {
   };
 
   const drawDistributionChart = (data, svgElement) => {
-  
+    console.log('Iniciando a criação do gráfico de distribuição...');
+    console.log('Dados recebidos para distribuição:', data);
+
     if (!svgElement) {
       console.error('Elemento SVG não encontrado!');
       return;
     }
-  
+
     const svg = d3.select(svgElement);
     svg.selectAll('*').remove();
-  
+
     const width = svgElement.clientWidth || 600;
     const height = svgElement.clientHeight || 300;
     console.log('Dimensões do SVG:', { width, height });
-  
-    const margin = { top: 30, right: 30, bottom: 100, left: 70 };
-    
-    const wrap = (text, width) => {
-      text.each(function() {
-        const text = d3.select(this);
-        const words = text.text().split(/[\s_]+/);
-        const lineHeight = 1.1;
-        const y = text.attr("y");
-        const dy = parseFloat(text.attr("dy"));
-        
-        let tspan = text.text(null).append("tspan")
-          .attr("x", 0)
-          .attr("y", y)
-          .attr("dy", dy + "em");
-        
-        let lineNumber = 0;
-        let line = [];
-        let word;
-  
-        while (word = words.pop()) {
-          line.push(word);
-          tspan.text(line.join(" "));
-          if (tspan.node().getComputedTextLength() > width) {
-            line.pop();
-            tspan.text(line.join(" "));
-            line = [word];
-            tspan = text.append("tspan")
-              .attr("x", 0)
-              .attr("y", y)
-              .attr("dy", ++lineNumber * lineHeight + dy + "em")
-              .text(word);
-          }
-        }
-      });
-    };
-  
+
+    const margin = { top: 30, right: 30, bottom: 80, left: 70 };
     const x = d3.scaleBand()
       .domain(data.map(d => d.name))
       .range([margin.left, width - margin.right])
       .padding(0.1);
-  
+
     const y = d3.scaleLinear()
       .domain([0, d3.max(data, d => d.average + d.stddev)])
       .nice()
       .range([height - margin.bottom, margin.top]);
-  
+
     const defs = svg.append('defs');
     const gradient = defs.append('linearGradient')
       .attr('id', 'barGradient')
@@ -289,14 +256,14 @@ const MarketingPage = () => {
       .attr('y1', '0%')
       .attr('x2', '0%')
       .attr('y2', '100%');
-  
+
     gradient.append('stop')
       .attr('offset', '0%')
       .attr('stop-color', '#FF1A66');
     gradient.append('stop')
       .attr('offset', '100%')
       .attr('stop-color', '#99103D');
-  
+
     svg.selectAll('.bar')
       .data(data)
       .enter()
@@ -307,9 +274,9 @@ const MarketingPage = () => {
       .attr('height', d => y(0) - y(d.average))
       .attr('width', x.bandwidth())
       .attr('fill', 'url(#barGradient)');
-  
+
     console.log('Barras com gradiente adicionadas.');
-  
+
     svg.selectAll('.error-line')
       .data(data)
       .enter()
@@ -321,31 +288,34 @@ const MarketingPage = () => {
       .attr('y2', d => y(d.average - d.stddev))
       .attr('stroke', 'black')
       .attr('stroke-width', 1.5);
-  
+
     console.log('Linhas de erro adicionadas.');
-  
-    const xAxis = svg.append('g')
+
+    svg.append('g')
       .attr('transform', `translate(0,${height - margin.bottom})`)
-      .call(d3.axisBottom(x));
-  
-    xAxis.selectAll('.tick text')
-      .call(wrap, x.bandwidth())
-      .style('font-size', '12px')
-      .attr('transform', `translate(0,10)`);
-    
+      .call(d3.axisBottom(x))
+      .selectAll('text')
+      .attr('transform', 'rotate(-25)')
+      .style('text-anchor', 'end')
+      .style('font-size', '12px');
+
+    console.log('Eixo X adicionado.');
+
     svg.append('g')
       .attr('transform', `translate(${margin.left},0)`)
       .call(d3.axisLeft(y).ticks(10).tickValues(d3.range(0, y.domain()[1], 1000)))
       .style('font-size', '12px');
-    
+
+    console.log('Eixo Y adicionado.');
+
     svg.append('text')
       .attr('text-anchor', 'middle')
       .attr('x', width / 2)
       .attr('y', margin.top / 2)
       .attr('font-size', '16px');
-  
+
     console.log('Gráfico finalizado.');
-  };  
+  };
 
   const drawGenderChart = (data, svgElement) => {
     const svg = d3.select(svgElement);
@@ -374,7 +344,7 @@ const MarketingPage = () => {
       .data(pie(formattedData))
       .enter().append('path')
       .attr('d', arc)
-      .attr('fill', (d, i) => colors[i % colors.length]);
+      .attr('fill', (d, i) => colors[i % colors.length]);  // Alterna entre as duas cores
 
     group.selectAll('text')
       .data(pie(formattedData))
@@ -495,7 +465,7 @@ const MarketingPage = () => {
     const svgElement = svg.node();
     const width = svgElement.clientWidth;
     const height = svgElement.clientHeight;
-    const margin = { top: 20, right: 30, bottom: 80, left: 70 };
+    const margin = { top: 20, right: 30, bottom: 80, left: 50 };
 
     const { dias, instagram, facebook, tiktok } = data;
 
@@ -541,34 +511,24 @@ const MarketingPage = () => {
       .attr('transform', (d, i) => `translate(${i * 120 + margin.left}, ${height - margin.bottom + 30})`);
 
     legend.append('image')
-      .attr('x', 25)
-      .attr('y', 0)
+      .attr('x', 35)
+      .attr('y', 10)
       .attr('width', 20)
       .attr('height', 20)
       .attr('xlink:href', d => `/images/${d.logo}`);
 
     legend.append('circle')
       .attr('r', 2.5)
-      .attr('cx', 50)
-      .attr('cy', 0)
+      .attr('cx', 60)
+      .attr('cy', 10)
       .attr('fill', d => d.color);
 
     legend.append('text')
-      .attr('x', 60)
-      .attr('y', 15)
+      .attr('x', 70)
+      .attr('y', 25)
       .attr('font-size', '12px')
       .attr('fill', '#000')
       .text(d => d.platform);
-
-      // Y axis label
-      svg.append('text')
-      .attr('transform', 'rotate(-90)')
-      .attr('x', -height / 3)
-      .attr('y', margin.left / 8)
-      .attr('text-anchor', 'middle')
-      .style('font-size', '12px')
-      .style('font-weight', '900')
-      .text('Alcance Medio');
 
     svg.append('g')
       .attr('transform', `translate(0,${height - margin.bottom})`)
@@ -585,128 +545,91 @@ const MarketingPage = () => {
   const drawAverageReachChart = (data) => {
     const svg = d3.select(averageReachChartRef.current);
     svg.selectAll('*').remove();
-  
+
     const svgElement = svg.node();
     const width = svgElement.clientWidth;
     const height = svgElement.clientHeight;
-    const margin = { top: 20, right: 0, bottom: 80, left: 60 };
-  
-    const colors = ['#ED1164', '#FF9FBA', '#500124'];
+    const margin = { top: 20, right: 30, bottom: 50, left: 50 };
+
+    const colors = ['#ED1164', '#FF9FBA', '#000'];
     const platforms = ['instagram', 'facebook', 'tiktok'];
-  
-    const ageGroups = ['13-20', '21-30', '31-40', '41-50', '51-60'];
-  
-    const groupedData = ageGroups.map(group => {
-      const [minAge, maxAge] = group.split('-').map(Number);
-      return {
-        ageGroup: group,
-        data: platforms.map(platform => {
-          const platformData = data[platform].filter(d => {
-            const [min, max] = d[`idade_${platform}`].split('-').map(Number);
-            return (min >= minAge && min <= (maxAge || Infinity)) || 
-                   (max >= minAge && max <= (maxAge || Infinity)) ||
-                   (min <= minAge && max >= (maxAge || Infinity));
-          });
-          
-          const reach = platformData.length > 0
-            ? platformData.reduce((sum, d) => sum + d[`alcance_${platform}`], 0) / platformData.length
-            : 0;
-            
-          return {
-            platform,
-            reach: reach
-          };
-        })
-      };
+
+    platforms.forEach(platform => {
+      console.log(`${platform} data:`, data[platform]);
     });
-  
-    const x0 = d3.scaleBand()
-      .domain(ageGroups)
-      .range([margin.left, width + margin.right])
-      .paddingInner(0.25);
-  
-    const x1 = d3.scaleBand()
-      .domain(platforms)
-      .range([0, x0.bandwidth()])
-      .padding(0);
-  
+
+    const x = d3.scaleBand()
+      .domain(data.instagram.map(d => d.idade_instagram))
+      .range([margin.left, width - margin.right])
+      .padding(0.1);
+
     const y = d3.scaleLinear()
-      .domain([0, d3.max(groupedData, g => d3.max(g.data, d => d.reach || 0)) * 1])
+      .domain([0, d3.max(platforms, platform => d3.max(data[platform], d => d[`alcance_${platform}`]))])
       .nice()
       .range([height - margin.bottom, margin.top]);
-  
-    groupedData.forEach(group => {
-      const ageGroup = svg.append('g')
-        .attr('transform', `translate(${x0(group.ageGroup)},0)`);
-  
-      group.data.forEach((d, i) => {
-        ageGroup.append('rect')
-          .attr('x', x1(d.platform) + 10)
-          .attr('y', y(d.reach))
-          .attr('width', x1.bandwidth())
-          .attr('height', height - margin.bottom - y(d.reach))
-          .attr('fill', colors[i]);
-      });
+
+    platforms.forEach((platform, i) => {
+      const platformData = data[platform];
+
+      svg.append('g')
+        .selectAll(`.bar-${platform}`)
+        .data(platformData)
+        .enter().append('rect')
+        .attr('class', `bar-${platform}`)
+        .attr('x', d => x(d[`idade_${platform}`]) + (x.bandwidth() * i / platforms.length))
+        .attr('y', d => y(d[`alcance_${platform}`]))
+        .attr('height', d => y(0) - y(d[`alcance_${platform}`]))
+        .attr('width', x.bandwidth() / platforms.length)
+        .attr('fill', colors[i]);
+
+      svg.append('g')
+        .attr('transform', `translate(0,${height - margin.bottom})`)
+        .call(d3.axisBottom(x))
+        .selectAll('text')
+        .style('text-anchor', 'end')
+        .attr('transform', 'rotate(-45)');
+
+      svg.append('g')
+        .attr('transform', `translate(${margin.left},0)`)
+        .call(d3.axisLeft(y));
     });
-  
-    svg.append('g')
-      .attr('transform', `translate(0,${height - margin.bottom})`)
-      .call(d3.axisBottom(x0))
-      .selectAll('text')
-      .style('text-anchor', 'end')
-      .attr('dx', '15')
-      .attr('dy', '15')
-      .attr('transform', 'rotate(0)');
-  
-    // Add the Y axis
-    svg.append('g')
-      .attr('transform', `translate(${margin.left},0)`)
-      .call(d3.axisLeft(y));
-  
-    // Y axis label
+
     svg.append('text')
-      .attr('transform', 'rotate(-90)')
-      .attr('x', -height / 3)
-      .attr('y', margin.left / 4)
+      .attr('x', width / 2)
+      .attr('y', height - margin.bottom + 40)
       .attr('text-anchor', 'middle')
       .style('font-size', '12px')
       .style('font-weight', '900')
-      .text('Alcance Medio');
-  
-    // Legend
-    const legendData = [
-      { platform: 'Instagram', color: '#ED1164', logo: 'instagram_logo.svg' },
-      { platform: 'Facebook', color: '#FF9FBA', logo: 'facebook_logo.svg' },
-      { platform: 'TikTok', color: '#000', logo: 'tiktok_logo.svg' }
-    ];
-  
-    const legend = svg.selectAll('.legend')
-      .data(legendData)
-      .enter().append('g')
-      .attr('class', 'legend')
-      .attr('transform', (d, i) => `translate(${i * 120 + margin.left}, ${height - margin.bottom + 30})`);
-  
-    legend.append('image')
-      .attr('x', 35)
-      .attr('y', 10)
-      .attr('width', 20)
-      .attr('height', 20)
-      .attr('xlink:href', d => `/images/${d.logo}`);
-  
-    legend.append('circle')
-      .attr('r', 2.5)
-      .attr('cx', 60)
-      .attr('cy', 10)
-      .attr('fill', d => d.color);
-  
-    legend.append('text')
-      .attr('x', 70)
-      .attr('y', 25)
-      .attr('font-size', '12px')
-      .attr('fill', '#000')
-      .text(d => d.platform);
+      .text('Idade');
+
+    svg.append('text')
+      .attr('transform', 'rotate(-90)')
+      .attr('x', -height / 2)
+      .attr('y', margin.left - 40)
+      .attr('text-anchor', 'middle')
+      .style('font-size', '12px')
+      .style('font-weight', '900')
+      .text('Alcance');
+
+    const legend = svg.append('g')
+      .attr('transform', `translate(${width - margin.right - 100},${margin.top})`);
+
+    platforms.forEach((platform, i) => {
+      legend.append('rect')
+        .attr('x', 0)
+        .attr('y', i * 20)
+        .attr('width', 15)
+        .attr('height', 15)
+        .attr('fill', colors[i]);
+
+      legend.append('text')
+        .attr('x', 20)
+        .attr('y', i * 20 + 12)
+        .style('font-size', '12px')
+        .text(platform.charAt(0).toUpperCase() + platform.slice(1));
+    });
   };
-  
+
   return (
     <div className={styles.container}>
       <div className={styles.sidebar}>

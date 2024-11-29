@@ -19,7 +19,7 @@ function App() {
         <Route path='/dashboard/:userType/usuarios/novo' element={<InsertUser />} />
         <Route path='/dashboard/:userType/dados/novo' element={<InsertData />} />
         <Route path='/dashboard/:userType/marketing' element={<MarketingPage/>} />
-        <Route path='/dashboard/:userType/financial' element={<FinancialPage/>} />
+        <Route path='/dashboard/:userType/financeiro' element={<FinancialPage/>} />
       </Routes>
     </Router>
   );

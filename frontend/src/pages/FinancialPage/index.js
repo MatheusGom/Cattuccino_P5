@@ -8,10 +8,10 @@ import Sidebar from '../../components/Sidebar';
 
 const FinancialPage = () => {
   const { userType } = useParams();
-  const [activeButton, setActiveButton] = useState('financeiro');
+  const [activeButton, setActiveButton] = useState('financial');
 
   useEffect(() => {
-    setActiveButton('financeiro');
+    setActiveButton('financial');
   }, []);
 
   const [topSuppliersData, setTopSuppliersData] = useState(null);
@@ -336,8 +336,6 @@ const FinancialPage = () => {
       .attr('transform', `translate(${margin.left},0)`)
       .call(d3.axisLeft(y));
   };
-  
-  
 
   return (
     <div className={styles.container}>
@@ -346,7 +344,7 @@ const FinancialPage = () => {
       </div>
       <div className={styles['main-content']}>
         <div className={styles.header}>
-          <Header title="Financeiro" />
+          <Header activeButton={activeButton} />
         </div>
         <div className={styles['content-grid']}>
           <div className={styles.card}>

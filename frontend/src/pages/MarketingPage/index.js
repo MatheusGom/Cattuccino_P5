@@ -640,7 +640,7 @@ const MarketingPage = () => {
       </div>
       <div className={styles['main-content']}>
         <div className={styles.header}>
-          <Header title="Marketing" />
+          <Header activeButton={activeButton} />
         </div>
         <div className={styles['content-grid']}>
           <div className={styles.card}>

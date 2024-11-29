@@ -31,7 +31,7 @@
     margin-top: 25px;
     display: grid;
     grid-template-columns: repeat(2, 1fr);
-    gap: 20px; /* Espaçamento consistente entre os gráficos */
+    gap: 20px;
     justify-items: center;
 }
 
@@ -62,8 +62,8 @@
 }
 
 .card svg {
-    width: 80%; /* Deixe um espaço para o padding */
-    height: calc(100% - 50px); /* Ajuste para incluir o título */
+    width: 80%; 
+    height: calc(100% - 50px);
 }
 
 .graphic-line {

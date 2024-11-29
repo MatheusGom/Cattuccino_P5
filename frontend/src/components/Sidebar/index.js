@@ -13,6 +13,8 @@ function Sidebar({ userType, activeButton, setActiveButton }) {
             navigate(`/dashboard/${userType}`);
         } else if (button === 'marketing') {
             navigate(`/dashboard/${userType}/marketing`);
+        } else if (button === 'financial') {
+            navigate(`/dashboard/${userType}/financeiro`);
         } else if (button === 'add') {
             navigate(`/dashboard/${userType}/dados/novo`);
         } else if (button === 'management') { 

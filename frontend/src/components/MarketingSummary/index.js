@@ -29,13 +29,15 @@ const MarketingSummary = () => {
             <div className={styles.card}>
                 <div className={styles['card-content']}>
                     <span className={styles.label}>Usuários Diários</span>
-                    <h2 className={styles.value}>{data.clientes_novos_diarios.toLocaleString('pt-BR')}</h2>
-                    <span
-                        className={styles.variation}
-                        style={{ color: getVariationColor(data.variacao_clientes) }}
-                    >
-                        {data.variacao_clientes > 0 ? `+${data.variacao_clientes}%` : `${data.variacao_clientes}%`}
-                    </span>
+                    <div className={styles['card-info']}>
+                        <h2 className={styles.value}>{data.clientes_novos_diarios.toLocaleString('pt-BR')}</h2>
+                        <span
+                            className={styles.variation}
+                            style={{ color: getVariationColor(data.variacao_clientes) }}
+                        >
+                            {data.variacao_clientes > 0 ? `+${data.variacao_clientes}%` : `${data.variacao_clientes}%`}
+                        </span>
+                    </div>
                 </div>
                 <div className={styles.icon}>
                     <img src='/images/new_clients.svg' />
@@ -45,7 +47,9 @@ const MarketingSummary = () => {
             <div className={styles.card}>
                 <div className={styles['card-content']}>
                     <span className={styles.label}>Alcance Total</span>
-                    <h2 className={styles.value}>{data.alcance_total.toLocaleString('pt-BR')}</h2>
+                    <div className={styles['card-info']}>
+                        <h2 className={styles.value}>{data.alcance_total.toLocaleString('pt-BR')}</h2>
+                    </div>
                 </div>
                 <div className={styles.icon}>
                     <img src='/images/day_users.svg' />

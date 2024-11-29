@@ -58,14 +58,14 @@ const FinancialSummary = () => {
         <div className={styles['card-content']}>
           <span className={styles.label}>Faturamento Total</span>
           <div className={styles['card-info']}>
-          <h2 className={styles.value}>
-            R${faturamento_total.toLocaleString('pt-BR')}
-          </h2>
-          <span
-            className={styles.variation}
-          >
-            {variacao_total > 0 ? `+${variacao_total}%` : `${variacao_total}%`}
-          </span>
+            <h2 className={styles.value}>
+              R${faturamento_total.toLocaleString('pt-BR')}
+            </h2>
+            <span
+              className={styles.variation}
+            >
+              {variacao_total > 0 ? `+${variacao_total}%` : `${variacao_total}%`}
+            </span>
           </div>
         </div>
         <div className={styles.icon}>

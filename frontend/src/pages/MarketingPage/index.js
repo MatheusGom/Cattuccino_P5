@@ -78,7 +78,6 @@ const MarketingPage = () => {
       }
     };
 
-
     const fetchPeakHoursData = async () => {
       try {
         const response = await axios.get('http://localhost:5000/marketing/peak-hours');
@@ -345,7 +344,7 @@ const MarketingPage = () => {
       .data(pie(formattedData))
       .enter().append('path')
       .attr('d', arc)
-      .attr('fill', (d, i) => colors[i % colors.length]);  // Alterna entre as duas cores
+      .attr('fill', (d, i) => colors[i % colors.length]);
 
     group.selectAll('text')
       .data(pie(formattedData))

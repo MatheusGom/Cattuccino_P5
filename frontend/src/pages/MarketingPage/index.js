@@ -470,59 +470,35 @@ const MarketingPage = () => {
       </div>
       <div className={styles['main-content']}>
         <div className={styles.header}>
-          <Header activeButton={activeButton} />
+          <Header title="Marketing" />
         </div>
         <div className={styles['content-grid']}>
-          <div className={styles['graphic-line']}>
-            <div className={styles.card} onClick={() => handleCardClick('revenue')}>
-              <h2>Faturamento Semanal</h2>
-              <svg ref={chartRef}></svg>
-            </div>
-            <div className={styles.card} onClick={() => handleCardClick('distribution')}>
-              <h2>Análise de Distribuição</h2>
-              <svg ref={distributionChartRef}></svg>
-            </div>
-            <div className={styles.card} onClick={() => handleCardClick('gender')}>
-              <h2>Análise de Gênero</h2>
-              <svg ref={genderChartRef}></svg>
-            </div>
+          <div className={styles.card}>
+            <h2>Faturamento Semanal</h2>
+            <svg ref={chartRef}></svg>
           </div>
-          <div className={styles['graphic-line']}>
-            <div className={styles.card} onClick={() => handleCardClick('peakHours')}>
-              <h2>Horários de Pico</h2>
-              <svg ref={peakHoursChartRef}></svg>
-            </div>
-            <div className={styles.card} onClick={() => handleCardClick('reach')}>
-              <h2>Alcance por Dia da Semana</h2>
-              <svg ref={reachChartRef}></svg>
-            </div>
-            <div className={styles.card} onClick={() => handleCardClick('averageReach')}>
-              <h2>Alcance Médio por Faixa Etária</h2>
-              <svg ref={averageReachChartRef}></svg>
-            </div>
+          <div className={styles.card}>
+            <h2>Análise de Distribuição</h2>
+            <svg ref={distributionChartRef}></svg>
+          </div>
+          <div className={styles.card}>
+            <h2>Análise de Gênero</h2>
+            <svg ref={genderChartRef}></svg>
+          </div>
+          <div className={styles.card}>
+            <h2>Horários de Pico</h2>
+            <svg ref={peakHoursChartRef}></svg>
+          </div>
+          <div className={styles.card}>
+            <h2>Alcance por Dia da Semana</h2>
+            <svg ref={reachChartRef}></svg>
+          </div>
+          <div className={styles.card}>
+            <h2>Alcance Médio por Faixa Etária</h2>
+            <svg ref={averageReachChartRef}></svg>
           </div>
         </div>
       </div>
-      {isModalOpen && (
-        <div className={styles.modalOverlay} onClick={closeModal}>
-          <div className={styles.modalContent} onClick={(e) => e.stopPropagation()}>
-            <button className={styles.closeButton} onClick={closeModal} aria-label="Fechar">
-              &times;
-            </button>
-            <h2 className={styles.modalTitle}>
-              {activeChart && `${activeChart.charAt(0).toUpperCase() + activeChart.slice(1)} Chart`}
-            </h2>
-            <ModalContent activeChart={activeChart} data={{
-              marketingData,
-              distributionData,
-              genderData,
-              peakHoursData,
-              reachData,
-              averageReachData
-            }} />
-          </div>
-        </div>
-      )}
     </div>
   );
 };

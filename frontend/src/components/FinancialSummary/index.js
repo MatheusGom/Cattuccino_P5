@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import styles from './FinancialSummary.module.css'; // Estilização específica
+import styles from './FinancialSummary.module.css';
 
 const FinancialSummary = ({ data }) => {
   const {
@@ -10,12 +10,10 @@ const FinancialSummary = ({ data }) => {
     variacao_total,
   } = data;
 
-  // Função para definir cor de variação (positivo = verde, negativo = vermelho)
   const getVariationColor = (variation) => (variation >= 0 ? '#28a745' : '#dc3545');
 
   return (
-    <div className={styles.container}>
-      {/* Faturamento Diário */}
+    <div className={styles.container}>=
       <div className={styles.card}>
         <div className={styles.cardContent}>
           <span className={styles.label}>Faturamento Diário</span>
@@ -34,7 +32,6 @@ const FinancialSummary = ({ data }) => {
         </div>
       </div>
 
-      {/* Faturamento Total */}
       <div className={styles.card}>
         <div className={styles.cardContent}>
           <span className={styles.label}>Faturamento Total</span>

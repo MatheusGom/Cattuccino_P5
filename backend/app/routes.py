@@ -337,6 +337,55 @@ def reach_by_day():
         'tiktok': alcance_por_dia['alcance_tiktok'].tolist()
     })
 
+@marketing_bp.route('/marketing/multivariate-timeseries', methods=['GET'])
+def multivariate_timeseries():
+    # Obter dados do banco de dados
+    df = pd.read_sql_table('Marketing', con=db.engine)
+
+    # Selecionar as colunas relevantes e remover valores ausentes
+    df_multivar_faq = df[['faturamento_diario', 'data_id', 'qtd_clientes']].dropna()
+
+    # Garantir que 'data_id' esteja no formato datetime
+    df_multivar_faq['data_id'] = pd.to_datetime(df_multivar_faq['data_id'])
+
+    # Adicionar a coluna de ano
+    df_multivar_faq['ano'] = df_multivar_faq['data_id'].dt.year
+
+    # Lista de anos únicos
+    anos = df_multivar_faq['ano'].unique()
+    result = {}
+
+    # Iterar pelos anos
+    for ano in anos:
+        dados_ano = df_multivar_faq[df_multivar_faq['ano'] == ano]
+
+        # Agrupar por semana e calcular somas
+        dados_agrupados = (
+            dados_ano.set_index('data_id')
+            .resample('W')[['qtd_clientes', 'faturamento_diario']]
+            .sum()
+        )
+
+        # Filtrar semanas dentro do ano
+        dados_agrupados = dados_agrupados[dados_agrupados.index.year == ano]
+
+        # Calcular médias semanais
+        soma_total_clientes = dados_ano['qtd_clientes'].sum()
+        soma_total_faturamento = dados_ano['faturamento_diario'].sum()
+        numero_de_intervalos = len(dados_agrupados)
+        media_total_clientes = soma_total_clientes / numero_de_intervalos
+        media_total_faturamento = soma_total_faturamento / numero_de_intervalos
+
+        # Adicionar dados ao resultado
+        result[ano] = {
+            'semanas': dados_agrupados.index.strftime('%Y-%m-%d').tolist(),
+            'clientes_semanais': dados_agrupados['qtd_clientes'].tolist(),
+            'faturamento_semanal': dados_agrupados['faturamento_diario'].tolist(),
+            'media_clientes': media_total_clientes,
+            'media_faturamento': media_total_faturamento,
+        }
+
+    return jsonify(result)
 
 #========================
 

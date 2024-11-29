@@ -467,15 +467,20 @@ const InsertData = () => {
                                     />
                                 </div>
                                 <div className={styles.row}>
-                                    <p className={styles['form-p']}>Maioria Sexo</p>
-                                    <input
+                                    <p className={styles['form-p']}>Sexo da Maioria</p>
+                                    <select
                                         type="text"
-                                        name="maioria_sexo"
-                                        value={formMarketing.maioria_sexo}
+                                        name='maioria_sexo'
                                         onChange={(e) => handleInputChange(e, setFormMarketing)}
-                                        placeholder="M - F"
+                                        placeholder="Maioria"
                                         className={styles.input}
-                                    />
+                                    >
+                                        <option value="" disabled>
+                                            Selecione
+                                        </option>
+                                        <option value="M">Masculino</option>
+                                        <option value="F">Feminino</option>
+                                    </select>
                                 </div>
                                 <button type="submit" className={styles.button}>
                                     <p>Adicionar</p>

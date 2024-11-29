@@ -27,9 +27,15 @@ Para executar o programa, é necessário seguir os seguintes passos:
       https://github.com/MatheusGom/Cattuccino_P5.git
   </dt>
   </tr>
+  <tr>- Navegue até a pasta de frontend do projeto (Cattuccino_P5/frontend) e execute o comando: 
+    <dt>
+
+      npm install
+  </dt>
+  </tr>
   <tr>- Caso esteja em um sistema windows, certifique-se de estar com o Docker Desktop aberto</tr><br>
   <tr>- Certifique-se de que a porta 3306 esteja disponível para o servidor MySQL</tr><br>
-  <tr>- Navegar até a pasta raiz do projeto (Cattuccino_P5/cattuccino)</tr><br>
+  <tr>- Navegar até a pasta raiz do projeto (Cattuccino_P5)</tr><br>
   <tr>
     - Usar o comando: 
     <dt>
@@ -37,7 +43,16 @@ Para executar o programa, é necessário seguir os seguintes passos:
       docker-compose up --build
   </dt>
   </tr>
-  <tr>Após a finalização, acessar, em seu navegador, o endereço http://localhost:3000/</tr>
+  <tr>- Após a finalização, acessar, em seu navegador, o endereço http://localhost:3000/</tr>
+  <tr>- Você pode acessar o dashboar com as seguintes credenciais para gerencia:</tr><br>
+  <tr>- email: gerente@email.com</tr><br>
+  <tr>- senha: admin.123</tr><br>
+  <tr>- Ao fim da execução, você pode derrubar o container usando, na pasta raiz do projeto, o comando: 
+  <dt>
+
+      docker-compose down -v
+  </dt>
+  </tr>
 </table>
 
 ##
@@ -130,6 +145,12 @@ To run the program, the following steps must be followed:
 
       https://github.com/MatheusGom/Cattuccino_P5.git
   </dt>
+  </tr>
+  <tr>- Navigate to the frontend folder of the project (Cattuccino_P5/frontend) and run the command:  
+    <dt>
+
+      npm install
+  </dt>
   <tr>- If you are on a Windows system, make sure Docker Desktop is open</tr><br> 
   <tr>- Ensure that port 3306 is available for the MySQL server</tr><br>
   <tr>- Go to the root folder of the project (Cattuccino_P5/cattuccino)</tr><br>
@@ -141,6 +162,15 @@ To run the program, the following steps must be followed:
   </dt>
   </tr>
   <tr>After completion, access the address http://localhost:3000/ in your browser</tr>
+  <tr>- You can access the dashboard with the following credentials for management:</tr><br>
+  <tr>- email: gerente@email.com</tr><br>
+  <tr>- password: admin.123</tr><br>
+  <tr>- At the end of the execution, you can stop the container by running the following command in the root folder of the project:  
+  <dt>
+
+      docker-compose down -v
+  </dt>
+  </tr>
 </table>
 
 ##

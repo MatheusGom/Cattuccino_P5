@@ -170,16 +170,14 @@ def revenue_by_day():
         .all()
     )
 
-    # Formatar os resultados em JSON
     data = [
         {
-            'dia_semana': row[0],  # Dias da semana permanecem em português
+            'dia_semana': row[0],
             'total_faturamento': row[1]
         }
         for row in result
     ]
 
-    # Retornar os dados no formato JSON
     return jsonify(data)
 
 
@@ -234,13 +232,10 @@ def distributions():
 
 @marketing_bp.route('/marketing/gender-analysis', methods=['GET'])
 def gender_analysis():
-    # Obter dados do banco de dados
     df = pd.read_sql_table('Marketing', con=db.engine)
 
-    # Contar as ocorrências de cada gênero
     gender_counts = df['maioria_sexo'].value_counts()
 
-    # Retornar os dados no formato JSON
     return jsonify({
         'generos': gender_counts.index.tolist(),
         'ocorrencias': gender_counts.values.tolist()
@@ -249,29 +244,23 @@ def gender_analysis():
 
 @marketing_bp.route('/marketing/peak-hours', methods=['GET'])
 def peak_hours():
-    # Obter dados do banco de dados
     df = pd.read_sql_table('Marketing', con=db.engine)
 
-    # Converter a coluna 'horario_pico' para formato datetime
     df['horario_pico'] = pd.to_datetime(
         df['horario_pico'], format='%H:%M', errors='coerce').dt.time
 
-    # Lista dos dias da semana em ordem
     dias_ordenados = ['DOMINGO', 'SEGUNDA', 'TERCA',
                       'QUARTA', 'QUINTA', 'SEXTA', 'SABADO']
 
-    # Agrupar por dia da semana e encontrar o horário de pico mais frequente
     horario_pico_dia = (
         df.groupby('dia_semana')['horario_pico']
         .agg(lambda x: x.mode()[0] if not x.mode().empty else None)
     )
     horario_pico_dia = horario_pico_dia.reindex(dias_ordenados)
 
-    # Converter horários para string no formato HH:MM, garantindo que sejam válidos
     horarios_formatados = horario_pico_dia.apply(
         lambda t: t.strftime('%H:%M') if isinstance(t, datetime.time) else None)
 
-    # Retornar os dados no formato JSON
     return jsonify({
         'dias': dias_ordenados,
         'horarios': horarios_formatados.tolist()
@@ -280,21 +269,17 @@ def peak_hours():
 
 @marketing_bp.route('/marketing/average-reach', methods=['GET'])
 def average_reach_by_age():
-    # Obter dados do banco de dados
     df = pd.read_sql_table('Marketing', con=db.engine)
 
-    # Converter colunas de alcance para numérico, substituindo strings inválidas por NaN
     df['alcance_instagram'] = pd.to_numeric(
         df['alcance_instagram'], errors='coerce')
     df['alcance_facebook'] = pd.to_numeric(
         df['alcance_facebook'], errors='coerce')
     df['alcance_tiktok'] = pd.to_numeric(df['alcance_tiktok'], errors='coerce')
 
-    # Remover valores nulos das colunas de alcance e faixa etária
     df = df.dropna(subset=['idade_instagram', 'idade_facebook', 'idade_tiktok',
                    'alcance_instagram', 'alcance_facebook', 'alcance_tiktok'])
 
-    # Agrupar por faixa etária e calcular o alcance médio
     alcance_instagram = df.groupby('idade_instagram')[
         'alcance_instagram'].mean().reset_index()
     alcance_facebook = df.groupby('idade_facebook')[
@@ -302,7 +287,6 @@ def average_reach_by_age():
     alcance_tiktok = df.groupby('idade_tiktok')[
         'alcance_tiktok'].mean().reset_index()
 
-    # Retornar os dados no formato JSON
     return jsonify({
         'instagram': alcance_instagram.to_dict(orient='records'),
         'facebook': alcance_facebook.to_dict(orient='records'),
@@ -312,17 +296,14 @@ def average_reach_by_age():
 
 @marketing_bp.route('/marketing/reach-by-day', methods=['GET'])
 def reach_by_day():
-    # Obter dados do banco de dados
     df = pd.read_sql_table('Marketing', con=db.engine)
 
-    # Converter colunas de alcance para numérico, substituindo strings inválidas por NaN
     df['alcance_instagram'] = pd.to_numeric(
         df['alcance_instagram'], errors='coerce')
     df['alcance_facebook'] = pd.to_numeric(
         df['alcance_facebook'], errors='coerce')
     df['alcance_tiktok'] = pd.to_numeric(df['alcance_tiktok'], errors='coerce')
 
-    # Função para remover outliers usando o método IQR
     def remover_outliers(df, col):
         Q1 = df[col].quantile(0.25)
         Q3 = df[col].quantile(0.75)
@@ -331,27 +312,21 @@ def reach_by_day():
         limite_superior = Q3 + 1.5 * IQR
         return df[(df[col] >= limite_inferior) & (df[col] <= limite_superior)]
 
-    # Remover outliers das colunas de alcance
     df = remover_outliers(df, 'alcance_tiktok')
 
-    # Remover valores nulos das colunas de alcance
     df = df.dropna(subset=['alcance_instagram',
                    'alcance_facebook', 'alcance_tiktok'])
 
-    # Lista ordenada dos dias da semana
     dias_ordenados = ['DOMINGO', 'SEGUNDA', 'TERCA',
                       'QUARTA', 'QUINTA', 'SEXTA', 'SABADO']
 
-    # Agrupar por dia da semana e somar os alcances
     alcance_por_dia = (
         df.groupby('dia_semana')[['alcance_instagram',
                                   'alcance_facebook', 'alcance_tiktok']]
         .sum()
-        # Preenche valores ausentes com 0
         .reindex(dias_ordenados, fill_value=0)
     )
 
-    # Retornar os dados no formato JSON
     return jsonify({
         'dias': alcance_por_dia.index.tolist(),
         'instagram': alcance_por_dia['alcance_instagram'].tolist(),
@@ -360,9 +335,45 @@ def reach_by_day():
     })
 
 
+@marketing_bp.route('/marketing/summary', methods=['GET'])
+def marketing_summary():
+    df = pd.read_sql_table('Marketing', con=db.engine)
+
+    df['data_id'] = pd.to_datetime(
+        df['data_id'], format='%Y-%m-%d', errors='coerce')
+
+    ultimo_dia = df['data_id'].max()
+    clientes_novos_diarios = df[df['data_id']
+                                == ultimo_dia]['qtd_clientes'].sum()
+
+    alcance_total_instagram = df['alcance_instagram'].sum()
+    alcance_total_facebook = df['alcance_facebook'].sum()
+    alcance_total_tiktok = df['alcance_tiktok'].sum()
+    alcance_total = alcance_total_instagram + \
+        alcance_total_facebook + alcance_total_tiktok
+
+    penultimo_dia = df[df['data_id'] < ultimo_dia]['data_id'].max()
+    clientes_novos_anterior = df[df['data_id']
+                                 == penultimo_dia]['qtd_clientes'].sum()
+
+    variacao_clientes = ((clientes_novos_diarios - clientes_novos_anterior) /
+                         clientes_novos_anterior) * 100 if clientes_novos_anterior else 0
+
+    return jsonify({
+        'clientes_novos_diarios': round(float(clientes_novos_diarios), 2),
+        'variacao_clientes': round(float(variacao_clientes), 2),
+        'alcance_total': round(float(alcance_total), 2),
+        'alcance_total_instagram': round(float(alcance_total_instagram), 2),
+        'alcance_total_facebook': round(float(alcance_total_facebook), 2),
+        'alcance_total_tiktok': round(float(alcance_total_tiktok), 2)
+    })
+
+
 # ========================
 
 # Financeiro
+
+
 @financeiro_bp.route('/financial/top-suppliers', methods=['GET'])
 def revenue_by_supplier():
     result = (
@@ -372,20 +383,18 @@ def revenue_by_supplier():
         )
         .group_by(Financeiro.nome_fornecedor)
         .order_by(func.sum(Financeiro.faturamento_produto).desc())
-        .limit(6)  # Seleciona os 6 maiores fornecedores em faturamento
+        .limit(6)
         .all()
     )
 
-    # Formatar os resultados em JSON
     data = [
         {
-            'nome_fornecedor': row[0],  # Nome do fornecedor
-            'total_faturamento': row[1]  # Faturamento total
+            'nome_fornecedor': row[0],
+            'total_faturamento': row[1]
         }
         for row in result
     ]
 
-    # Retornar os dados no formato JSON
     return jsonify(data)
 
 
@@ -402,7 +411,6 @@ def profit_revenue_ratio():
         .all()
     )
 
-    # Calcular a relação lucro/faturamento e ordenar os resultados
     data = []
     for row in result:
         total_faturamento = row.total_faturamento or 0
@@ -414,7 +422,6 @@ def profit_revenue_ratio():
             'relacao_lucro_faturamento': round(relacao, 2),
         })
 
-    # Ordenar pela relação lucro/faturamento em ordem decrescente
     data.sort(key=lambda x: x['relacao_lucro_faturamento'], reverse=True)
 
     return jsonify(data)
@@ -422,16 +429,12 @@ def profit_revenue_ratio():
 
 @financeiro_bp.route('/financial/category-proportions', methods=['GET'])
 def category_proportions():
-    # Obter dados do banco de dados
     df = pd.read_sql_table('Financeiro', con=db.engine)
 
-    # Contar o número de produtos por categoria
     categoria_counts = df['categoria_produto'].value_counts()
 
-    # Calcular as proporções
     proporcoes = (categoria_counts / categoria_counts.sum() * 100).round(1)
 
-    # Retornar os dados no formato JSON
     return jsonify({
         'categories': categoria_counts.index.tolist(),
         'counts': categoria_counts.tolist(),
@@ -441,13 +444,10 @@ def category_proportions():
 
 @financeiro_bp.route('/financial/top-products', methods=['GET'])
 def top_products():
-    # Obter dados do banco de dados
     df = pd.read_sql_table('Financeiro', con=db.engine)
 
-    # Ordenar pelo lucro e selecionar os 3 produtos mais lucrativos
     top_3_produtos = df.nlargest(3, 'lucro_produto')
 
-    # Retornar os dados no formato JSON
     return jsonify({
         'produtos': top_3_produtos['nome_produto'].tolist(),
         'lucros': top_3_produtos['lucro_produto'].tolist()
@@ -456,17 +456,14 @@ def top_products():
 
 @financeiro_bp.route('/financial/category-distribution', methods=['GET'])
 def category_distribution():
-    # Obter dados do banco de dados
     df = pd.read_sql_table('Financeiro', con=db.engine)
 
-    # Agrupar os dados por categoria e calcular a quantidade total comprada
     df_grouped = (
         df.groupby('categoria_produto')
         .agg(quantidade_total=('qtd_comprada', 'sum'))
         .reset_index()
     )
 
-    # Retornar os dados no formato JSON
     return jsonify({
         'categorias': df_grouped['categoria_produto'].tolist(),
         'quantidades': df_grouped['quantidade_total'].tolist()
@@ -475,58 +472,53 @@ def category_distribution():
 
 @financeiro_bp.route('/financial/profit-margin', methods=['GET'])
 def profit_margin_by_category():
-    # Obter dados do banco de dados
     df = pd.read_sql_table('Financeiro', con=db.engine)
 
-    # Calcular a margem de lucro
     df['margem_lucro'] = (df['lucro_produto'] /
                           df['faturamento_produto']) * 100
 
-    # Agrupar por categoria e calcular a margem de lucro média
     margem_por_categoria = (
         df.groupby('categoria_produto')['margem_lucro']
         .mean()
         .reset_index()
     )
 
-    # Retornar os dados no formato JSON
     return jsonify({
         'categorias': margem_por_categoria['categoria_produto'].tolist(),
         'margens': margem_por_categoria['margem_lucro'].round(2).tolist()
     })
 
+
 @financeiro_bp.route('/financial/summary', methods=['GET'])
 def financial_summary():
-    # Obter dados do banco de dados
     df = pd.read_sql_table('Financeiro', con=db.engine)
 
-    # Garantir que as datas estão no formato correto
     df['data_transacao'] = pd.to_datetime(df['data_transacao'], dayfirst=True)
 
-    # Calcular faturamento diário (última data no dataset)
     ultimo_dia = df['data_transacao'].max()
-    faturamento_diario = df[df['data_transacao'] == ultimo_dia]['faturamento_produto'].sum()
+    faturamento_diario = df[df['data_transacao']
+                            == ultimo_dia]['faturamento_produto'].sum()
 
-    # Calcular faturamento total
     faturamento_total = df['faturamento_produto'].sum()
 
-    # Calcular a variação percentual diária (comparar com o dia anterior)
-    penultimo_dia = df[df['data_transacao'] < ultimo_dia]['data_transacao'].max()
-    faturamento_diario_anterior = df[df['data_transacao'] == penultimo_dia]['faturamento_produto'].sum()
+    penultimo_dia = df[df['data_transacao']
+                       < ultimo_dia]['data_transacao'].max()
+    faturamento_diario_anterior = df[df['data_transacao']
+                                     == penultimo_dia]['faturamento_produto'].sum()
 
-    variacao_diaria = ((faturamento_diario - faturamento_diario_anterior) / faturamento_diario_anterior) * 100 if faturamento_diario_anterior else 0
+    variacao_diaria = ((faturamento_diario - faturamento_diario_anterior) /
+                       faturamento_diario_anterior) * 100 if faturamento_diario_anterior else 0
 
-    # Calcular a variação percentual total (em relação ao total acumulado do mês anterior)
     mes_atual = ultimo_dia.month
     mes_anterior = mes_atual - 1 if mes_atual > 1 else 12
-    faturamento_mes_anterior = df[df['data_transacao'].dt.month == mes_anterior]['faturamento_produto'].sum()
-    variacao_total = ((faturamento_total - faturamento_mes_anterior) / faturamento_mes_anterior) * 100 if faturamento_mes_anterior else 0
+    faturamento_mes_anterior = df[df['data_transacao'].dt.month ==
+                                  mes_anterior]['faturamento_produto'].sum()
+    variacao_total = ((faturamento_total - faturamento_mes_anterior) /
+                      faturamento_mes_anterior) * 100 if faturamento_mes_anterior else 0
 
-    # Retornar os dados no formato JSON
     return jsonify({
         'faturamento_diario': round(faturamento_diario, 2),
         'variacao_diaria': round(variacao_diaria, 2),
         'faturamento_total': round(faturamento_total, 2),
         'variacao_total': round(variacao_total, 2)
     })
-    

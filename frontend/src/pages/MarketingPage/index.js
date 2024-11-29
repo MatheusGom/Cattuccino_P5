@@ -5,6 +5,7 @@ import axios from 'axios';
 import styles from './MarketingPage.module.css'
 import Header from '../../components/Header';
 import Sidebar from '../../components/Sidebar';
+import MarketingSummary from '../../components/MarketingSummary';
 
 const MarketingPage = () => {
   const { userType } = useParams();
@@ -639,6 +640,13 @@ const MarketingPage = () => {
         <div className={styles.header}>
           <Header activeButton={activeButton} />
         </div>
+        {MarketingSummary ? (
+          <div className={styles.summary}>
+            <MarketingSummary data={MarketingSummary} />
+          </div>
+        ) : (
+          <p>Carregando resumo de marketing...</p>
+        )}
         <div className={styles['content-grid']}>
           <div className={styles.card}>
             <h2>Faturamento Semanal</h2>

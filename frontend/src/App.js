@@ -6,6 +6,7 @@ import UsuariosPage from './pages/userPage';
 import MarketingPage from './pages/MarketingPage';
 import InsertData from './pages/insertData';
 import InsertUser from './pages/insertUser';
+import FinancialPage from './pages/FinancialPage';
 
 function App() {
   return (
@@ -18,6 +19,7 @@ function App() {
         <Route path='/dashboard/:userType/usuarios/novo' element={<InsertUser />} />
         <Route path='/dashboard/:userType/dados/novo' element={<InsertData />} />
         <Route path='/dashboard/:userType/marketing' element={<MarketingPage/>} />
+        <Route path='/dashboard/:userType/financial' element={<FinancialPage/>} />
       </Routes>
     </Router>
   );

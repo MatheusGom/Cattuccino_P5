@@ -26,8 +26,6 @@ const MarketingPage = () => {
   const reachChartRef = useRef();
   const [averageReachData, setAverageReachData] = useState(null);
   const averageReachChartRef = useRef();
-  const [multivariateData, setMultivariateData] = useState(null);
-  const multivariateChartRef = useRef();
 
   useEffect(() => {
     const fetchRevenueByDay = async () => {
@@ -408,42 +406,7 @@ const MarketingPage = () => {
   };
   
   return (
-    <div className={styles.container}>
-      <div className={styles.sidebar}>
-        <Sidebar activeButton={activeButton} setActiveButton={setActiveButton} userType={userType} />
-      </div>
-      <div className={styles['main-content']}>
-        <div className={styles.header}>
-          <Header title="Marketing" />
-        </div>
-        <div className={styles['content-grid']}>
-          <div className={styles.card}>
-            <h2>Faturamento Semanal</h2>
-            <svg ref={chartRef}></svg>
-          </div>
-          <div className={styles.card}>
-            <h2>Análise de Distribuição</h2>
-            <svg ref={distributionChartRef}></svg>
-          </div>
-          <div className={styles.card}>
-            <h2>Análise de Gênero</h2>
-            <svg ref={genderChartRef}></svg>
-          </div>
-          <div className={styles.card}>
-            <h2>Horários de Pico</h2>
-            <svg ref={peakHoursChartRef}></svg>
-          </div>
-          <div className={styles.card}>
-            <h2>Alcance por Dia da Semana</h2>
-            <svg ref={reachChartRef}></svg>
-          </div>
-          <div className={styles.card}>
-            <h2>Alcance Médio por Faixa Etária</h2>
-            <svg ref={averageReachChartRef}></svg>
-          </div>
-        </div>
-      </div>
-    </div>
+   <></>
   );
 };
 

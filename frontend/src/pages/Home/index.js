@@ -305,9 +305,9 @@ function Home() {
         svg.append('text')
           .attr('text-anchor', 'middle')
           .attr('transform', 'rotate(-90)')
-          .attr('y', margin.left / 4)
+          .attr('y', margin.left / 5)
           .attr('x', -height / 2.5)
-          .text('Lucro/Faturamento');
+          .text('Lucro/Faturamento (%)');
     };
 
     const drawCategoryDistributionChart = (data) => {

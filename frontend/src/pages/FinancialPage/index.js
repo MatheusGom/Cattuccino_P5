@@ -327,9 +327,9 @@ const FinancialPage = () => {
     svg.append('text')
       .attr('text-anchor', 'middle')
       .attr('transform', 'rotate(-90)')
-      .attr('y', margin.left / 4)
+      .attr('y', margin.left / 5)
       .attr('x', -height / 2.5)
-      .text('Lucro/Faturamento');
+      .text('Lucro/Faturamento (%)');
   };
   
   const drawCategoryProportionsChart = (data) => {
@@ -681,9 +681,9 @@ const FinancialPage = () => {
     svg.append('text')
       .attr('text-anchor', 'middle')
       .attr('transform', 'rotate(-90)')
-      .attr('y', margin.left / 4)
-      .attr('x', -height / 2.5)
-      .text('Margem de Lucro');
+      .attr('y', margin.left / 5.25)
+      .attr('x', -height / 2.3)
+      .text('Margem de Lucro (%)');
   };
   
   return (

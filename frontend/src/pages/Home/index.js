@@ -303,82 +303,88 @@ function Home() {
         const width = svg.node().clientWidth;
         const height = svg.node().clientHeight;
         const margin = { top: 30, right: 20, bottom: 60, left: 60 };
-
+      
         svg.selectAll('*').remove();
-
+      
         const x = d3.scaleBand()
-            .domain(data.categorias)
-            .range([margin.left, width - margin.right])
-            .padding(0.4);
-
+          .domain(data.categorias)
+          .range([margin.left, width - margin.right])
+          .padding(0.4);
+      
         const y = d3.scaleLinear()
-            .domain([0, d3.max(data.quantidades)]).nice()
-            .range([height - margin.bottom, margin.top]);
-
+          .domain([0, d3.max(data.quantidades)]).nice()
+          .range([height - margin.bottom, margin.top]);
+      
         const maxY = Math.ceil(d3.max(data.quantidades) / 100) * 100;
         y.domain([0, maxY]);
-
+      
         const defs = svg.append('defs');
         const gradient = defs.append('linearGradient')
-            .attr('id', 'barGradient')
-            .attr('x1', '0%')
-            .attr('y1', '0%')
-            .attr('x2', '0%')
-            .attr('y2', '100%');
-
+          .attr('id', 'barGradient')
+          .attr('x1', '0%')
+          .attr('y1', '0%')
+          .attr('x2', '0%')
+          .attr('y2', '100%');
+      
         gradient.append('stop')
-            .attr('offset', '0%')
-            .attr('stop-color', '#d62728');
+          .attr('offset', '0%')
+          .attr('stop-color', '#FF1A66');
         gradient.append('stop')
-            .attr('offset', '100%')
-            .attr('stop-color', '#a2321f');
-
-        svg.selectAll('.bar')
-            .data(data.quantidades)
-            .enter().append('rect')
-            .attr('class', 'bar')
-            .attr('x', (_, i) => x(data.categorias[i]))
-            .attr('y', d => y(d))
-            .attr('height', d => y(0) - y(d))
-            .attr('width', x.bandwidth())
-            .attr('fill', 'url(#barGradient)');
-
+          .attr('offset', '100%')
+          .attr('stop-color', '#99103D');
+      
+        svg.selectAll('.bar-body')
+          .data(data.quantidades)
+          .enter().append('rect')
+          .attr('class', 'bar-body')
+          .attr('x', (_, i) => x(data.categorias[i]))
+          .attr('y', d => y(d))
+          .attr('height', d => y(0) - y(d))
+          .attr('width', x.bandwidth())
+          .attr('fill', 'url(#barGradient)');
+      
+        svg.selectAll('.bar-top')
+          .data(data.quantidades)
+          .enter().append('rect')
+          .attr('class', 'bar-top')
+          .attr('x', (_, i) => x(data.categorias[i]))
+          .attr('y', d => y(d) - 2.5)
+          .attr('height', 4)
+          .attr('width', x.bandwidth())
+          .attr('rx', 5)
+          .attr('ry', 5)
+          .attr('fill', '#FF1A66');
+      
         svg.selectAll('.label')
-            .data(data.quantidades)
-            .enter().append('text')
-            .attr('class', 'label')
-            .attr('x', (_, i) => x(data.categorias[i]) + x.bandwidth() / 2)
-            .attr('y', d => y(d) - 5)
-            .attr('text-anchor', 'middle')
-            .attr('font-size', '10px')
-            .attr('fill', '#fff')
-            .text(d => d3.format('.2f')(d));
-
+          .data(data.quantidades)
+          .enter().append('text')
+          .attr('class', 'label')
+          .attr('x', (_, i) => x(data.categorias[i]) + x.bandwidth() / 2)
+          .attr('y', d => y(d) - 10)
+          .attr('text-anchor', 'middle')
+          .attr('font-size', '10px')
+          .attr('fill', 'black')
+          .text(d => d3.format('.2f')(d));
+      
         svg.append('g')
-            .attr('transform', `translate(0,${height - margin.bottom})`)
-            .call(d3.axisBottom(x))
-            .selectAll('text')
-            .attr('transform', 'rotate(-45)')
-            .style('text-anchor', 'end')
-            .style('font-size', '10px');
-
+          .attr('transform', `translate(0,${height - margin.bottom})`)
+          .call(d3.axisBottom(x))
+          .selectAll('text')
+          .attr('transform', 'rotate(-45)')
+          .style('text-anchor', 'end')
+          .style('font-size', '10px');
+      
         svg.append('g')
-            .attr('transform', `translate(${margin.left},0)`)
-            .call(d3.axisLeft(y).ticks(maxY / 100).tickFormat(d3.format('.0f')));
-
+          .attr('transform', `translate(${margin.left},0)`)
+          .call(d3.axisLeft(y).ticks(maxY / 100).tickFormat(d3.format('.0f')));
+      
         svg.append('text')
-            .attr('text-anchor', 'middle')
-            .attr('x', width / 2)
-            .attr('y', height - 10)
-            .text('Categoria');
-
-        svg.append('text')
-            .attr('text-anchor', 'middle')
-            .attr('transform', 'rotate(-90)')
-            .attr('y', margin.left / 4)
-            .attr('x', -height / 2.5)
-            .text('Quantidade');
-    };
+          .attr('text-anchor', 'middle')
+          .attr('transform', 'rotate(-90)')
+          .attr('y', margin.left / 4)
+          .attr('x', -height / 2.5)
+          .text('Quantidade');
+      };  
 
     return (
         <>

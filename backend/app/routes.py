@@ -373,7 +373,6 @@ def marketing_summary():
 
 # Financeiro
 
-
 @financeiro_bp.route('/financial/top-suppliers', methods=['GET'])
 def revenue_by_supplier():
     result = (

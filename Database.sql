@@ -126,6 +126,25 @@ INSERT INTO Financeiro ( data_transacao, preco_unitario, qtd_comprada, preco_tot
 INSERT INTO Financeiro ( data_transacao, preco_unitario, qtd_comprada, preco_total, nome_produto, marca_produto, categoria_produto, descricao_produto, faturamento_produto, lucro_produto, cnpj_fornecedor, nome_fornecedor) VALUES ('07/10/2019', 12.2, 40, 488.0, 'Refrigerante', 'Coca-Cola', 'BEBIDA', 'Refrigerante sabor cola 2L', 680.0, 192.0, '85.315.878/0001-45', 'Mix Atacado');
 INSERT INTO Financeiro ( data_transacao, preco_unitario, qtd_comprada, preco_total, nome_produto, marca_produto, categoria_produto, descricao_produto, faturamento_produto, lucro_produto, cnpj_fornecedor, nome_fornecedor) VALUES ('07/10/2019', 17.5, 10, 175.0, 'Ketchup', 'Heinz', 'CONDIMENTO', 'Ketchup de tomate', 270.0, 95.0, '15.233.539/0001-68', 'CEASA');
 
+UPDATE Financeiro
+SET nome_fornecedor = REPLACE(REPLACE(REPLACE(REPLACE(nome_fornecedor, 'é', 'e'), 
+                                                'ã', 'a'), 
+                                                'í', 'i'), 
+                                                'ó', 'o');
+
+UPDATE Financeiro
+SET categoria_produto = REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(categoria_produto, 'é', 'e'), 
+                                                                                    'É', 'E'),
+                                                                                    'é', 'e'), 
+                                                                                    'ã', 'a'), 
+                                                                                    'Ã', 'a'), 
+                                                                                    'í', 'i'), 
+                                                                                    'Í', 'i'), 
+                                                                                    'ó', 'o'), 
+                                                                                    'Ó', 'o'), 
+                                                                                    'ú', 'u');
+
+
 CREATE TABLE Marketing (
     data_id DATE PRIMARY KEY,
     dia_semana VARCHAR(255),

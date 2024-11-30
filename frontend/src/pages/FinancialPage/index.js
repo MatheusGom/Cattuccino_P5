@@ -615,11 +615,15 @@ const FinancialPage = () => {
       .attr('fill', 'black')
       .text(d => d3.format('.2f')(d));
   
-    svg.append('g')
+      svg.append('g')
       .attr('transform', `translate(0,${height - margin.bottom})`)
       .call(d3.axisBottom(x))
       .selectAll('text')
-      .attr('transform', 'rotate(-45)')
+      .attr('transform', (d) => {
+        const dx = d === "CONDIMENTO" ? 30 : 15;
+        const dy = 5;
+        return `rotate(0) translate(${dx},${dy})`;
+      })
       .style('text-anchor', 'end')
       .style('font-size', '10px');
   
@@ -633,8 +637,8 @@ const FinancialPage = () => {
       .attr('y', margin.left / 4)
       .attr('x', -height / 2.5)
       .text('Quantidade');
-  };  
-
+  };
+  
   const drawProfitMarginChart = (data) => {
     const svg = d3.select(profitMarginChartRef.current);
     const width = svg.node().clientWidth;
@@ -723,8 +727,6 @@ const FinancialPage = () => {
       .attr('x', -height / 2.5)
       .text('Margem de Lucro');
   };
-  
-  
   
   return (
     <div className={styles.container}>

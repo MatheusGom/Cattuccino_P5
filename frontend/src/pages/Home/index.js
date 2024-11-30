@@ -314,7 +314,7 @@ function Home() {
           .text('Lucro/Faturamento');
       };
 
-    const drawCategoryDistributionChart = (data) => {
+      const drawCategoryDistributionChart = (data) => {
         const svg = d3.select(categoryDistributionChartRef.current);
         const width = svg.node().clientWidth;
         const height = svg.node().clientHeight;
@@ -382,11 +382,15 @@ function Home() {
           .attr('fill', 'black')
           .text(d => d3.format('.2f')(d));
       
-        svg.append('g')
+          svg.append('g')
           .attr('transform', `translate(0,${height - margin.bottom})`)
           .call(d3.axisBottom(x))
           .selectAll('text')
-          .attr('transform', 'rotate(-45)')
+          .attr('transform', (d) => {
+            const dx = d === "CONDIMENTO" ? 30 : 15;
+            const dy = 5;
+            return `rotate(0) translate(${dx},${dy})`;
+          })
           .style('text-anchor', 'end')
           .style('font-size', '10px');
       
@@ -400,7 +404,7 @@ function Home() {
           .attr('y', margin.left / 4)
           .attr('x', -height / 2.5)
           .text('Quantidade');
-      };  
+      }; 
 
     return (
         <>

@@ -138,12 +138,12 @@ const FinancialPage = () => {
     topSuppliers.forEach((d) => {
       const barWidth = x.bandwidth();
       const barHeight = y(0) - y(d.total_faturamento);
-      const radius = 10;
+      const radius = 20;
   
       svg.append('rect')
         .attr('x', x(d.nome_fornecedor))
-        .attr('y', y(d.total_faturamento))
-        .attr('height', Math.min(barHeight, radius))
+        .attr('y', y(d.total_faturamento) + 8.5)
+        .attr('height', Math.min(barHeight, radius) - 8)
         .attr('width', barWidth)
         .attr('rx', radius)
         .attr('fill', '#FF1A66');
@@ -334,31 +334,88 @@ const FinancialPage = () => {
   
   const drawCategoryProportionsChart = (data) => {
     const svg = d3.select(categoryProportionsChartRef.current);
-    const width = svg.node().clientWidth;
-    const height = svg.node().clientHeight;
-    const margin = { top: 30, right: 20, bottom: 60, left: 60 };
+    const width = svg.node().clientWidth || 400;
+    const height = svg.node().clientHeight || 400;
+    const radius = Math.min(width, height) / 2 - 20;
   
     svg.selectAll('*').remove();
   
-    const x = d3.scaleBand()
+    if (!data || !data.categories || !data.counts || data.categories.length === 0 || data.counts.length === 0) {
+      return;
+    }
+  
+    const pie = d3.pie().value((d) => d.count);
+    const arc = d3.arc().innerRadius(0).outerRadius(radius);
+  
+    const colors = d3.scaleOrdinal()
       .domain(data.categories)
-      .range([margin.left, width - margin.right])
-      .padding(0.4);
+      .range(['#500124', '#A8094F', '#ED1164', '#FF6997', '#FFCADA', '#FFE2EA']);
   
-    const y = d3.scaleLinear()
-      .domain([0, d3.max(data.counts)]).nice()
-      .range([height - margin.bottom, margin.top]);
+    const formattedData = data.categories.map((category, index) => ({
+      category,
+      count: data.counts[index],
+    }));
   
-    const yAxisTicks = Math.ceil(d3.max(data.counts) / 50) * 50;
-    y.domain([0, yAxisTicks]);
+    const group = svg.append('g')
+      .attr('transform', `translate(${width / 2},${height / 2})`);
+  
+    group.selectAll('path')
+      .data(pie(formattedData))
+      .enter()
+      .append('path')
+      .attr('d', arc)
+      .attr('fill', (d) => colors(d.data.category))
+      .attr('stroke', 'white')
+      .style('stroke-width', '2px');
+  
+    const legend = svg.append('g')
+      .attr('transform', `translate(${width - 110},${50})`);
+  
+    legend.selectAll('rect')
+      .data(formattedData)
+      .enter()
+      .append('rect')
+      .attr('x', 0)
+      .attr('y', (_, i) => i * 20)
+      .attr('width', 15)
+      .attr('height', 15)
+      .attr('fill', (d) => colors(d.category));
+  
+    legend.selectAll('text')
+      .data(formattedData)
+      .enter()
+      .append('text')
+      .attr('x', 20)
+      .attr('y', (_, i) => i * 20 + 12)
+      .attr('font-size', '10px')
+      .attr('text-anchor', 'start')
+      .text((d) => `${d.category}: ${d.count}`);
+  };  
+  
+  const drawTopProductsChart = (data) => {
+    const svg = d3.select(topProductsChartRef.current);
+    const width = svg.node().clientWidth;
+    const height = svg.node().clientHeight;
+    const margin = { top: 30, right: 40, bottom: 60, left: 120 };
+  
+    svg.selectAll('*').remove();
+  
+    const x = d3.scaleLinear()
+      .domain([0, d3.max(data.lucros)]).nice()
+      .range([margin.left, width - margin.right]);
+  
+    const y = d3.scaleBand()
+      .domain(data.produtos)
+      .range([margin.top, height - margin.bottom])
+      .padding(0.5);
   
     const defs = svg.append('defs');
     const gradient = defs.append('linearGradient')
       .attr('id', 'barGradient')
       .attr('x1', '0%')
       .attr('y1', '0%')
-      .attr('x2', '0%')
-      .attr('y2', '100%');
+      .attr('x2', '100%')
+      .attr('y2', '0%');
   
     gradient.append('stop')
       .attr('offset', '0%')
@@ -368,183 +425,84 @@ const FinancialPage = () => {
       .attr('stop-color', '#99103D');
   
     svg.selectAll('.bar')
-      .data(data.counts)
-      .enter().append('rect')
-      .attr('class', 'bar-body')
-      .attr('x', (_, i) => x(data.categories[i]))
-      .attr('y', d => y(d))
-      .attr('height', d => y(0) - y(d))
-      .attr('width', x.bandwidth())
-      .attr('fill', 'url(#barGradient)');
-  
-    svg.selectAll('.bar-top')
-      .data(data.counts)
-      .enter().append('rect')
-      .attr('class', 'bar-top')
-      .attr('x', (_, i) => x(data.categories[i]))
-      .attr('y', d => y(d) - 2.5)
-      .attr('height', 5)
-      .attr('width', x.bandwidth())
-      .attr('rx', 5)
-      .attr('ry', 5)
-      .attr('fill', '#FF1A66');
-  
-    svg.selectAll('.label')
-      .data(data.counts)
-      .enter().append('text')
-      .attr('class', 'label')
-      .attr('x', (_, i) => x(data.categories[i]) + x.bandwidth() / 2)
-      .attr('y', d => y(d) - 10)
-      .attr('text-anchor', 'middle')
-      .attr('font-size', '10px')
-      .attr('fill', 'black')
-      .text(d => d3.format('.2f')(d));
-  
-    svg.append('g')
-      .attr('transform', `translate(0,${height - margin.bottom})`)
-      .call(d3.axisBottom(x))
-      .selectAll('text')
-      .attr('transform', (d) => {
-        const dx = d === "CONDIMENTO" ? 35 : 18;
-        return `translate(${dx})`;
-      })
-      .style('text-anchor', 'end')
-      .style('font-size', '10px');
-  
-    svg.append('g')
-      .attr('transform', `translate(${margin.left},0)`)
-      .call(d3.axisLeft(y).ticks(yAxisTicks / 50).tickFormat(d3.format('.0f')));
-  
-    svg.append('text')
-      .attr('text-anchor', 'middle')
-      .attr('transform', 'rotate(-90)')
-      .attr('y', margin.left / 4)
-      .attr('x', -height / 2.5)
-      .text('Proporcao');
-  };
-  
-  const drawTopProductsChart = (data) => {
-    const svg = d3.select(topProductsChartRef.current);
-    const width = svg.node().clientWidth;
-    const height = svg.node().clientHeight;
-    const margin = { top: 30, right: 20, bottom: 60, left: 60 };
-  
-    svg.selectAll('*').remove();
-  
-    const x = d3.scaleBand()
-      .domain(data.produtos)
-      .range([margin.left, width - margin.right])
-      .padding(0.8);
-  
-    const y = d3.scaleLinear()
-      .domain([0, d3.max(data.lucros)]).nice()
-      .range([height - margin.bottom, margin.top]);
-  
-    const maxY = Math.ceil(d3.max(data.lucros) / 50) * 50;
-    y.domain([0, maxY]);
-  
-    const defs = svg.append('defs');
-    const gradient = defs.append('linearGradient')
-      .attr('id', 'barGradient')
-      .attr('x1', '0%')
-      .attr('y1', '0%')
-      .attr('x2', '0%')
-      .attr('y2', '100%');
-  
-    gradient.append('stop')
-      .attr('offset', '0%')
-      .attr('stop-color', '#FF1A66');
-    gradient.append('stop')
-      .attr('offset', '100%')
-      .attr('stop-color', '#99103D');
-  
-    svg.selectAll('.bar-body')
       .data(data.lucros)
       .enter().append('rect')
-      .attr('class', 'bar-body')
-      .attr('x', (_, i) => x(data.produtos[i]))
-      .attr('y', d => y(d))
-      .attr('height', d => y(0) - y(d))
-      .attr('width', x.bandwidth())
+      .attr('class', 'bar')
+      .attr('y', (_, i) => y(data.produtos[i]))
+      .attr('x', x(0))
+      .attr('width', d => x(d) - x(0))
+      .attr('height', y.bandwidth())
       .attr('fill', 'url(#barGradient)');
-  
-    svg.selectAll('.bar-top')
-      .data(data.lucros)
-      .enter().append('rect')
-      .attr('class', 'bar-top')
-      .attr('x', (_, i) => x(data.produtos[i]))
-      .attr('y', d => y(d) - 2.5)
-      .attr('height', 5)
-      .attr('width', x.bandwidth())
-      .attr('rx', 5)
-      .attr('ry', 5)
-      .attr('fill', '#FF1A66');
   
     svg.selectAll('.label')
       .data(data.lucros)
       .enter().append('text')
       .attr('class', 'label')
-      .attr('x', (_, i) => x(data.produtos[i]) + x.bandwidth() / 2)
-      .attr('y', d => y(d) - 10)
-      .attr('text-anchor', 'middle')
+      .attr('x', d => x(d) + 5)
+      .attr('y', (_, i) => y(data.produtos[i]) + y.bandwidth() / 2)
+      .attr('dy', '0.35em')
+      .attr('text-anchor', 'start')
       .attr('font-size', '10px')
       .attr('fill', 'black')
       .text(d => d3.format('.2f')(d));
   
     const wrap = (text, width) => {
-      text.each(function() {
+      text.each(function () {
         const text = d3.select(this);
-        const words = text.text().split(/\s+/);
-        const lineHeight = 1.1;
-        const y = text.attr("y");
-        const dy = parseFloat(text.attr("dy"));
-  
-        let tspan = text.text(null).append("tspan")
-          .attr("x", 15)
-          .attr("y", y)
-          .attr("dy", dy + "em");
-  
-        let lineNumber = 0;
+        const words = text.text().split(/\s+/).reverse();
+        const y = text.attr('y');
+        const dy = parseFloat(text.attr('dy')) || 0;
         let line = [];
-        let word;
+        let lineNumber = 0;
   
-        while (word = words.pop()) {
+        let tspan = text.text(null).append('tspan')
+          .attr('x', -10)
+          .attr('y', y)
+          .attr('dy', `${dy}em`);
+  
+        let word;
+        while ((word = words.pop())) {
           line.push(word);
-          tspan.text(line.join(" "));
+          tspan.text(line.join(' '));
           if (tspan.node().getComputedTextLength() > width) {
             line.pop();
-            tspan.text(line.join(" "));
+            tspan.text(line.join(' '));
             line = [word];
-            tspan = text.append("tspan")
-              .attr("x", 7.5)
-              .attr("y", y)
-              .attr("dy", ++lineNumber * lineHeight + dy + "em")
+            tspan = text.append('tspan')
+              .attr('x', -10)
+              .attr('y', y)
+              .attr('dy', `${++lineNumber * 1.1}em`)
               .text(word);
           }
         }
       });
     };
   
-    svg.append('g')
-      .attr('transform', `translate(0,${height - margin.bottom})`)
-      .call(d3.axisBottom(x))
-      .selectAll('text')
-      .attr('transform', 'rotate(0)')
-      .attr('x', 25)
-      .style('text-anchor', 'end')
-      .style('font-size', '10px')
-      .call(wrap, x.bandwidth());
+    const yAxis = svg.append('g')
+      .attr('transform', `translate(${margin.left},0)`)
+      .call(d3.axisLeft(y))
+      .selectAll('.tick text')
+      .call(wrap, margin.left - 20)
+      .style('font-size', '12px');
   
     svg.append('g')
-      .attr('transform', `translate(${margin.left},0)`)
-      .call(d3.axisLeft(y).ticks(maxY / 200).tickFormat(d3.format('.0f')));
+      .attr('transform', `translate(0,${height - margin.bottom})`)
+      .call(d3.axisBottom(x).ticks(5).tickFormat(d3.format('.0f')))
+      .selectAll('text')
+      .style('font-size', '10px');
+  
+    svg.append('text')
+      .attr('text-anchor', 'middle')
+      .attr('x', width / 2)
+      .attr('y', height - 10)
+      .text('Lucro (R$)');
   
     svg.append('text')
       .attr('text-anchor', 'middle')
       .attr('transform', 'rotate(-90)')
       .attr('y', margin.left / 4)
-      .attr('x', -height / 2.5)
-      .text('Lucro');
+      .attr('x', -height / 2)
+      .text('Produtos');
   };  
   
   const drawCategoryDistributionChart = (data) => {
@@ -597,11 +555,11 @@ const FinancialPage = () => {
       .enter().append('rect')
       .attr('class', 'bar-top')
       .attr('x', (_, i) => x(data.categorias[i]))
-      .attr('y', d => y(d) - 2.5)
-      .attr('height', 4)
+      .attr('y', d => y(d) - 3.5)
+      .attr('height', 7.5)
       .attr('width', x.bandwidth())
-      .attr('rx', 5)
-      .attr('ry', 5)
+      .attr('rx', 50)
+      .attr('ry', 10)
       .attr('fill', '#FF1A66');
   
     svg.selectAll('.label')
@@ -686,8 +644,8 @@ const FinancialPage = () => {
       .enter().append('rect')
       .attr('class', 'roundedTop')
       .attr('x', (_, i) => x(data.categorias[i]))
-      .attr('y', d => d < 0 ? y(d) - 2.5 : y(d) - 2.5)
-      .attr('height', 5)
+      .attr('y', d => d < 0 ? y(d) - 3.5 : y(d) - 3.5)
+      .attr('height', 7.5)
       .attr('width', x.bandwidth())
       .attr('rx', 10)
       .attr('ry', 10)

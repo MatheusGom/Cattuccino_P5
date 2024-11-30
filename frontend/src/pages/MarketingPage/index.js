@@ -229,7 +229,7 @@ const MarketingPage = () => {
     const width = svgElement.clientWidth || 600;
     const height = svgElement.clientHeight || 300;
   
-    const margin = { top: 30, right: 30, bottom: 100, left: 70 };
+    const margin = { top: 40, right: 30, bottom: 100, left: 70 };
     
     const wrap = (text, width) => {
       text.each(function() {
@@ -312,7 +312,19 @@ const MarketingPage = () => {
       .attr('y2', d => y(d.average - d.stddev))
       .attr('stroke', 'black')
       .attr('stroke-width', 1.5);
-    
+  
+    svg.selectAll('.label')
+      .data(data)
+      .enter()
+      .append('text')
+      .attr('class', 'label')
+      .attr('x', d => x(d.name) + x.bandwidth() / 2)
+      .attr('y', d => y(d.average) - 35)
+      .attr('text-anchor', 'middle')
+      .attr('font-size', '12px')
+      .attr('fill', 'black')
+      .text(d => d3.format('.2f')(d.average));
+  
     const xAxis = svg.append('g')
       .attr('transform', `translate(0,${height - margin.bottom})`)
       .call(d3.axisBottom(x));
@@ -324,7 +336,11 @@ const MarketingPage = () => {
     
     svg.append('g')
       .attr('transform', `translate(${margin.left},0)`)
-      .call(d3.axisLeft(y).ticks(10).tickValues(d3.range(0, y.domain()[1], 1000)))
+      .call(
+        d3.axisLeft(y)
+          .ticks(5)
+          .tickFormat(d3.format('.0f'))
+      )
       .style('font-size', '12px');
     
     svg.append('text')
@@ -436,7 +452,7 @@ const MarketingPage = () => {
         barGroup.append('rect')
           .attr('x', x(d.dia))
           .attr('y', y(parseInt(d.horario_pico?.split(':')[0]) || 0) + Math.min(baseHeight, radius) + -10)
-          .attr('height', baseHeight - Math.min(baseHeight, radius) + 10) // Altura restante
+          .attr('height', baseHeight - Math.min(baseHeight, radius) + 10)
           .attr('width', barWidth)
           .attr('fill', 'url(#barGradient)');
       });
@@ -635,12 +651,10 @@ const MarketingPage = () => {
       .attr('dy', '15')
       .attr('transform', 'rotate(0)');
   
-    // Add the Y axis
     svg.append('g')
       .attr('transform', `translate(${margin.left},0)`)
       .call(d3.axisLeft(y));
   
-    // Y axis label
     svg.append('text')
       .attr('transform', 'rotate(-90)')
       .attr('x', -height / 3)
@@ -650,7 +664,6 @@ const MarketingPage = () => {
       .style('font-weight', '900')
       .text('Alcance Medio');
   
-    // Legend
     const legendData = [
       { platform: 'Instagram', color: '#ED1164', logo: 'instagram_logo.svg' },
       { platform: 'Facebook', color: '#FF9FBA', logo: 'facebook_logo.svg' },

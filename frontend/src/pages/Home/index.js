@@ -35,7 +35,6 @@ function Home() {
                 }
             } catch (error) {
                 console.error('Erro ao buscar dados de análise de gênero:', error);
-                alert('Erro ao buscar dados de análise de gênero. Verifique o console para mais detalhes.');
             }
         };
 
@@ -46,7 +45,6 @@ function Home() {
                 if (response.data.dias && response.data.horarios) { drawPeakHoursChart(response.data); }
             } catch (error) {
                 console.error('Erro ao buscar dados de horários de pico:', error);
-                alert('Erro ao buscar dados de horários de pico. Verifique o console para mais detalhes.');
             }
         };
 
@@ -57,7 +55,6 @@ function Home() {
                 drawProfitRevenueChart(response.data);
             } catch (error) {
                 console.error('Erro ao buscar dados de relação lucro/faturamento:', error);
-                alert('Erro ao buscar dados de relação lucro/faturamento. Verifique o console para mais detalhes.');
             }
         };
 
@@ -68,7 +65,6 @@ function Home() {
                 drawCategoryDistributionChart(response.data);
             } catch (error) {
                 console.error('Erro ao buscar dados de distribuição por categoria:', error);
-                alert('Erro ao buscar dados de distribuição por categoria. Verifique o console para mais detalhes.');
             }
         };
 
@@ -180,7 +176,7 @@ function Home() {
                 barGroup.append('rect')
                     .attr('x', x(d.dia))
                     .attr('y', y(parseInt(d.horario_pico?.split(':')[0]) || 0) + Math.min(baseHeight, radius) + -10)
-                    .attr('height', baseHeight - Math.min(baseHeight, radius) + 10) // Altura restante
+                    .attr('height', baseHeight - Math.min(baseHeight, radius) + 10)
                     .attr('width', barWidth)
                     .attr('fill', 'url(#barGradient)');
             });
@@ -312,9 +308,9 @@ function Home() {
           .attr('y', margin.left / 4)
           .attr('x', -height / 2.5)
           .text('Lucro/Faturamento');
-      };
+    };
 
-      const drawCategoryDistributionChart = (data) => {
+    const drawCategoryDistributionChart = (data) => {
         const svg = d3.select(categoryDistributionChartRef.current);
         const width = svg.node().clientWidth;
         const height = svg.node().clientHeight;
@@ -364,11 +360,11 @@ function Home() {
           .enter().append('rect')
           .attr('class', 'bar-top')
           .attr('x', (_, i) => x(data.categorias[i]))
-          .attr('y', d => y(d) - 2.5)
-          .attr('height', 4)
+          .attr('y', d => y(d) - 3.5)
+          .attr('height', 7.5)
           .attr('width', x.bandwidth())
-          .attr('rx', 5)
-          .attr('ry', 5)
+          .attr('rx', 50)
+          .attr('ry', 10)
           .attr('fill', '#FF1A66');
       
         svg.selectAll('.label')
@@ -404,7 +400,7 @@ function Home() {
           .attr('y', margin.left / 4)
           .attr('x', -height / 2.5)
           .text('Quantidade');
-      }; 
+    };
 
     return (
         <>

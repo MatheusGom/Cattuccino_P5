@@ -297,21 +297,28 @@ const FinancialPage = () => {
       .enter().append('text')
       .attr('class', 'label')
       .attr('x', d => x(d.categoria_produto) + x.bandwidth() / 2)
-      .attr('y', d => d.relacao_lucro_faturamento < 0 ? y(d.relacao_lucro_faturamento) + 18 : y(d.relacao_lucro_faturamento) - 18)
+      .attr('y', d => {
+        const baseY = d.relacao_lucro_faturamento < 0 ? y(d.relacao_lucro_faturamento) : y(d.relacao_lucro_faturamento);
+        return d.relacao_lucro_faturamento < 0 ? baseY + 15 : baseY - 10;
+      })
       .attr('text-anchor', 'middle')
       .attr('font-size', '10px')
       .attr('fill', 'black')
       .text(d => d3.format('.2f')(d.relacao_lucro_faturamento));
   
-    svg.append('g')
+      svg.append('g')
       .attr('transform', `translate(0,${height - (margin.bottom * 1.561)})`)
       .call(d3.axisBottom(x))
       .selectAll('text')
-      .attr('transform', 'rotate(-45)')
+      .attr('transform', (d, i) => {
+        const dataPoint = data.find(item => item.categoria_produto === d);
+        const dy = dataPoint && dataPoint.relacao_lucro_faturamento < 0 ? -35 : 15;
+        const dx = d === "CONDIMENTO" ? 20 : 0;
+        return `translate(${dx},${dy})`;
+      })
       .style('text-anchor', 'end')
       .style('font-size', '10px')
-      .attr('dx', '5')
-      .attr('dy', '15');
+      .attr('dx', '15');
   
     svg.append('g')
       .attr('transform', `translate(${margin.left},0)`)
@@ -323,7 +330,7 @@ const FinancialPage = () => {
       .attr('y', margin.left / 4)
       .attr('x', -height / 2.5)
       .text('Lucro/Faturamento');
-  };  
+  };
   
   const drawCategoryProportionsChart = (data) => {
     const svg = d3.select(categoryProportionsChartRef.current);
@@ -397,7 +404,10 @@ const FinancialPage = () => {
       .attr('transform', `translate(0,${height - margin.bottom})`)
       .call(d3.axisBottom(x))
       .selectAll('text')
-      .attr('transform', 'rotate(-45)')
+      .attr('transform', (d) => {
+        const dx = d === "CONDIMENTO" ? 35 : 18;
+        return `translate(${dx})`;
+      })
       .style('text-anchor', 'end')
       .style('font-size', '10px');
   
@@ -424,7 +434,7 @@ const FinancialPage = () => {
     const x = d3.scaleBand()
       .domain(data.produtos)
       .range([margin.left, width - margin.right])
-      .padding(0.6);
+      .padding(0.8);
   
     const y = d3.scaleLinear()
       .domain([0, d3.max(data.lucros)]).nice()
@@ -481,7 +491,6 @@ const FinancialPage = () => {
       .attr('fill', 'black')
       .text(d => d3.format('.2f')(d));
   
-    // Função de quebra de texto para os rótulos do eixo X
     const wrap = (text, width) => {
       text.each(function() {
         const text = d3.select(this);
@@ -516,7 +525,6 @@ const FinancialPage = () => {
       });
     };
   
-    // Eixo X
     svg.append('g')
       .attr('transform', `translate(0,${height - margin.bottom})`)
       .call(d3.axisBottom(x))
@@ -527,12 +535,10 @@ const FinancialPage = () => {
       .style('font-size', '10px')
       .call(wrap, x.bandwidth());
   
-    // Eixo Y
     svg.append('g')
       .attr('transform', `translate(${margin.left},0)`)
       .call(d3.axisLeft(y).ticks(maxY / 200).tickFormat(d3.format('.0f')));
   
-    // Título do gráfico
     svg.append('text')
       .attr('text-anchor', 'middle')
       .attr('transform', 'rotate(-90)')
@@ -694,11 +700,15 @@ const FinancialPage = () => {
       .attr('fill', 'black')
       .text(d => d3.format('.2f')(d));
   
-    svg.append('g')
+      svg.append('g')
       .attr('transform', `translate(0,${height - (margin.bottom * 1.935)})`)
       .call(d3.axisBottom(x))
       .selectAll('text')
-      .attr('transform', 'rotate(-45)')
+      .attr('transform', (d, i) => {
+        const margin = data.margens[i] < 0 ? -45 : 15;
+        const dx = d === "CONDIMENTO" ? 30 : 15;
+        return `rotate(0) translate(${dx},${margin})`;
+      })
       .style('text-anchor', 'end')
       .style('font-size', '10px');
   
@@ -713,6 +723,8 @@ const FinancialPage = () => {
       .attr('x', -height / 2.5)
       .text('Margem de Lucro');
   };
+  
+  
   
   return (
     <div className={styles.container}>

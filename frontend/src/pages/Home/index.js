@@ -223,80 +223,96 @@ function Home() {
         const svg = d3.select(profitRevenueChartRef.current);
         const width = svg.node().clientWidth;
         const height = svg.node().clientHeight;
-        const margin = { top: 30, right: 20, bottom: 60, left: 60 };
-
+        const margin = { top: 30, right: 20, bottom: 80, left: 60 };
+      
         svg.selectAll('*').remove();
-
-        const x = d3.scaleBand()
-            .domain(data.map(d => d.categoria_produto))
-            .range([margin.left, width - margin.right])
-            .padding(0.4);
-
+      
         const y = d3.scaleLinear()
-            .domain([0, d3.max(data, d => d.relacao_lucro_faturamento)]).nice()
-            .range([height - margin.bottom, margin.top]);
-
+          .domain([d3.min(data, d => d.relacao_lucro_faturamento), d3.max(data, d => d.relacao_lucro_faturamento)])
+          .nice()
+          .range([height - margin.bottom, margin.top]);
+      
+        const x = d3.scaleBand()
+          .domain(data.map(d => d.categoria_produto))
+          .range([margin.left, width - margin.right])
+          .padding(0.7);
+      
         const defs = svg.append('defs');
         const gradient = defs.append('linearGradient')
-            .attr('id', 'barGradient')
-            .attr('x1', '0%')
-            .attr('y1', '0%')
-            .attr('x2', '0%')
-            .attr('y2', '100%');
-
+          .attr('id', 'barGradient')
+          .attr('x1', '0%')
+          .attr('y1', '0%')
+          .attr('x2', '0%')
+          .attr('y2', '100%');
+      
         gradient.append('stop')
-            .attr('offset', '0%')
-            .attr('stop-color', '#FF1A66');
+          .attr('offset', '0%')
+          .attr('stop-color', '#FF1A66');
         gradient.append('stop')
-            .attr('offset', '100%')
-            .attr('stop-color', '#99103D');
-
+          .attr('offset', '100%')
+          .attr('stop-color', '#99103D');
+      
         svg.selectAll('.bar')
-            .data(data)
-            .enter().append('rect')
-            .attr('class', 'bar')
-            .attr('x', d => x(d.categoria_produto))
-            .attr('y', d => y(d.relacao_lucro_faturamento))
-            .attr('height', d => y(0) - y(d.relacao_lucro_faturamento))
-            .attr('width', x.bandwidth())
-            .attr('fill', 'url(#barGradient)');
-
+          .data(data)
+          .enter().append('rect')
+          .attr('class', 'bar')
+          .attr('x', d => x(d.categoria_produto))
+          .attr('y', d => d.relacao_lucro_faturamento < 0 ? y(0) : y(d.relacao_lucro_faturamento))
+          .attr('height', d => Math.abs(y(0) - y(d.relacao_lucro_faturamento)))
+          .attr('width', x.bandwidth())
+          .attr('fill', 'url(#barGradient)');
+      
+        svg.selectAll('.roundedTop')
+          .data(data)
+          .enter().append('rect')
+          .attr('class', 'roundedTop')
+          .attr('x', d => x(d.categoria_produto))
+          .attr('y', d => d.relacao_lucro_faturamento < 0 ? y(d.relacao_lucro_faturamento) - 2.5 : y(d.relacao_lucro_faturamento) - 2.5)
+          .attr('height', 5)
+          .attr('width', x.bandwidth())
+          .attr('rx', 10)
+          .attr('ry', 10)
+          .attr('fill', d => d.relacao_lucro_faturamento < 0 ? '#99103D' : '#FF1A66');
+      
         svg.selectAll('.label')
-            .data(data)
-            .enter().append('text')
-            .attr('class', 'label')
-            .attr('x', d => x(d.categoria_produto) + x.bandwidth() / 2)
-            .attr('y', d => y(d.relacao_lucro_faturamento) - 5)
-            .attr('text-anchor', 'middle')
-            .attr('font-size', '10px')
-            .attr('fill', '#fff')
-            .text(d => d3.format('.2f')(d.relacao_lucro_faturamento));
-
+          .data(data)
+          .enter().append('text')
+          .attr('class', 'label')
+          .attr('x', d => x(d.categoria_produto) + x.bandwidth() / 2)
+          .attr('y', d => {
+            const baseY = d.relacao_lucro_faturamento < 0 ? y(d.relacao_lucro_faturamento) : y(d.relacao_lucro_faturamento);
+            return d.relacao_lucro_faturamento < 0 ? baseY + 15 : baseY - 10;
+          })
+          .attr('text-anchor', 'middle')
+          .attr('font-size', '10px')
+          .attr('fill', 'black')
+          .text(d => d3.format('.2f')(d.relacao_lucro_faturamento));
+      
+          svg.append('g')
+          .attr('transform', `translate(0,${height - (margin.bottom * 1.561)})`)
+          .call(d3.axisBottom(x))
+          .selectAll('text')
+          .attr('transform', (d, i) => {
+            const dataPoint = data.find(item => item.categoria_produto === d);
+            const dy = dataPoint && dataPoint.relacao_lucro_faturamento < 0 ? -35 : 15;
+            const dx = d === "CONDIMENTO" ? 20 : 0;
+            return `translate(${dx},${dy})`;
+          })
+          .style('text-anchor', 'end')
+          .style('font-size', '10px')
+          .attr('dx', '15');
+      
         svg.append('g')
-            .attr('transform', `translate(0,${height - margin.bottom})`)
-            .call(d3.axisBottom(x))
-            .selectAll('text')
-            .attr('transform', 'rotate(-45)')
-            .style('text-anchor', 'end')
-            .style('font-size', '10px');
-
-        svg.append('g')
-            .attr('transform', `translate(${margin.left},0)`)
-            .call(d3.axisLeft(y).ticks(5).tickFormat(d3.format('.2f')));
-
+          .attr('transform', `translate(${margin.left},0)`)
+          .call(d3.axisLeft(y).ticks(5).tickFormat(d3.format('.2f')));
+      
         svg.append('text')
-            .attr('text-anchor', 'middle')
-            .attr('x', width / 2)
-            .attr('y', height - 10)
-            .text('Categoria de Produto');
-
-        svg.append('text')
-            .attr('text-anchor', 'middle')
-            .attr('transform', 'rotate(-90)')
-            .attr('y', margin.left / 4)
-            .attr('x', -height / 2.5)
-            .text('Lucro/Faturamento');
-    };
+          .attr('text-anchor', 'middle')
+          .attr('transform', 'rotate(-90)')
+          .attr('y', margin.left / 4)
+          .attr('x', -height / 2.5)
+          .text('Lucro/Faturamento');
+      };
 
     const drawCategoryDistributionChart = (data) => {
         const svg = d3.select(categoryDistributionChartRef.current);
